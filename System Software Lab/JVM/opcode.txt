@@ -1,0 +1,5 @@
+dload_1 27 0 1
+dload_3 29 0 1
+dadd 63 0 1
+dreturn AF 0 1
+dstore 39 1 2

@@ -1,0 +1,466 @@
+1.Truncate the Bills table and insert only the following values:
+
+SQL> TRUNCATE TABLE BILLS;
+
+Table truncated.
+
+
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C103',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C104',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C105',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C105',2016,2,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C106',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C107',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C108',2016,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C109',2015,12,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C109',2015,1,0);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS(bill_id,con_id,year,month,amount)
+  2  VALUES(BILL.NEXTVAL,'C110',2016,1,0);
+
+1 row created.
+
+2.Delete the following values in Reading table:
+
+SQL>DELETE FROM READING
+  2 WHERE (CON_ID,YEAR,MONTH) IN
+  3 (('C101',2015,12),('C101',2016,1),('C101',2016,2));
+
+3 rows deleted.
+
+3.Add the foreign key constraint to 
+  the con_id field in History table which refers Consumer ( con_id).
+
+SQL>ALTER TABLE HISTORY 
+   2 ADD CONSTRAINT HISTORY_FK_CON_ID
+   3 FOREIGN KEY (CON_ID) REFERENCES CONSUMER(CON_ID);
+
+Table altered.
+
+4.Insert the following values in History table:
+
+SQL> INSERT INTO HISTORY VALUES('C101',1,2015,12,198,450,'22-JAN-16');
+
+1 row created.
+
+
+SQL> INSERT INTO HISTORY VALUES('C101',2,2016,1,200,465,'20-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO HISTORY VALUES('C101',3,2016,2,30,80,'15-MAR-16');
+
+1 row created.
+
+Do the following queries by using Set Operation:
+
+1.List all the Male Consumers and Employees.
+
+
+SQL> (select con_name as name from consumer
+  2  where gender = 'M')
+  3  union
+  4  (select emp_name as name from employee
+  5  where gender = 'M');
+
+NAME
+---------------
+Karthik
+Kumar
+Kumaran
+Prabhu
+Pradeep
+Ramesh
+Ramu
+Sankar
+Siva
+
+9 rows selected.
+
+2.List the Consumer name who is also the Employee in Electric Board.
+
+SQL> (select con_name as name from consumer)
+  2  intersect
+  3  (select emp_name as name from employee);
+
+NAME
+---------------
+Prabhu
+Ramu
+
+
+3.List the Consumer name who is not an Employee of Electric Board.
+
+
+SQL> (select con_name as name from consumer)
+  2  minus
+  3  (select emp_name as name from employee);
+
+NAME
+---------------
+Anu
+Karthik
+Kumar
+Kumaran
+Pradeep
+Sankar
+Sheela
+Shree
+Simran
+Siva
+
+10 rows selected.
+
+
+4.List the Consumer details who is residing in the city which has maximum 
+  number of consumers or minimum number of consumers are residing when 
+  compared with other city of Consumers.
+
+SQL> WITH TAB AS(
+  2  SELECT CITY,COUNT(*) AS COUNT
+  3  FROM CONSUMER
+  4  GROUP BY CITY)
+  5  SELECT * FROM CONSUMER
+  6  WHERE CITY =
+  7  (SELECT CITY FROM TAB
+  8  WHERE TAB.COUNT =
+  9  (SELECT MAX(TAB.COUNT) FROM TAB))
+ 10  UNION
+ 11  SELECT * FROM CONSUMER
+ 12  WHERE CITY =
+ 13  (SELECT CITY FROM TAB
+ 14  WHERE TAB.COUNT =
+ 15  (SELECT MIN(TAB.COUNT) FROM TAB));
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com     
+C102 Siva            M D       2000 VNR        9777384718 siva@gmail.com        
+C106 Sankar          M C      12000 VNR        9875442616 sankar@gmail.com      
+C107 Karthik         M C       2000 CHE        9876762332 karthik@gmail.com     
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+6 rows selected.
+
+
+5.Display all the employee id with the consumer 
+   name for whom the reading is taken for January 2016.
+
+SELECT EMP_ID,CON_NAME FROM
+CONSUMER right OUTER JOIN EMPLOYEE JOIN READING
+ON EMPLOYEE.EMP_ID  = READING.EMPLOYEE
+ON CONSUMER.CON_ID = READING.CON_ID;
+EMP_ID CON_NAME        
+------ --------------- 
+E101   Siva            
+E103   Kumaran         
+E101   Sheela          
+E103   Simran          
+E102   Simran          
+E104   Sankar          
+E104   Karthik         
+E104   Kumar           
+E102   Anu             
+E103   Anu             
+E104   Shree           
+
+11 rows selected
+
+
+6.List all the consumer id with all the employee name for 
+  whom readings taken for February 2016.
+
+SELECT CONSUMER.CON_ID,EMP_NAME FROM
+CONSUMER FULL OUTER JOIN EMPLOYEE FULL OUTER JOIN READING
+ON EMPLOYEE.EMP_ID  = READING.EMPLOYEE
+ON CONSUMER.CON_ID = READING.CON_ID;
+
+CON_ID EMP_NAME        
+------ --------------- 
+C101                   
+C102   Prabhu          
+C103   Ramesh          
+C104   Prabhu          
+C105   Ramesh          
+C105   Kanaga          
+C106   Ramu            
+C107   Ramu            
+C108   Ramu            
+C109   Kanaga          
+C109   Ramesh          
+C110   Ramu            
+C111                   
+C112                   
+
+14 rows selected
+
+
+7.Display the consumer names of those who have the same type of electric 
+  usage of the consumer ‘Karthik’.((Don’t use the eb_type in the query and 
+  don’t use subquery which is inefficient)
+
+
+SELECT c1.con_name, c2.con_name
+FROM CONSUMER C1 JOIN CONSUMER C2
+ON C1.EB_TYPE = C2.EB_TYPE
+WHERE C1.CON_NAME != C2.CON_NAME;
+
+CON_NAME        CON_NAME        
+--------------- --------------- 
+Prabhu          Pradeep         
+Shree           Pradeep         
+Simran          Pradeep         
+Sheela          Pradeep         
+Kumaran         Pradeep         
+Siva            Pradeep         
+Prabhu          Siva            
+Shree           Siva            
+Simran          Siva            
+Sheela          Siva            
+Kumaran         Siva            
+Pradeep         Siva            
+Prabhu          Kumaran         
+Shree           Kumaran         
+Simran          Kumaran         
+Sheela          Kumaran         
+Siva            Kumaran         
+Pradeep         Kumaran         
+Prabhu          Sheela          
+Shree           Sheela          
+Simran          Sheela          
+Kumaran         Sheela          
+Siva            Sheela          
+Pradeep         Sheela          
+Prabhu          Simran          
+Shree           Simran          
+Sheela          Simran          
+Kumaran         Simran          
+Siva            Simran          
+Pradeep         Simran          
+Ramu            Sankar          
+Anu             Sankar          
+Kumar           Sankar          
+Karthik         Sankar          
+Ramu            Karthik         
+Anu             Karthik         
+Kumar           Karthik         
+Sankar          Karthik         
+Ramu            Kumar           
+Anu             Kumar           
+Karthik         Kumar           
+Sankar          Kumar           
+Ramu            Anu             
+Kumar           Anu             
+Karthik         Anu             
+Sankar          Anu             
+Prabhu          Shree           
+Simran          Shree           
+Sheela          Shree           
+Kumaran         Shree           
+Siva            Shree           
+Pradeep         Shree           
+Shree           Prabhu          
+Simran          Prabhu          
+Sheela          Prabhu          
+Kumaran         Prabhu          
+Siva            Prabhu          
+Pradeep         Prabhu          
+Anu             Ramu            
+Kumar           Ramu            
+Karthik         Ramu            
+Sankar          Ramu            
+
+62 rows selected
+
+
+
+8.Display the Consumer name, mobile and email for those who didn’t 
+  paid the electric bill amount for more than one month. (Don’t use 
+  specific id in the condition)
+
+SQL> select con_name,mobile,email from
+  2  consumer join bills
+  3  on consumer.con_id = bills.con_id
+  4  where pay_date is null and extract(month from sysdate) > month;
+
+CON_NAME            MOBILE EMAIL
+--------------- ---------- --------------------
+Kumaran         9756567767 kumaran@gmail.com
+Sheela          9876761342 sheels@gmail.com
+Simran          9766173741 sim22@gmail.com
+Sankar          9875442616 sankar@gmail.com
+Karthik         9876762332 karthik@gmail.com
+Kumar           9987813749
+Anu             9878345287
+Shree           7878237844
+
+8 rows selected.
+
+9.Update the Bill amount for all consumers for whom the reading 
+  is taken by the following calculations:
+Max. No. of Units	Units	Amount in Rupees per unit
+	From	To	
+200	0	100	1
+200	101	200	2
+500	0	200	2
+500	201	500	2.5
+> 500	0	500	2.5
+> 500	501	1000	4
+> 500	> 1000	6
+
+
+merge into bills b
+using reading r
+ON (b.CON_ID = r.CON_ID and b.year = r.year and b.month = r.month)
+when matched then 
+UPDATE 
+SET AMOUNT =
+CASE
+WHEN r.UNITS < 200 AND UNITS BETWEEN 0 AND 100 THEN r.UNITS*1
+WHEN r.UNITS < 200 AND UNITS BETWEEN 101 AND 200 THEN r.UNITS*2
+WHEN r.UNITS BETWEEN 200 AND 500 AND r.UNITS BETWEEN 0 AND 200 THEN r.UNITS*2
+WHEN r.UNITS BETWEEN 200 AND 500 AND r.UNITS BETWEEN 201 AND 500 THEN r.UNITS*2.5
+WHEN r.UNITS BETWEEN 500 AND 1000 AND r.UNITS BETWEEN 0 AND 500 THEN r.UNITS*2.5
+WHEN r.UNITS BETWEEN 500 AND 1000 AND r.UNITS BETWEEN 501 AND 1000 THEN r.UNITS*4
+WHEN r.UNITS > 1000 THEN r.UNITS*4
+END
+WHERE amount is NULL;
+
+0 rows merged
+
+BILL_ID                CON_ID YEAR                   MONTH                  AMOUNT                 STATUS PAY_DATE                  
+---------------------- ------ ---------------------- ---------------------- ---------------------- ------ ------------------------- 
+4                      C103   2016                   1                      745                                                     
+5                      C104   2016                   1                      40                                                      
+6                      C105   2016                   1                      875                                                     
+7                      C105   2016                   2                      725                                                     
+8                      C106   2016                   1                      210                                                     
+9                      C107   2016                   1                      4580                                                    
+10                     C108   2016                   1                      4480                                                    
+11                     C109   2015                   12                     8800                                                    
+12                     C109   2015                   1                      5800                                                    
+13                     C110   2016                   1                      1125                                                    
+
+10 rows selected
+
+
+
+
+
+
+10.Display the details of the consumers who have to pay the amount 
+  as a report in the following format: (In the Ascending order of 
+  Consumer Id with Year and Month as Descending order)
+
+SQL> select con_id,con_name,bills.year,bills.month,reading.units,bills.amount
+  2  from
+  3  consumer join reading join bills
+  4  on reading.con_id = bills.con_id and reading.month = bills.month and readin
+g.year = bills.year
+  5  on consumer.con_id = reading.con_id
+  6  where pay_date is null
+  7  order by con_id,year desc,month desc;
+
+CON_ CON_NAME              YEAR      MONTH      UNITS     AMOUNT
+---- --------------- ---------- ---------- ---------- ----------
+C102 Siva                  2016          1        250           
+C103 Kumaran               2016          1        298          
+C104 Sheela                2016          1         40          
+C105 Simran                2016          2        290          
+C105 Simran                2016          1        350          
+C106 Sankar                2016          1        105          
+C107 Karthik               2016          1       1145          
+C108 Kumar                 2016          1       1120          
+C109 Anu                   2015         12       2200          
+C109 Anu                   2015          1       1450          
+C110 Shree                 2016          1        450          
+
+11 rows selected.
+
+
+
+11.Display the consumer details whose name is same as any of the employees 
+   whose salary is maximum among other employees in the same gender.
+
+SQL> select con_id,con_name,consumer.mobile,consumer.email,consumer.city from
+  2  consumer join employee
+  3  on consumer.con_name = employee.emp_name
+  4  where (employee.salary,employee.gender) in
+  5  (select max(employee.salary),employee.gender from employee
+  6   group by employee.gender);
+
+CON_ CON_NAME            MOBILE EMAIL                CITY
+---- --------------- ---------- -------------------- ----------
+C112 Kanaga          9874165232 kan@gmail.com        CBE
+
+
+
+12.Display the history details of the consumers (with the fields such as 
+   Consumer Name, Year, Month, Units and amount) who doesn’t have any pending 
+   amount to pay.
+
+
+SELECT CONSUMER.CON_NAME,CONSUMER.CON_ID,HISTORY.YEAR,HISTORY.MONTH,HISTORY
+.AMOUNT
+FROM CONSUMER JOIN HISTORY
+ON CONSUMER.CON_ID = HISTORY.CON_ID
+WHERE CONSUMER.CON_ID NOT IN
+(SELECT DISTINCT BILLS.CON_ID
+FROM BILLS JOIN HISTORY
+ON BILLS.CON_ID != HISTORY.CON_ID
+where bills.amount is not null);
+
+
+CON_NAME        CON_ID YEAR                   MONTH                  AMOUNT                 
+--------------- ------ ---------------------- ---------------------- ---------------------- 
+Pradeep         C101   2015                   12                     450                    
+Pradeep         C101   2016                   2                      80                     
+Pradeep         C101   2016                   1                      465                    
+
+3 rows selected

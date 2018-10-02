@@ -1,0 +1,440 @@
+ALTER TABLE READING DROP CONSTRAINT READ_EMP_FK;
+
+ ALTER TABLE READING succeeded.
+
+
+1.Write a statement level trigger logEntry to store the log in the 
+  log table for insert, update and delete operations done on Consumer table.
+  
+  LogTable(operation, date)
+
+CREATE TABLE LOGTABLE(
+  L_ID INT PRIMARY KEY,
+  OPERATION VARCHAR(10),
+  L_DATE DATE);
+
+create or replace TRIGGER LOGENTRY
+AFTER INSERT OR DELETE OR UPDATE ON CONSUMER
+BEGIN
+IF INSERTING THEN
+  INSERT INTO LOGTABLE VALUES(LENTRY.nextval,'INSERT',SYSDATE);
+END IF; 
+IF DELETING THEN
+  INSERT INTO LOGTABLE VALUES(LENTRY.nextval,'DELETE',SYSDATE);
+END IF;
+IF UPDATING THEN
+  INSERT INTO LOGTABLE VALUES (LENTRY.nextval,'UPDATE',SYSDATE);
+END IF;
+END;
+
+TRIGGER LOGENTRY Compiled.
+
+
+1 rows inserted
+1 rows inserted
+
+update consumer
+set deposit = 12000
+where con_id = 'C113';
+
+1 rows updated
+
+L_ID                   OPERATION  L_DATE                    
+---------------------- ---------- ------------------------- 
+21                     INSERT     17-MAR-16                 
+22                     INSERT     17-MAR-16                 
+23                     UPDATE     17-MAR-16                 
+24                     INSERT     17-MAR-16                 
+25                     DELETE     17-MAR-16                 
+
+5 rows selected
+
+a.Write a sql query to count the no. of update operations 
+ done between 16.03.16 and 18.03.16.
+
+select count(*) AS COUNT from logtable
+where operation = 'UPDATE'AND l_date BETWEEN '16-MAR-16' AND '18-MAR-16';
+
+COUNT                  
+---------------------- 
+1                      
+
+1 rows selected
+
+b.Write a query to find the number of insert, 
+ update and delete operations performed.
+
+
+SELECT operation,COUNT(operation) as Count FROM logtable
+GROUP BY operation;
+
+OPERATION  COUNT                  
+---------- ---------------------- 
+UPDATE     2                      
+DELETE     1                      
+INSERT     4                      
+
+3 rows selected
+
+2.Write a trigger insertBill to generate the bill for the consumer whose reading is taken and 
+  entered in Reading table. Bill should contain the bill_id(auto incremented value), con_id, year, 
+  month and amount which can be calculated by using the formula given in 9th question in Join exercise. 
+(Trigger action has to be fired out when the reading is inserted in the reading table)
+
+create or replace TRIGGER INSERTBILL
+AFTER INSERT
+ON READING
+FOR EACH ROW
+DECLARE CONSUMED INTEGER;
+BEGIN
+
+SELECT UNITS INTO CONSUMED FROM READING
+WHERE CON_ID = :NEW.CON_ID and year = :NEW.year and month = :NEW.month;
+
+INSERT INTO BILLS VALUES(BILL.NEXTVAL,:NEW.CON_ID,:NEW.YEAR,:NEW.MONTH,0,NULL,NULL);
+
+UPDATE BILLS
+SET AMOUNT =
+CASE
+WHEN CONSUMED < 200 AND CONSUMED BETWEEN 0 AND 100 THEN CONSUMED*1
+WHEN CONSUMED < 200 AND CONSUMED BETWEEN 101 AND 200 THEN CONSUMED*2
+WHEN CONSUMED BETWEEN 200 AND 500 AND CONSUMED BETWEEN 0 AND 200 THEN CONSUMED*2
+WHEN CONSUMED BETWEEN 200 AND 500 AND CONSUMED BETWEEN 201 AND 500 THEN CONSUMED*2.5
+WHEN CONSUMED BETWEEN 500 AND 1000 AND CONSUMED BETWEEN 0 AND 500 THEN CONSUMED*2.5
+WHEN CONSUMED BETWEEN 500 AND 1000 AND CONSUMED BETWEEN 501 AND 1000 THEN CONSUMED*4
+WHEN CONSUMED > 1000 THEN CONSUMED*4
+END
+WHERE amount is NULL;
+
+END;
+
+SELECT * FROM READING;
+SELECT * FROM BILLS;
+
+CON_ID YEAR                   MONTH                  EMPLOYEE UNITS                  
+------ ---------------------- ---------------------- -------- ---------------------- 
+C102   2016                   1                      E101     250                    
+C103   2016                   1                      E103     298                    
+C104   2016                   1                      E101     40                     
+C105   2016                   1                      E102     350                    
+C105   2016                   2                      E103     290                    
+C106   2016                   1                      E104     105                    
+C107   2016                   1                      E104     1145                   
+C108   2016                   1                      E104     1120                   
+C109   2015                   12                     E103     2200                   
+C109   2015                   1                      E102     1450                   
+C110   2016                   1                      E104     450                    
+
+11 rows selected
+
+BILL_ID                CON_ID YEAR                   MONTH                  AMOUNT                 STATUS PAY_DATE                  
+---------------------- ------ ---------------------- ---------------------- ---------------------- ------ ------------------------- 
+5                      C102   2016                   1                      625                                                     
+6                      C103   2016                   1                      745                                                     
+7                      C104   2016                   1                      40                                                      
+8                      C105   2016                   1                      875                                                     
+9                      C105   2016                   2                      725                                                     
+10                     C106   2016                   1                      210                                                     
+11                     C107   2016                   1                      4580                                                    
+12                     C108   2016                   1                      4480                                                    
+13                     C109   2015                   12                     8800                                                    
+14                     C109   2015                   1                      5800                                                    
+15                     C110   2016                   1                      1125                                                    
+
+11 rows selected
+
+
+3.Write a trigger deleteEmployee to make the value of employee as 
+  NULL if any employee is deleted in Employee table.
+
+CREATE OR REPLACE TRIGGER DELETEEMPLOYEE
+AFTER DELETE
+ON EMPLOYEE
+FOR EACH ROW
+BEGIN
+
+UPDATE READING
+SET EMPLOYEE = NULL
+WHERE EMPLOYEE = :OLD.EMP_ID;
+
+END;
+
+
+TRIGGER DELETEEMPLOYEE Compiled.
+
+
+a.Delete the Employee ‘E102’ in employee table and infer the result.
+
+
+DELETE FROM employee
+WHERE EMP_ID = 'E103';
+
+1 rows deleted
+
+SELECT * FROM EMPLOYEE;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E101   Prabhu          M      9763874613             prabhu@gmail.com     2000                   
+E102   Kanaga          F      9651274234             kanaga@gmail.com     25000                  
+E104   Ramu            M      7887234522             ramu12@gmail.com     42300                  
+E105   SRIDHAR         M      9675467611                                  25000                  
+E106   Murugan         M      9654367234             murugan@gmail.com    45000                  
+E110   Kumaran         M      98787634221            kumaram@gmail.com    34500                  
+
+6 rows selected
+
+
+SELECT * FROM READING;
+CON_ID YEAR                   MONTH                  EMPLOYEE UNITS                  
+------ ---------------------- ---------------------- -------- ---------------------- 
+C102   2016                   1                      E101     250                    
+C103   2016                   1                               298                    
+C104   2016                   1                      E101     40                     
+C105   2016                   1                      E102     350                    
+C105   2016                   2                               290                    
+C106   2016                   1                      E104     105                    
+C107   2016                   1                      E104     1145                   
+C108   2016                   1                      E104     1120                   
+C109   2015                   12                              2200                   
+C109   2015                   1                      E102     1450                   
+C110   2016                   1                      E104     450                    
+
+11 rows selected
+
+4.Write a trigger insertHistory that should insert the corresponding values in History tablefrom Bills and Reading table once the paydate is updated with any value.Also it should delete the corresponding records in Reading table. 
+Also delete the corresponding records in Bill table in a separate PL/SQL block.
+
+create or replace TRIGGER INSERTHISTORY
+AFTER UPDATE OF STATUS
+ON BILLS
+FOR EACH ROW
+DECLARE 
+AMNT INTEGER;
+UNIT INTEGER;
+BEGIN
+
+SELECT UNITS INTO UNIT FROM READING
+WHERE CON_ID = :NEW.CON_ID AND MONTH = :NEW.MONTH AND YEAR = :NEW.YEAR;
+
+SELECT BILLS.AMOUNT INTO AMNT FROM BILLS
+WHERE CON_ID = :NEW.CON_ID AND MONTH = :NEW.MONTH AND YEAR = :NEW.YEAR;
+
+INSERT INTO HISTORY VALUES(:NEW.CON_ID,:NEW.BILL_ID,:NEW.YEAR,:NEW.MONTH,UNIT,AMNT,:NEW.PAY_DATE);
+
+DELETE FROM READING
+WHERE CON_ID = :NEW.CON_ID AND MONTH = :NEW.MONTH AND YEAR = :NEW.YEAR;
+
+END;
+
+
+SELECT * FROM BILLS ;
+
+BILL_ID                CON_ID YEAR                   MONTH                  AMOUNT                 STATUS PAY_DATE                  
+---------------------- ------ ---------------------- ---------------------- ---------------------- ------ ------------------------- 
+5                      C102   2016                   1                      625                                                     
+6                      C103   2016                   1                      745                                                     
+7                      C104   2016                   1                      40                                                      
+8                      C105   2016                   1                      875                                                     
+9                      C105   2016                   2                      725                                                     
+10                     C106   2016                   1                      210                                                     
+11                     C107   2016                   1                      4580                                                    
+12                     C108   2016                   1                      4480                                                    
+13                     C109   2015                   12                     8800                                                    
+14                     C109   2015                   1                      5800                                                    
+15                     C110   2016                   1                      1125                                                    
+
+11 rows selected
+
+SELECT * FROM READING;
+
+CON_ID YEAR                   MONTH                  EMPLOYEE UNITS                  
+------ ---------------------- ---------------------- -------- ---------------------- 
+C102   2016                   1                      E101     250                    
+C103   2016                   1                               298                    
+C104   2016                   1                      E101     40                     
+C105   2016                   1                      E102     350                    
+C105   2016                   2                               290                    
+C106   2016                   1                      E104     105                    
+C107   2016                   1                      E104     1145                   
+C108   2016                   1                      E104     1120                   
+C109   2015                   12                              2200                   
+C109   2015                   1                      E102     1450                   
+C110   2016                   1                      E104     450                    
+
+11 rows selected
+
+SELECT * FROM HISTORY;
+
+CON_ID BILL_ID                YEAR                   MONTH                  UNITS                  AMOUNT                 PAYDATE                   
+------ ---------------------- ---------------------- ---------------------- ---------------------- ---------------------- ------------------------- 
+C101   1                      2015                   12                     198                    450                    22-JAN-16                 
+C101   2                      2016                   1                      200                    465                    20-FEB-16                 
+C101   3                      2016                   2                      30                     80                     15-MAR-16                 
+
+3 rows selected
+
+a.Update the Status of consumer C105, C107 as ‘Direct’ and infer the result.
+
+
+BEGIN
+
+UPDATE BILLS 
+SET status = 'Direct'
+WHERE CON_ID = 'C105' OR CON_ID='C107';
+
+
+DELETE FROM bills
+WHERE CON_ID = 'C105' OR CON_ID='C107';
+
+END;
+
+anonymous block completed
+
+
+SELECT * FROM history;
+
+CON_ID BILL_ID                YEAR                   MONTH                  UNITS                  AMOUNT                 PAYDATE                   
+------ ---------------------- ---------------------- ---------------------- ---------------------- ---------------------- ------------------------- 
+C105   8                      2016                   1                      350                    875                    31-MAR-16                 
+C105   9                      2016                   2                      290                    725                    31-MAR-16                 
+C107   11                     2016                   1                      1145                   4580                   31-MAR-16                 
+C101   1                      2015                   12                     198                    450                    22-JAN-16                 
+C101   2                      2016                   1                      200                    465                    20-FEB-16                 
+C101   3                      2016                   2                      30                     80                     15-MAR-16                 
+
+6 rows selected
+
+SELECT * FROM BILLS;
+
+SELECT * FROM READING;
+
+BILL_ID                CON_ID YEAR                   MONTH                  AMOUNT                 STATUS PAY_DATE                  
+---------------------- ------ ---------------------- ---------------------- ---------------------- ------ ------------------------- 
+5                      C102   2016                   1                      625                                                     
+6                      C103   2016                   1                      745                                                     
+7                      C104   2016                   1                      40                                                      
+10                     C106   2016                   1                      210                                                     
+12                     C108   2016                   1                      4480                                                    
+13                     C109   2015                   12                     8800                                                    
+14                     C109   2015                   1                      5800                                                    
+15                     C110   2016                   1                      1125                                                    
+
+8 rows selected
+
+CON_ID YEAR                   MONTH                  EMPLOYEE UNITS                  
+------ ---------------------- ---------------------- -------- ---------------------- 
+C102   2016                   1                      E101     250                    
+C103   2016                   1                               298                    
+C104   2016                   1                      E101     40                     
+C106   2016                   1                      E104     105                    
+C108   2016                   1                      E104     1120                   
+C109   2015                   12                              2200                   
+C109   2015                   1                      E102     1450                   
+C110   2016                   1                      E104     450                    
+
+8 rows selected
+
+b.Update the Status of consumer C106, C108 as ‘Online’ and infer the result.
+
+BEGIN
+
+UPDATE BILLS 
+SET status = 'Online'
+WHERE CON_ID = 'C106' OR CON_ID='C108';
+
+
+DELETE FROM bills
+WHERE CON_ID = 'C106' OR CON_ID='C108';
+
+END;
+
+Statement processed.
+
+select * from reading;
+
+CON_ID	YEAR	MONTH	EMPLOYEE	UNITS
+C102	2016	1	E101	250
+C103	2016	1	E103	298
+C104	2016	1	E101	40
+C109	2015	12	E103	2200
+C109	2015	1	E102	1450
+C110	2016	1	E104	450
+
+select * from bills;
+
+BILL_ID	CON_ID	YEAR	MONTH	AMOUNT	STATUS	PAY_DATE
+25	C102	2016	1	625	- 	-
+26	C103	2016	1	745	- 	-
+27	C104	2016	1	40	- 	-
+33	C109	2015	12	8800	- 	-
+34	C109	2015	1	5800	- 	-
+35	C110	2016	1	1125	- 	- 
+
+
+select * from history;
+
+
+
+CON_ID	BILL_ID	YEAR	MONTH	UNITS	AMOUNT	PAYDATE
+C101	1	2015	12	198	450	22-JAN-16
+C101	2	2016	1	200	465	20-FEB-16
+C101	3	2016	2	30	80	15-MAR-16
+C105	28	2016	1	350	875	31-MAR-16
+C105	29	2016	2	290	725	31-MAR-16
+C107	31	2016	1	1145	4580	31-MAR-16
+C106	30	2016	1	105	210	31-MAR-16
+C108	32	2016	1	1120	4480	31-MAR-16
+5.Disable the insertBill trigger.
+
+ALTER TRIGGER INSERTBILL DISABLE;
+
+Trigger altered.
+
+
+a.Insert any statement in Bill table and infer the result.
+
+select * from bills;
+
+BILL_ID	CON_ID	YEAR	MONTH	AMOUNT	STATUS	PAY_DATE
+25	C102	2016	1	625	- 	-
+26	C103	2016	1	745	- 	-
+27	C104	2016	1	40	- 	-
+33	C109	2015	12	8800	- 	-
+34	C109	2015	1	5800	- 	-
+35	C110	2016	1	1125	- 	- 
+
+
+INSERT INTO READING VALUES('C109',2016,3,'E103',200);
+
+1 row(s) inserted.
+
+select * from bills;
+
+BILL_ID	CON_ID	YEAR	MONTH	AMOUNT	STATUS	PAY_DATE
+25	C102	2016	1	625	- 	-
+26	C103	2016	1	745	- 	-
+27	C104	2016	1	40	- 	-
+33	C109	2015	12	8800	- 	-
+34	C109	2015	1	5800	- 	-
+35	C110	2016	1	1125	- 	- 
+
+select * from reading;
+
+CON_ID	YEAR	MONTH	EMPLOYEE	UNITS
+C109	2016	3	E103	200
+C102	2016	1	E101	250
+C103	2016	1	E103	298
+C104	2016	1	E101	40
+C109	2015	12	E103	2200
+C109	2015	1	E102	1450
+C110	2016	1	E104	450
+
+6.Drop the logEntry trigger.
+
+drop trigger logentry;
+
+Trigger dropped.
+
+
+

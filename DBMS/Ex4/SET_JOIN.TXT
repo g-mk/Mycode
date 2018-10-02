@@ -1,0 +1,173 @@
+
+SQL> WITH TAB AS(
+  2  SELECT CITY,COUNT(*) AS COUNT
+  3  FROM CONSUMER
+  4  GROUP BY CITY)
+  5  SELECT * FROM CONSUMER
+  6  WHERE CITY =
+  7  (SELECT CITY FROM TAB
+  8  WHERE TAB.COUNT =
+  9  (SELECT MAX(TAB.COUNT) FROM TAB))
+ 10  UNION
+ 11  SELECT * FROM CONSUMER
+ 12  WHERE CITY =
+ 13  (SELECT CITY FROM TAB
+ 14  WHERE TAB.COUNT =
+ 15  (SELECT MIN(TAB.COUNT) FROM TAB));
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com     
+C102 Siva            M D       2000 VNR        9777384718 siva@gmail.com        
+C106 Sankar          M C      12000 VNR        9875442616 sankar@gmail.com      
+C107 Karthik         M C       2000 CHE        9876762332 karthik@gmail.com     
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+6 rows selected.
+
+SQL> SELECT EMP_ID,CON_NAME FROM
+  2  CONSUMER JOIN READING JOIN EMPLOYEE
+  3  ON EMPLOYEE.EMP_ID  = READING.EMPLOYEE
+  4  ON CONSUMER.CON_ID = READING.CON_ID
+  5  WHERE MONTH = 1 AND YEAR = 2016;
+
+EMP_ CON_NAME                                                                   
+---- ---------------                                                            
+E101 Siva                                                                       
+E103 Kumaran                                                                    
+E101 Sheela                                                                     
+E102 Simran                                                                     
+E104 Sankar                                                                     
+E104 Karthik                                                                    
+E104 Kumar                                                                      
+E104 Shree                                                                      
+
+8 rows selected.
+
+SQL> SELECT CON_ID,EMP_NAME FROM
+  2  CONSUMER JOIN READING JOIN EMPLOYEE
+  3  ON EMPLOYEE.EMP_ID  = READING.EMPLOYEE
+  4  ON CONSUMER.CON_ID = READING.CON_ID
+  5  WHERE MONTH = 2 AND YEAR = 2016;
+
+CON_ EMP_NAME                                                                   
+---- ---------------                                                            
+C105 Ramesh                                                                     
+
+
+SQL> WITH TAB AS(
+  2  SELECT CON_ID,COUNT(*) AS COUNT FROM BILLS
+  3  WHERE PAY_DATE IS NULL
+  4  GROUP BY CON_ID)
+  5  SELECT CON_NAME,MOBILE,EMAIL FROM
+  6  CONSUMER JOIN TAB
+  7  ON CONSUMER.CON_ID = TAB.CON_ID
+  8  WHERE COUNT>1;
+
+CON_NAME            MOBILE EMAIL
+--------------- ---------- --------------------
+Simran          9766173741 sim22@gmail.com
+Anu             9878345287
+
+SQL> select con_id,con_name,consumer.mobile,consumer.email,consumer.city from
+  2  consumer join employee
+  3  on consumer.con_name = employee.emp_name
+  4  where (employee.salary,employee.gender) in
+  5  (select max(employee.salary),employee.gender from employee
+  6   group by employee.gender);
+
+CON_ CON_NAME            MOBILE EMAIL                CITY
+---- --------------- ---------- -------------------- ----------
+C112 Kanaga          9874165232 kan@gmail.com        CBE
+
+
+10 q
+
+SQL> select con_id,con_name,bills.year,bills.month,reading.units,bills.amount
+  2  from
+  3  consumer join reading join bills
+  4  on reading.con_id = bills.con_id and reading.month = bills.month and readin
+g.year = bills.year
+  5  on consumer.con_id = reading.con_id
+  6  where pay_date is null
+  7  order by con_id,year desc,month desc;
+
+CON_ CON_NAME              YEAR      MONTH      UNITS     AMOUNT
+---- --------------- ---------- ---------- ---------- ----------
+C102 Siva                  2016          1        250          0
+C103 Kumaran               2016          1        298          0
+C104 Sheela                2016          1         40          0
+C105 Simran                2016          2        290          0
+C105 Simran                2016          1        350          0
+C106 Sankar                2016          1        105          0
+C107 Karthik               2016          1       1145          0
+C108 Kumar                 2016          1       1120          0
+C109 Anu                   2015         12       2200          0
+C109 Anu                   2015          1       1450          0
+C110 Shree                 2016          1        450          0
+
+11 rows selected.
+
+
+
+UPDATE (select * from Bills JOIN READING 
+ON BILLS.CON_ID = READING.CON_ID)
+SET 
+AMOUNT =
+CASE
+WHEN UNITS < 200 AND UNITS BETWEEN 0 AND 100 THEN UNITS*1
+WHEN UNITS < 200 AND UNITS BETWEEN 101 AND 200 THEN UNITS*2
+WHEN UNITS BETWEEN 200 AND 500 AND UNITS BETWEEN 0 AND 200 THEN UNITS*2
+WHEN UNITS BETWEEN 200 AND 500 AND UNITS BETWEEN 201 AND 500 THEN UNITS*2.5
+WHEN UNITS BETWEEN 500 AND 1000 AND UNITS BETWEEN 0 AND 500 THEN UNITS*2.5
+WHEN UNITS BETWEEN 500 AND 1000 AND UNITS BETWEEN 501 AND 1000 THEN UNITS*4
+WHEN UNITS > 1000 THEN UNITS*4
+END;
+
+
+
+select con_id,con_name,consumer.mobile,consumer.email,consumer.city from
+consumer join employee
+on consumer.con_name = employee.emp_name
+where (employee.salary,employee.gender) in
+(select max(employee.salary),employee.gender from employee
+ group by employee.gender);
+
+
+
+select con_id,con_name,bills.year,bills.month,reading.units,bills.amount
+from
+consumer join reading join bills
+on reading.con_id = bills.con_id and reading.month = bills.month and reading.year = bills.year
+on consumer.con_id = reading.con_id
+where pay_date is null
+order by con_id,year desc,month desc;
+
+
+SELECT CONSUMER.CON_ID,EMP_NAME FROM
+CONSUMER LEFT OUTER JOIN EMPLOYEE LEFT OUTER JOIN READING
+ON EMPLOYEE.EMP_ID  = READING.EMPLOYEE
+ON CONSUMER.CON_ID = READING.CON_ID
+WHERE MONTH = 2 AND YEAR = 2016;
+
+select distinct bills.con_id from bills join history
+on bills.con_id != History.con_id;
+
+SELECT CONSUMER.CON_NAME,CONSUMER.CON_ID,HISTORY.YEAR,HISTORY.MONTH,HISTORY.AMOUNT
+FROM CONSUMER,HISTORY
+WHERE CONSUMER.CON_ID = HISTORY.CON_ID
+AND CONSUMER.CON_ID NOT IN
+(SELECT DISTINCT BILLS.CON_ID 
+FROM BILLS JOIN HISTORY 
+ON BILLS.CON_ID != 
+
+
+SELECT C1.CON_ID,C1.CON_NAME,C1.GENDER,C1.EB_TYPE,C1.DEPOSIT,C1.CITY,C1.MOBILE,C1.EMAIL
+FROM CONSUMER C1 JOIN CONSUMER C2
+ON C1.EB_TYPE = C2.EB_TYPE;
+
+SELECT C1.CON_ID,C1.CON_NAME,C1.MOBILE,C2.CON_ID,C2.CON_NAME,C2.MOBILE
+FROM CONSUMER C1 JOIN CONSUMER C2
+ON C1.EB_TYPE = C2.EB_TYPE
+WHERE C1.CON_NAME != C2.CON_NAME;

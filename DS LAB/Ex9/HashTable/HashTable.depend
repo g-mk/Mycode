@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1446227939 source:f:\studies\ds lab\ex9\ahash.cpp
+	"hHash.h"
+
+1446228789 f:\studies\ds lab\ex9\hhash.h
+	<iostream>
+	<string.h>
+
+1446230620 source:f:\studies\ds lab\ex9\ihash.cpp
+	"hHash.h"
+

@@ -1,0 +1,106 @@
+body{
+   background-image: url("../image/wall4_@2X.png");
+}
+#lbanner {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  height:10%;
+  width:10%;
+  z-index: -1;
+}
+#rbanner {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  height:10%;
+  width:10%;
+  z-index: -1;
+}
+nav{
+   font-style:bold;
+   font-family: "sofia",cursive;
+   font-size:20px
+}
+p{
+   letter-spacing:1px;
+   font-family:"Lucida Grande",cursive;
+   text-indent:50px;
+   font-size:15px;
+}
+header{
+   font-size:20px;
+}
+h1,h2{
+   font-family: "Lucida Grande",cursive;
+   text-shadow: 2px 2px #639bf1;
+}
+.menu{
+   padding: 1%;
+   list-style: none;
+   background-color:#293e6a;
+   font-family:"Lucida Grande",cursive;
+}
+.menu li{
+   display: inline;
+   position: relative;
+   padding-bottom: 2px;
+   padding-top: 2px;
+   text-align: left;
+   font-size:100%;
+}
+.menu li a{
+   padding: 8px 15px;
+   padding-right: 8px;
+   color: #fcfcfc;
+   text-decoration: none;
+}
+.menu li:hover{
+   color: black;
+   font-weight:bold;
+   background: #639bf1;
+   transition: .5s;
+}
+.liRight{
+   float:right;
+   right:2%;
+}
+footer{
+   background-color:#b0c05e;
+   position:fixed;
+   bottom:5px;
+   float:right;
+   width:100%;
+}
+input, textarea {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #DDDDDD;
+}
+ 
+input:focus, textarea:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(81, 203, 238, 1);
+}
+#topNav{
+  text-decoration: none;
+}
+#goTop{
+   position:fixed;
+   bottom:4px;
+   right:2px;
+   float:right;
+   -webkit-transition: all 1s ease-in-out;
+   -moz-transition: all 1s ease-in-out;
+   transition: all 1s ease-in-out;
+   opacity: 0;
+}
+#goTop:hover{
+   cursor:pointer;
+}

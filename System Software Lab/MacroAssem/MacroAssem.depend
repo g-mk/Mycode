@@ -1,0 +1,68 @@
+# depslib dependency file v1.0
+1456839584 source:f:\studies\iv sem\ss lab\ex3\ipassone.c
+	"hPassOne.h"
+
+1454932875 f:\studies\iv sem\ss lab\ex3\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\ss lab\ex3\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1456145524 source:f:\studies\iv sem\ss lab\ex3\isymbol.c
+	"hSymbol.h"
+
+1456842550 source:f:\studies\iv sem\ss lab\macroassem\amacro.c
+	"hMacro.h"
+
+1456843233 f:\studies\iv sem\ss lab\macroassem\hmacro.h
+	<stdio.h>
+	<string.h>
+
+1454932875 f:\studies\iv sem\ss lab\macroassem\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\ss lab\macroassem\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1457068593 source:f:\studies\iv sem\ss lab\macroassem\imacro.c
+	"hMacro.h"
+
+1456842107 source:f:\personal\subangan\studies\program\sem4\extra\macroassem\amacro.c
+	"hMacro.h"
+
+1456842219 f:\personal\subangan\studies\program\sem4\extra\macroassem\hmacro.h
+	<stdio.h>
+	<string.h>
+
+1454932875 f:\personal\subangan\studies\program\sem4\extra\macroassem\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\personal\subangan\studies\program\sem4\extra\macroassem\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1456841966 source:f:\personal\subangan\studies\program\sem4\extra\macroassem\imacro.c
+	"hMacro.h"
+
+1456842550 source:m:\macroassem\amacro.c
+	"hMacro.h"
+
+1456842219 m:\macroassem\hmacro.h
+	<stdio.h>
+	<string.h>
+
+1456842345 source:m:\macroassem\imacro.c
+	"hMacro.h"
+
+1456842550 source:f:\studies\iv sem\lab\ss lab\macroassem\amacro.c
+	"hMacro.h"
+
+1456843233 f:\studies\iv sem\lab\ss lab\macroassem\hmacro.h
+	<stdio.h>
+	<string.h>
+
+1457068593 source:f:\studies\iv sem\lab\ss lab\macroassem\imacro.c
+	"hMacro.h"
+

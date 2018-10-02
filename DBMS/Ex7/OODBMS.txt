@@ -1,0 +1,284 @@
+1.Create a type person_class as object 
+  (which can be inherited further) with the following properties: 
+create or replace TYPE PERSON_CLASS AS OBJECT
+(
+ PERSON_ID NUMBER,
+ PERSON_NAME VARCHAR(30),
+ CATEGORY VARCHAR(30),
+ ADDRESS VARCHAR(40),
+ DATE_0F_JOIN DATE
+ )NOT FINAL;
+
+TYPE PERSON_CLASS Compiled.
+
+a.Create a table student of type person_class. 
+
+
+CREATE TABLE PERSON OF PERSON_CLASS;
+
+CREATE TABLE` succeeded.
+
+b.Define primary key for student using alter table. 
+
+ALTER TABLE PERSON ADD PRIMARY KEY(PERSON_ID);
+
+ ALTER TABLE PERSON succeeded.
+
+c.Describe student.
+
+DESC PERSON;
+Name                           Null     Type                                                                                                                                                                                          
+------------------------------ -------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+PERSON_ID                      NOT NULL NUMBER                                                                                                                                                                                        
+PERSON_NAME                             VARCHAR2(30)                                                                                                                                                                                  
+CATEGORY                                VARCHAR2(30)                                                                                                                                                                                  
+ADDRESS                                 VARCHAR2(40)                                                                                                                                                                                  
+DATE_0F_JOIN                            DATE                                                                                                                                                                                          
+
+5 rows selected
+
+d.Insert atleast 5 records into student and display it.
+
+INSERT INTO PERSON VALUES(1,'GURU','S','BIG STREET TVL TOWN','30-JUL-14');
+INSERT INTO PERSON VALUES(2,'HARI','S','MDU','03-MAR-14');
+INSERT INTO PERSON VALUES(3,'SUBANGAN','S','MDU','26-JUN-14');
+INSERT INTO PERSON VALUES(4,'SENTHIL','S','TVL','17-FEB-14');
+INSERT INTO PERSON VALUES(5,'MIKE','S','TUT','25-JAN-15');
+INSERT INTO PERSON VALUES(201,'MIKE','S','TUT','25-JAN-15');
+
+
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+
+
+e.Update the name of the person 
+  with id ‘201’ to ‘K.Vikram’.
+
+UPDATE PERSON
+SET person_name = 'K.Vikram'
+where person_id = 201;
+
+1 rows updated
+
+select * from PERSON;
+
+PERSON_ID              PERSON_NAME                    CATEGORY    ADDRESS              DATE_0F_JOIN              
+---------------------- ------------------------------ ----------- -------------------- ------------------------- 
+1                      GURU                           S           BIG STREET TVL TOWN  30-JUL-14                 
+2                      HARI                           S           MDU                  03-MAR-14                 
+3                      SUBANGAN                       S           MDU                  26-JUN-14                 
+4                      SENTHIL                        S           TVL                  17-FEB-14                 
+5                      MIKE                           S           TUT                  25-JAN-15                 
+201                    K.Vikram                       S           TUT                  25-JAN-15                 
+
+6 rows selected
+
+
+2.Create a type employee_class under 
+  person_class with following properties.
+
+
+CREATE OR REPLACE TYPE EMPLOYEE_CLASS UNDER PERSON_CLASS
+(
+ EMP_ID NUMBER,
+ DEPARTMENT VARCHAR(30),
+ SALARY NUMBE
+ )FINAL;
+
+TYPE EMPLOYEE_CLASS Compiled.
+
+a.Create a table employee of type employee_class. 
+
+CREATE TABLE EMP OF EMPLOYEE_CLASS;
+
+CREATE TABLE succeeded.
+
+b.Define primary key and foreign key 
+  (refers to person table) for employee using alter table. 
+
+
+ALTER TABLE EMP ADD PRIMARY KEY(EMP_ID);
+
+ ALTER TABLE EMP succeeded.
+
+ALTER TABLE EMP ADD FOREIGN KEY(PERSON_ID) REFERENCING PERSON(PERSON_ID);
+
+ ALTER TABLE EMP succeeded.
+
+c.Describe employee.
+
+
+DESC EMP;
+Name                           Null     Type                                                                                                                                                                                          
+------------------------------ -------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+PERSON_ID                               NUMBER                                                                                                                                                                                        
+PERSON_NAME                             VARCHAR2(30)                                                                                                                                                                                  
+CATEGORY                                VARCHAR2(30)                                                                                                                                                                                  
+ADDRESS                                 VARCHAR2(40)                                                                                                                                                                                  
+DATE_0F_JOIN                            DATE                                                                                                                                                                                          
+EMP_ID                         NOT NULL NUMBER                                                                                                                                                                                        
+DEPARTMENT                              VARCHAR2(30)                                                                                                                                                                                  
+SALARY                                  NUMBER                                                                                                                                                                                        
+
+8 rows selected
+
+d.Insert atleast 5 records into employee and display it.
+
+INSERT INTO emp VALUES(201,'MIKE','E','TUT','25-JAN-15',103,'SALES',12000);
+INSERT INTO emp VALUES(3,'SUBANGAN','S','MDU','26-JUN-14',101,'MANAGER',25000);
+INSERT INTO emp VALUES(4,'SENTHIL','S','TVL','17-FEB-14',102,'e-MANAGER',20000);
+INSERT INTO EMP VALUES(202,'Raj','E','TUT','25-JAN-15',104,'INCOME',24000);
+
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+
+SELECT * FROM EMP;
+
+PERSON_ID              PERSON_NAME                    CATEGORY                       ADDRESS                                  DATE_0F_JOIN              EMP_ID                 DEPARTMENT                     SALARY                 
+---------------------- ------------------------------ ------------------------------ ---------------------------------------- ------------------------- ---------------------- ------------------------------ ---------------------- 
+3                      SUBANGAN                       E                              MDU                                      26-JUN-14                 101                    MANAGER                        35000                  
+4                      SENTHIL                        e                              TVL                                      17-FEB-14                 102                    E-Manager                      25000                  
+201                    MIKE                           E                              TUT                                      25-JAN-15                 103                    SALES                          12000                  
+202                    Raj                            E                              TUT                                      25-JAN-15                 104                    INCOME                         24000                  
+
+4 rows selected
+
+e.Delete the employee with person name ‘S.Raj’.
+
+
+DELETE FROM emp
+WHERE PERSON_NAME ='Raj';
+
+1 rows deleted
+
+SELECT * FROM EMP;
+
+PERSON_ID              PERSON_NAME                    CATEGORY                       ADDRESS                                  DATE_0F_JOIN              EMP_ID                 DEPARTMENT                     SALARY                 
+---------------------- ------------------------------ ------------------------------ ---------------------------------------- ------------------------- ---------------------- ------------------------------ ---------------------- 
+3                      SUBANGAN                       E                              MDU                                      26-JUN-14                 101                    MANAGER                        35000                  
+4                      SENTHIL                        e                              TVL                                      17-FEB-14                 102                    E-Manager                      25000                  
+201                    MIKE                           E                              TUT                                      25-JAN-15                 103                    SALES                          12000                  
+
+3 rows selected
+
+3.Create a type student_class under 
+  person_class with following properties.
+
+
+create or replace
+TYPE PERSON_CLASS UNDER PERSON_CLASS
+(
+ ROLL_NO NUMBER,
+ DEPARTMENT VARCHAR(10)
+ )FINAL;
+
+TYPE PERSON_CLASS Compiled.
+
+a.Create a table student of type student_class. 
+
+
+CREATE TABLE STUDENT OF STUDENT_CLASS;
+
+CREATE TABLE succeeded.
+
+b.Define primary key and foreign key (refers to person table) 
+  for student using alter table. 
+
+ALTER TABLE STUDENT ADD PRIMARY KEY(ROLL_NO);
+
+ ALTER TABLE STUDENT succeeded.
+
+ALTER TABLE STUDENT ADD FOREIGN KEY(PERSON_ID) REFERENCING PERSON(PERSON_ID);
+
+ ALTER TABLE STUDENT succeeded.
+
+c.Describe student.
+
+DESC STUDENT;
+Name                           Null     Type                                                                                                                                                                                          
+------------------------------ -------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+PERSON_ID                               NUMBER                                                                                                                                                                                        
+PERSON_NAME                             VARCHAR2(30)                                                                                                                                                                                  
+CATEGORY                                VARCHAR2(30)                                                                                                                                                                                  
+ADDRESS                                 VARCHAR2(40)                                                                                                                                                                                  
+DATE_0F_JOIN                            DATE                                                                                                                                                                                          
+ROLL_NO                        NOT NULL NUMBER                                                                                                                                                                                        
+DEPARTMENT                              VARCHAR2(10)                                                                                                                                                                                  
+
+7 rows selected
+
+d.Insert atleast 5 records into student and display it.
+
+
+INSERT INTO STUDENT VALUES(1,'GURU','S','BIG STREET TVL TOWN','30-JUL-14',68,'CSE');
+INSERT INTO STUDENT VALUES(2,'HARI','S','MDU','03-MAR-14',21,'ECE');
+INSERT INTO STUDENT VALUES(5,'MIKE','S','TUT','25-JAN-15',75,'CSE');
+INSERT INTO STUDENT VALUES(6,'S.Vikram','S','CHN','01-DEC-14',70,'CSE');
+INSERT INTO STUDENT VALUES(7,'Rao','S','THENI','01-DEC-14',70,'EEE');
+
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+1 rows inserted
+
+SELECT * FROM student;
+
+PERSON_ID              PERSON_NAME                    CATEGORY                       ADDRESS                                  DATE_0F_JOIN              ROLL_NO                DEPARTMENT 
+---------------------- ------------------------------ ------------------------------ ---------------------------------------- ------------------------- ---------------------- ---------- 
+1                      GURU                           S                              BIG STREET TVL TOWN                      30-JUL-14                 68                     CSE        
+2                      HARI                           S                              MDU                                      03-MAR-14                 21                     ECE        
+5                      MIKE                           S                              TUT                                      25-JAN-15                 75                     CSE        
+6                      S.Vikram                       S                              CHN                                      01-JUL-14                 69                     CSE        
+7                      Rao                            S                              THENI                                    01-DEC-14                 70                     EEE        
+
+5 rows selected
+
+e.Delete the employee with person name ‘S.Vikram’.
+
+DELETE FROM STUDENT 
+WHERE PERSON_NAME = 'S.Vikram';
+
+1 rows deleted
+
+
+SELECT * FROM student;
+
+PERSON_ID              PERSON_NAME                    CATEGORY                       ADDRESS                                  DATE_0F_JOIN              ROLL_NO                DEPARTMENT 
+---------------------- ------------------------------ ------------------------------ ---------------------------------------- ------------------------- ---------------------- ---------- 
+1                      GURU                           S                              BIG STREET TVL TOWN                      30-JUL-14                 68                     CSE        
+2                      HARI                           S                              MDU                                      03-MAR-14                 21                     ECE        
+5                      MIKE                           S                              TUT                                      25-JAN-15                 75                     CSE        
+7                      Rao                            S                              THENI                                    01-DEC-14                 70                     EEE        
+
+4 rows selected
+
+4.Drop all the tables. In which order do you drop?
+
+DROP TABLE STUDENT;
+DROP TABLE EMP;
+DROP TABLE PERSON;
+
+DROP TABLE STUDENT succeeded.
+DROP TABLE EMP succeeded.
+DROP TABLE PERSON succeeded.
+
+
+5.Drop all the types and mention the order of dropping.
+
+DROP TYPE STUDENT_CLASS;
+DROP TYPE EMPLOYEE_CLASS;
+DROP TYPE PERSON_CLASS;
+
+DROP TYPE STUDENT_CLASS succeeded.
+DROP TYPE EMPLOYEE_CLASS succeeded.
+DROP TYPE PERSON_CLASS succeeded.
+
+FROM DERIVED TO BASE TYPE 
+

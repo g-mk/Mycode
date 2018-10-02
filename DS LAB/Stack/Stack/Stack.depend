@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1441134326 source:i:\studies\ds lab\stack\astack.cpp
+	"hStack.h"
+
+1441133133 i:\studies\ds lab\stack\hstack.h
+	<iostream>
+
+1441134535 source:i:\studies\ds lab\stack\istack.cpp
+	"hStack.h"
+

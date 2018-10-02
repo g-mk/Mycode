@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1445969655 source:f:\studies\ds lab\minheap\aminheap.cpp
+	"hMinheap.h"
+
+1445964875 f:\studies\ds lab\minheap\hminheap.h
+	<iostream>
+	<string.h>
+	<stdio.h>
+
+1445969918 source:f:\studies\ds lab\minheap\iminheap.cpp
+	"hMinheap.h"
+

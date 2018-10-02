@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:7.6164,7.6164;}
+	.st2{fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:7.8519,7.8519;}
+	.st3{fill:#2A8BFF;}
+</style>
+<g>
+	<circle class="st0" cx="25" cy="25" r="24.3"/>
+	<circle class="st1" cx="25" cy="25" r="24.3">
+	
+		<animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur="10s" fill="remove" from="0 25 25" id="transform" repeatCount="indefinite" restart="always" to="360 25 25" type="rotate">
+		</animateTransform>
+	</circle>
+</g>
+<g>
+	<circle class="st0" cx="25" cy="25" r="20"/>
+	<circle class="st2" cx="25" cy="25" r="20">
+	
+		<animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur="10s" fill="remove" from="360 25 25" id="transform" repeatCount="indefinite" restart="always" to="0 25 25" type="rotate">
+		</animateTransform>
+	</circle>
+</g>
+    
+<circle class="st3" cx="25" cy="25" r="15.3"/>
+    
+<circle class="st0" cx="17" cy="25" r="1.9">
+    <animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur=".5s" fill="remove" from="0 25 25" id="transform" repeatCount="indefinite" restart="always" to="360 25 25" type="rotate"/>
+
+</circle>
+    
+<circle class="st0" cx="21" cy="25" r="1.9">
+    <animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur=".5s" fill="remove" from="0 25 25" id="transform" repeatCount="indefinite" restart="always" to="360 25 25" type="rotate"/>
+</circle>
+    
+<circle class="st4" cx="25" cy="25" r="1.9"/>
+    
+<circle class="st0" cx="29" cy="25" r="1.9">
+    <animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur=".5s" fill="remove" from="0 25 25" id="transform" repeatCount="indefinite" restart="always" to="360 25 25" type="rotate"/>
+</circle>
+<circle class="st0" cx="33" cy="25" r="1.9">
+   <animateTransform  accumulate="none" additive="replace" attributeName="transform" attributeType="XML" calcMode="linear" dur=".5s" fill="remove" from="0 25 25" id="transform" repeatCount="indefinite" restart="always" to="360 25 25" type="rotate"/>
+</circle>
+    
+</svg>

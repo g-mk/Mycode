@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1441823685 source:i:\studies\ds lab\linkedlist\aslist.cpp
+	"slist.h"
+
+1441823099 i:\studies\ds lab\linkedlist\slist.h
+	<iostream>
+	<string.h>
+
+1441823910 source:i:\studies\ds lab\linkedlist\ilist.cpp
+	"slist.h"
+

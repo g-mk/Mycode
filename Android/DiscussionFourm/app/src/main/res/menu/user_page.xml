@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="@string/action_settings"
+        app:showAsAction="never"
+        >
+        <menu>
+            <item android:id="@+id/action_changepass"
+                android:title="Change Password"/>
+            <item android:id="@+id/action_deactivate"
+                android:title="@string/deactivate"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_menu_sign_out"
+        android:orderInCategory="10"
+        app:showAsAction="never"
+        android:title="@string/logout" />
+</menu>

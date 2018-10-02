@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1444320153 source:i:\studies\oop lab\c++\ex3\astudent.cpp
+	"hStudent.h"
+
+1444319807 i:\studies\oop lab\c++\ex3\hstudent.h
+	<iostream>
+
+1444320150 source:i:\studies\oop lab\c++\ex3\istudent.cpp
+	"hStudent.h"
+

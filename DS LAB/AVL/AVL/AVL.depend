@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1445099542 source:i:\studies\ds lab\avl\aavl.cpp
+	"hAvl.h"
+
+1445099053 i:\studies\ds lab\avl\havl.h
+	<iostream>
+	<string.h>
+
+1445099397 source:i:\studies\ds lab\avl\iavl.cpp
+	"hAvl.h"
+
+1445099542 source:f:\studies\ds lab\avl\aavl.cpp
+	"hAvl.h"
+
+1445099053 f:\studies\ds lab\avl\havl.h
+	<iostream>
+	<string.h>
+

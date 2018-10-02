@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gurumanikandan.discussionfourm.SignUpActivity"
+    android:background="@drawable/material">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/TextColorWhite"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:typeface="serif"
+        tools:layout_editor_absoluteX="149dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textAllCaps="false"
+                android:textSize="16dp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+            <EditText
+                android:id="@+id/txtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.37"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:textColor="@color/TextColorWhite"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="E-Mail ID"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+            <EditText
+                android:id="@+id/txtUserMail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.37"
+                android:inputType="textEmailAddress"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:textColor="@color/TextColorWhite"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"
+                />
+            <EditText
+                android:id="@+id/txtUserPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.37"
+                android:typeface="serif"
+                android:inputType="textPassword"
+                android:textStyle="bold"
+                android:textColor="@color/TextColorWhite"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+            <EditText
+                android:id="@+id/txtUserConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.37"
+                android:typeface="serif"
+                android:inputType="textPassword"
+                android:textStyle="bold"
+                android:textColor="@color/TextColorWhite"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+            <EditText
+                android:id="@+id/txtUserMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.37"
+                android:typeface="serif"
+                android:inputType="number"
+                android:textStyle="bold"
+                android:textColor="@color/TextColorWhite"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+            <RadioGroup
+                android:id="@+id/rdbGroupGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rdbtnMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="40dp"
+                    android:text="Male"
+                    android:textColor="@color/TextColorWhite"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:typeface="serif" />
+
+                <RadioButton
+                    android:id="@+id/rdbtnFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:textColor="@color/TextColorWhite"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date of Birth"
+                android:textSize="16dp"
+                android:textStyle="italic"
+                android:typeface="serif"
+                android:textColor="@color/TextColorWhite"/>
+
+            <DatePicker
+                android:id="@+id/datePickerDOB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:animateLayoutChanges="true"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:calendarTextColor="@color/TextColorWhite"
+                 />
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/btnReg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:paddingRight="15dp"
+                android:background="@drawable/button_style"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold|italic"
+                android:typeface="serif"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

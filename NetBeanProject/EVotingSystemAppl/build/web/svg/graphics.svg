@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#29ABE2;stroke-miterlimit:10;stroke-dasharray:12.1005,12.1005;}
+	.st1{fill:#29ABE2;}
+	.st2{fill:#FFFDFD;stroke:#29ABE2;stroke-miterlimit:10;}
+</style>
+<g>
+	<ellipse class="st0" cx="49.5" cy="50" rx="46" ry="46">
+        <animateTransform attributeName="transform"
+                          attributeType="XML"
+                          type="rotate"
+                          from="0 50 50"
+                          to="360 50 50"
+                          dur="10s"
+                          repeatCount="indefinite"/>
+    </ellipse>
+</g>
+<ellipse class="st1" cx="49.5" cy="50" rx="31.5" ry="31.5"/>
+<path class="st2" d="M31.1,61.4L31.1,61.4c-1.2,0-2.3-1-2.3-2.2V40.6c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C33.4,60.4,32.4,61.4,31.1,61.4z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.1s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M36.4,61.4L36.4,61.4c-1.2,0-2.3-1-2.3-2.2V40.6c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C38.6,60.4,37.6,61.4,36.4,61.4z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.2s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M41.6,61.4L41.6,61.4c-1.2,0-2.3-1-2.3-2.2V40.6c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C43.9,60.4,42.9,61.4,41.6,61.4z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.3s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M46.9,61.4L46.9,61.4c-1.2,0-2.3-1-2.3-2.2V40.6c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C49.1,60.4,48.1,61.4,46.9,61.4z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.4s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M52.1,61.6L52.1,61.6c-1.2,0-2.3-1-2.3-2.2V40.9c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C54.4,60.6,53.4,61.6,52.1,61.6z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.5s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M57.4,61.6L57.4,61.6c-1.2,0-2.3-1-2.3-2.2V40.9c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C59.6,60.6,58.6,61.6,57.4,61.6z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.6s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M62.6,61.6L62.6,61.6c-1.2,0-2.3-1-2.3-2.2V40.9c0-1.2,1-2.2,2.2-2.2h0c1.2,0,2.2,1,2.2,2.2v18.5
+	C64.9,60.6,63.9,61.6,62.6,61.6z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.7s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+<path class="st2" d="M67.9,61.6L67.9,61.6c-1.2,0-2.3-1-2.3-2.2V40.9c0-1.2,1-2.2,2.3-2.2l0,0c1.2,0,2.3,1,2.3,2.2v18.5
+	C70.1,60.6,69.1,61.6,67.9,61.6z">
+    <animateTransform id="bar1"
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="translate"
+                      begin="0.8s"
+                      dur="2s"
+                      values="0,5;0,-5;0,5"
+                      repeatCount="indefinite"/>
+</path>
+</svg>

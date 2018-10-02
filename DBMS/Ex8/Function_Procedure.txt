@@ -1,0 +1,135 @@
+
+
+BEGIN 
+DECLARE 
+
+ID Employee.emp_id%type;
+NAME Employee.emp_name%type;
+GENDER Employee.gender%type;
+MOBILE Employee.mobile%type;
+MAIL Employee.email%type;
+SALARY Employee.salary%type;
+
+CURSOR EMP_CUR IS 
+(SELECT emp_id,emp_name,gender,mobile,email,salary FROM EMPLOYE
+WHERE EMP_ID = ( SELECT EMPLOYEE FROM READING
+                 GROUP BY employee
+                 HAVING COUNT(EMPLOYEE) > 1));     
+
+  OPEN EMP_CUR;
+LOOP
+  FETCH EMP_CUR INTO ID,NAME,GENDER,MOBILE,MAIL,SALARY;
+  EXIT WHEN EMP_CUR%NOTFOUND;
+    DBMS_OUTPUT.put_line('ID: '|| ID);
+    DBMS_OUTPUT.put_line('NAME : '|| NAME);
+    DBMS_OUTPUT.put_line('GENDER: '|| GENDER);
+    DBMS_OUTPUT.put_line('MOBILE: '|| MOBILE);
+    DBMS_OUTPUT.put_line('SALARY: '|| SALARY);
+END LOOP;
+  CLOSE EMP_CUR;
+END;
+
+
+
+Working with Procedure: 
+4.Write a PL/SQL procedure to retrieve the employee_name, email if emp_id is given.
+
+
+create or replace
+PROCEDURE procDisplayDetail( ID IN CHAR,NAME OUT VARCHAR,MAIL OUT VARCHAR ) as
+BEGIN
+  SELECT EMP_NAME INTO NAME FROM employee
+  WHERE EMP_ID = ID;
+  
+  SELECT EMAIL INTO MAIL FROM employee
+  WHERE EMP_ID = ID;
+END;
+
+
+OUTPUT:
+
+DECLARE 
+NAME VARCHAR2(20);
+MAIL VARCHAR2(20);
+BEGIN
+  procdisplaydetail('E102',NAME,MAIL);
+  DBMS_OUTPUT.put_line('NAME OF EMPLOYEE E102 IS ' || NAME);
+  DBMS_OUTPUT.put_line('EMAIL OF EMPLOYEE E102 IS ' || MAIL);
+END;
+
+NAME OF EMPLOYEE E102 IS Kanaga
+EMAIL OF EMPLOYEE E102 IS kanaga@gmail.com
+
+DECLARE 
+NAME VARCHAR2(20);
+MAIL VARCHAR2(20);
+BEGIN
+  procdisplaydetail('E104',NAME,MAIL);
+  DBMS_OUTPUT.put_line('NAME OF EMPLOYEE E104 IS ' || NAME);
+  DBMS_OUTPUT.put_line('EMAIL OF EMPLOYEE E104 IS ' || MAIL);
+END;
+
+anonymous block completed
+NAME OF EMPLOYEE E104 IS Ramu
+EMAIL OF EMPLOYEE E104 IS ramu12@gmail.com
+
+
+
+
+
+
+create type retTable as object
+(CON_ID CHAR(4),YEAR NUMBER(4),MONTH NUMBER(2),EMPLOYEE CHAR(4),UNITS INTEGER);
+
+create type retType as table of retTable;
+
+
+
+5.Create a package ‘ElectronicBill’ which contains the functions to 
+  count the no. of consumers and no. of employee in the board.
+
+CREATE OR REPLACE PACKAGE ELECTRICBILL AS
+FUNCTION TOTCONS RETURN INTEGER;
+FUNCTION TOTEMP RETURN INTEGER;
+END ELECTRICBILL;
+
+PACKAGE ELECTRICBILL Compiled.
+
+CREATE OR REPLACE PACKAGE BODY ELECTRICBILL AS
+FUNCTION TOTCONS 
+RETURN INTEGER AS
+TCONS INTEGER;
+
+BEGIN
+  SELECT COUNT(*) INTO TCONS FROM CONSUMER;
+  RETURN TCONS;
+END;
+
+FUNCTION TOTEMP 
+RETURN INTEGER AS
+TEMP INTEGER;
+
+BEGIN
+  SELECT COUNT(*) INTO TEMP FROM CONSUMER;
+  RETURN TEMP;
+END;
+END ELECTRICBILL;
+
+PACKAGE BODY ELECTRICBILL Compiled.
+
+DECLARE 
+TCONS INTEGER;
+TEMP INTEGER;
+BEGIN
+  TCONS := electricbill.totcons;
+  TEMP := electricbill.totemp;
+  dbms_output.put_line('TOTAL CONSUMER IS '|| TCONS || 'TOTAL EMPLOYEE IS '||TEMP);
+END;
+
+
+anonymous block completed
+
+TOTAL CONSUMER IS 15 TOTAL EMPLOYEE IS 6
+
+
+

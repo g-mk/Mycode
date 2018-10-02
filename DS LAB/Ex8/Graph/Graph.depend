@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1446319755 source:f:\studies\ds lab\ex8\igraph.cpp
+	"hGraph.h"
+	"hQueue.h"
+
+1446319752 f:\studies\ds lab\ex8\hgraph.h
+	<iostream>
+
+1446309327 f:\studies\ds lab\ex8\hqueue.h
+	<iostream>
+
+1446312642 source:f:\studies\ds lab\ex8\iqueue.cpp
+	"hQueue.h"
+
+1446319285 source:f:\studies\ds lab\ex8\agraph.cpp
+	"hGraph.h"
+

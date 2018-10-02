@@ -1,0 +1,41 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gurumanikandan.gomusic.PlayListFragment"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding">
+            <ImageButton
+                android:id="@+id/btnCreatePlayList"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_plus_circle"
+                />
+            <TextView
+                android:id="@+id/txtCreatePlayList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Playlist"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="30sp"
+                android:fontFamily="cursive"
+                android:paddingLeft="@dimen/padding"
+                android:textColor="@color/colorWhite"
+                />
+        </LinearLayout>
+            <ListView
+                android:id="@+id/playListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+        </LinearLayout>
+
+</FrameLayout>

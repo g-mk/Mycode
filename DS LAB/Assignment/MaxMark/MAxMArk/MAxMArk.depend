@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1441539057 source:i:\studies\ds lab\assignment\maxmark\appnodearray.cpp
+	"hNodeArray.h"
+
+1441538499 i:\studies\ds lab\assignment\maxmark\hnodearray.h
+	<iostream>
+
+1441539177 source:i:\studies\ds lab\assignment\maxmark\inodearray.cpp
+	"hNodeArray.h"
+

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>E-Voting</title>
+      <link href="css/background.css" type="text/css" rel="stylesheet"/>
+      <script src="javascript\jquery-1.11.3.min.js"></script>
+      <script>
+        $(document).ready(function(){
+          $("a").on('click', function(event) {
+            if (this.hash !== "") {
+              event.preventDefault();
+              var hash = this.hash; 
+              $('html, body').animate({
+                scrollTop: $(hash).offset().top
+              }, 600, function(){
+                window.location.hash = hash;
+              });
+            } // End if
+          });
+        });
+      </script>
+      <style type="text/css">
+         #gifImg{
+            float:left;
+         }
+         video{
+            float:middle;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="topDiv">
+         <img id="gifImg" src="image\\vote.gif" alt="Image Not Found"/>
+         <h2>E-Voting</h2>
+         <p>
+            Electronic voting (also known as e-voting) is voting using electronic 
+            means to either aid or take care of the chores of casting and 
+            counting votes. Depending on the particular implementation, e-voting
+            may encompass a range of Internet services, from basic data 
+            transmission to full-function online voting through common 
+            connectable household devices. Similarly, the degree of automation 
+            may vary from simple chores to a complete solution that includes 
+            voter registration &amp; authentication, vote input, local or 
+            precinct tallying, vote data encryption and transmission to servers,
+            vote consolidation and tabulation, and election administration. A 
+            worthy e-voting system must perform most of these tasks while 
+            complying with a set of standards established by regulatory bodies, 
+            and must also be capable to deal successfully with strong 
+            requirements associated with security, accuracy, integrity, 
+            swiftness, privacy, auditability, accessibility, cost-effectiveness,
+            scalability and ecological sustainability.
+         </p>
+         
+         <h2>The Importance of Protecting Our Right to Vote</h2>
+         <p>
+            Half a century ago the Civil Rights Act of 1964 brought an end to 
+            the era of Jim Crow by prohibiting discrimination on the basis of 
+            race, color, religion, sex, or national origin. One year later the 
+            landmark legislation was strengthened and expanded when the Voting 
+            Rights Act of 1965 was signed into law on Aug. 6, 1965. The Voting 
+            Rights Act prohibited discrimination in voting and, together with 
+            the Civil Rights Act, enshrines the principles upon which our nation
+            was founded. These laws serve as a testament to all who sacrificed 
+            to work toward ending segregation and discrimination.
+         </p>
+         <p>
+            For nearly half a century the Voting Rights Act has stood as a 
+            central pillar in the protection of fair voting practices. Our 
+            nation now faces the greatest threat to voting rights since 
+            Reconstruction.
+         </p>
+         <p>
+            Last year the Supreme Court issued its decision in Shelby County v. 
+            Holder. The decision severely undermines the effectiveness of the 
+            Voting Rights Act. Although legislation has been introduced in the
+            House of Representatives to address this flawed decision, Congress 
+            has yet to take action. Shelby County has allowed more than a dozen
+            states with histories of voter discrimination to implement new 
+            restrictions on voting.
+         </p>
+         <p>
+            When it comes time for voting, voter suppression is far too 
+            prevalent throughout our country. We need not look further than our 
+            own state of Florida, where Gov. Rick Scott has made repeated 
+            attempts to purge the voter database, despite the fact that his 
+            attempt to do so in 2011 was suspended by the U.S. Department of 
+            Justice. The 11th U.S. Circuit Court of Appeals in Atlanta ruled 
+            just last month that Gov. Scott’s administration violated federal 
+            law when he tried to purge non-citizens from the voter rolls 
+            immediately prior to the 2012 presidential election.
+         </p>
+         <p>
+            Today we face an unsettling reality. Shelby County, one of many 
+            recent decisions by the Supreme Court that has disenfranchised 
+            American voters, made it easier for minorities to be discriminated 
+            against at the polls. Republicans in Congress, as well as in states 
+            across the country, have gone out of their way to make it more 
+            difficult for minorities, the elderly, and young people to vote. 
+            This is outrageous and should serve as a wake-up call to voters 
+            everywhere.
+         </p>
+         <p>
+            Our nation has the obligation to make it easier, not more difficult,
+            for all American to vote. Instead of creating burdensome photo-ID 
+            requirements for voting, we should be expanding access to the polls 
+            through early voting and same-day registration. Instead of finding 
+            new ways to limit voting, we should be working day and night to 
+            ensure that every American has the opportunity to vote in person 
+            or through absentee ballot.
+         </p>
+         <p>
+            Voter discrimination has not disappeared, and Congress must act to 
+            put in place greater voter protections to ensure that all Americans 
+            can have their voices heard. I am proud to be a co-sponsor of the 
+            Voting Rights Amendment Act of 2014, which will take the necessary 
+            steps to address the flawed decision in Shelby County. I hope that 
+            Congress takes up this legislation very soon, because we cannot 
+            afford to let this issue slip from focus. Countless individuals have
+            fought long and hard for the chance to vote on Election Day, and we 
+            must not allow the clock to turn back on decades of progress.
+         </p>
+         <p>
+            Congressman Alcee L. Hastings represents Florida’s 20th 
+            Congressional district, serves as Senior Member of the House Rules 
+            Committee, Ranking Democratic Member of the U.S.Helsinki Commission,
+            and Co-Chairman of the Florida Delegation.
+         </p>
+         <br/>
+         <h2>US Election Procedure</h2>
+         <video width="100%" height="400px" buffered controls>
+            <source src="video\United States of America, elections.mp4" 
+                        type="video/mp4">
+         Your Browser Does not Support the video tag.
+         </video>
+      </div>
+      <br/><br/>
+      <div>
+         <a href="#topDiv" >
+            <img id="goTop" src="image\arrow.jpg" width="50px" height="50px" 
+               alt="Not Found"/>
+         </a>
+      </div>
+   </body>
+</html>

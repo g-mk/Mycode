@@ -1,0 +1,39 @@
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C102',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C103',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C104',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C105',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C105',2016,2,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C106',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C107',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C108',2016,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C109',2015,12,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C109',2015,1,0);
+
+INSERT INTO BILLS(bill_id,con_id,year,month,amount) VALUES(BILL.NEXTVAL,'C110',2016,1,0);
+
+
+SQL> ALTER TABLE HISTORY ADD CONSTRAINT HISTORY_FK
+  2  FOREIGN KEY(CON_ID) REFERENCES CONSUMER(CON_ID);
+
+Table altered.
+
+
+
+INSERT INTO HISTORY VALUES('C101',1,2015,12,198,450,'22-JAN-16');
+
+INSERT INTO HISTORY VALUES('C101',2,2016,1,200,465,'02-FEB-16');
+
+INSERT INTO HISTORY VALUES('C101',3,2016,2,30,80,'15-MAR-16');
+
+
+
+

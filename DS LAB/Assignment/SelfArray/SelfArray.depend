@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1441544376 source:i:\studies\ds lab\assignment\selfarray\selfarray.cpp
+	"hSelfArray.h"
+
+1441533400 i:\studies\ds lab\assignment\selfarray\hselfarray.h
+	<iostream>
+
+1441534068 source:i:\studies\ds lab\assignment\selfarray\selfarrayapp.cpp
+	"hSelfArray.h"
+

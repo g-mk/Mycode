@@ -1,0 +1,279 @@
+1.Display the avg, sum, max, min salary of all employees.
+
+SQL> SELECT AVG(SALARY) AS AVERAGE,SUM(SALARY) AS SUM,MAX(SALARY) AS MAXIMUM,
+  2  MIN(SALARY) AS MINIMUM FROM EMPLOYEE;
+
+   AVERAGE        SUM    MAXIMUM    MINIMUM                                     
+---------- ---------- ---------- ----------                                     
+     25200     100800      42300       2000                                     
+
+2.List all the employees whose salary is greater than the average salary of all employees.
+
+SQL> SELECT * FROM EMPLOYEE
+  2  WHERE SALARY >
+  3  (SELECT AVG(SALARY) FROM EMPLOYEE);
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY               
+---- --------------- - ---------- -------------------- ----------               
+E103 Ramesh          M 8723348793 ramesh@gmail.com          31500               
+E104 Ramu            M 7887234522 ramu12@gmail.com          42300               
+
+3.Count the total number of consumers residing in the city where ‘Pradeep’ or ‘Siva’ is residing.
+
+SQL> SELECT COUNT(*) AS COUNT FROM
+  2  (SELECT * FROM CONSUMER
+  3  WHERE CITY IN
+  4  (SELECT CITY FROM CONSUMER
+  5  WHERE CON_NAME IN('Pradeep','Siva')));
+
+     COUNT                                                                      
+----------                                                                      
+         5                                                                      
+4.List the consumer id, month and units consumed by the customers who are all consumed 
+  more than the average of units consumed by the consumers in the year ‘2016’.
+
+SQL> SELECT CON_ID,MONTH,UNITS FROM READING
+  2  WHERE UNITS >
+  3  (SELECT AVG(UNITS) FROM READING
+  4  WHERE YEAR = 2016);
+
+CON_      MONTH      UNITS                                                      
+---- ---------- ----------                                                      
+C107          1       1145                                                      
+C108          1       1120                                                      
+C109         12       2200                                                      
+C109          1       1450                                                      
+C110          1        450                                                      
+
+SQL> SELECT AVG(UNITS) FROM READING
+  2  WHERE YEAR = 2016;
+
+AVG(UNITS)                                                                      
+----------                                                                      
+388.909091                                                                      
+
+5.Display the consumer details who are consuming minimum units in every month of the year ‘2016’.
+
+SQL> SELECT * FROM CONSUMER
+  2  WHERE CON_ID IN
+  3  (
+  4  SELECT CON_ID FROM READING
+  5  WHERE (UNITS,MONTH) IN
+  6  (
+  7  SELECT MIN(UNITS),MONTH FROM READING
+  8  WHERE YEAR = 2016
+  9  GROUP BY MONTH));
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL
+---- --------------- - - ---------- ---------- ---------- --------------------
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com
+C104 Sheela          F D       3500 SVKS       9876761342 sheels@gmail.com
+
+6.Display the consumer id and consumer name who have deposited more amount in Domestic and Commercial region in each city.
+
+SQL> SELECT CON_ID,CON_NAME FROM CONSUMER
+  2  WHERE (CITY,EB_TYPE,DEPOSIT) IN
+  3  (SELECT CITY,EB_TYPE,MAX(DEPOSIT) FROM CONSUMER
+  4  GROUP BY EB_TYPE,CITY);
+
+CON_ CON_NAME
+---- ---------------
+C104 Sheela
+C105 Simran
+C106 Sankar
+C107 Karthik
+C108 Kumar
+C110 Shree
+
+6 rows selected.
+
+7.Count the no. of employee and sum of salary of all employee whose names start with letter ‘a’.
+
+SQL> SELECT COUNT(EMP_ID) AS COUNT,SUM(SALARY) AS SUM FROM EMPLOYEE
+  2  WHERE EMP_NAME LIKE 'A%';
+
+     COUNT        SUM                                                           
+---------- ----------                                                           
+         0                                                                      
+
+8.Display the name and deposit of consumers who deposted maximum amount in the city where ‘Pradeep’ is residing.
+
+SQL> SELECT CON_NAME,DEPOSIT FROM CONSUMER
+  2  WHERE DEPOSIT =
+  3  (SELECT MAX(DEPOSIT) AS MAX FROM CONSUMER
+  4  WHERE CITY =
+  5  (SELECT CITY FROM CONSUMER
+  6  WHERE CON_NAME = 'Pradeep'));
+
+CON_NAME           DEPOSIT
+--------------- ----------
+Sankar               12000
+
+
+9.Display the EB type and sum of deposit amount of those type 
+  in which sum of deposit of all consumer is greater than 15,000.
+
+SQL> SELECT EB_TYPE,SUM(DEPOSIT) AS SUM FROM CONSUMER
+  2  GROUP BY EB_TYPE
+  3  HAVING SUM(DEPOSIT) > 15000;
+
+E        SUM
+- ----------
+D      28500
+C      39000
+
+10.List the employee details who has taken maximum number of readings.
+
+
+SQL>
+SQL> SELECT * FROM EMPLOYEE
+  2  WHERE EMP_ID IN
+  3  (SELECT EMPLOYEE FROM
+  4  (SELECT EMPLOYEE,COUNT(*) AS COUNT FROM READING
+  5   GROUP BY EMPLOYEE)
+  6   WHERE COUNT =
+  7  (
+  8  SELECT MAX(COUNT) FROM
+  9  (SELECT COUNT(*) AS COUNT FROM READING
+ 10   GROUP BY EMPLOYEE)));
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY
+---- --------------- - ---------- -------------------- ----------
+E104 Ramu            M 7887234522 ramu12@gmail.com          42300
+E101 Prabhu          M 9763874613 prabhu@gmail.com           2000
+
+
+
+SQL> WITH Tab AS (
+  2    SELECT employee, COUNT(*) AS count
+  3    FROM   reading
+  4    GROUP BY employee)
+  5  SELECT * FROM EMPLOYEE
+  6  WHERE EMP_ID IN
+  7  (SELECT employee
+  8  FROM   Tab
+  9  where Tab.count =
+ 10  (SELECT max(Tab.count) FROM Tab));
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY
+---- --------------- - ---------- -------------------- ----------
+E104 Ramu            M 7887234522 ramu12@gmail.com          42300
+E101 Prabhu          M 9763874613 prabhu@gmail.com           2000
+
+
+
+SCALAR FUNCTION
+
+1.	Retrieve the employee id and name of all male employees. Perform case insensitive search. 
+
+
+SQL> SELECT EMP_ID,EMP_NAME FROM EMPLOYEE
+  2  WHERE UPPER(GENDER) = 'M';
+
+EMP_ EMP_NAME                                                                   
+---- ---------------                                                            
+E101 Prabhu                                                                     
+E103 Ramesh                                                                     
+E104 Ramu                                                                       
+
+                                              
+
+2.Calculate the new salary of employee as “salary = salary + (20% of salary)*0.77” and 
+  display the salary in ceil,floor,round format.
+  
+SQL> SELECT CEIL(SALARY*1.20*0.77) AS CEIL,
+  2  FLOOR(SALARY * 1.20*0.77) AS FLOOR,
+  3  ROUND(SALARY * 1.20 * 0.77) AS ROUND
+  4  FROM EMPLOYEE;
+
+      CEIL      FLOOR      ROUND                                                
+---------- ---------- ----------                                                
+      1848       1848       1848                                                
+     23100      23100      23100                                                
+     29106      29106      29106                                                
+     39086      39085      39085    
+
+                                            
+3.Retrieve the numeric part of consumer id of all consumers who have more than 2 characters.
+
+SQL> SELECT SUBSTR(CON_ID,2) AS ID FROM CONSUMER
+  2  WHERE LENGTH(CON_ID)>2;
+
+ID                                                                              
+------------                                                                    
+101                                                                             
+102                                                                             
+103                                                                             
+104                                                                             
+105                                                                             
+106                                                                             
+107                                                                             
+108                                                                             
+109                                                                             
+110                                                                             
+
+10 rows selected.
+
+4.Calculate and display the number of days/months/year completed from the 
+  date of payment.
+
+SQL> SELECT ABS(ROUND(MONTHS_BETWEEN(PAY_DATE,SYSDATE))) AS MONTH,
+  2  ABS(ROUND(PAY_DATE-SYSDATE)) AS DAYS,ABS(ROUND((PAY_DATE-SYSDATE)/365)) AS
+YEAR FROM BILLS;
+
+     MONTH       DAYS       YEAR
+---------- ---------- ----------
+         0         13          0
+         1         16          0
+         0         11          0
+
+         0         14          0
+         0          8          0
+         0         11          0
+
+         0         15          0
+         0          8          0
+         0          0          0
+
+     MONTH       DAYS       YEAR
+---------- ---------- ----------
+         1         27          0
+
+
+
+14 rows selected.
+
+
+5. Display the bill id, consumer id, amount, status, paydate for all the consumers in the February 2016. Display 
+  ‘Payment not done’ when status has NULL value and ‘NA’ when paydate has NULL value.
+
+SQL> SELECT BILL_ID,CON_ID,AMOUNT,NVL(STATUS,'Payment Not done') AS S
+  2  NVL(TO_CHAR(pay_date,'DD/MM/YYYY'),'NA') AS PAY_DATE FROM BILLS;
+
+   BILL_ID CON_     AMOUNT STATUS           PAY_DATE
+---------- ---- ---------- ---------------- ----------
+        22 C101        450 Online           22/01/2016
+        23 C101        465 Direct           20/02/2016
+        24 C101         80 Online           15/02/2016
+        25 C102        600 Payment Not done NA
+        26 C103        745 Direct           18/02/2016
+        27 C104         80 Online           12/02/2016
+        28 C105        912 Direct           15/02/2016
+        29 C105        480 Payment Not done NA
+        30 C106       1206 Direct           19/02/2016
+        31 C107      12050 Online           12/02/2016
+        32 C108      11420 Direct           04/02/2016
+
+   BILL_ID CON_     AMOUNT STATUS           PAY_DATE
+---------- ---- ---------- ---------------- ----------
+        33 C109      26400 Online           08/01/2016
+        34 C109      14500 Payment Not done NA
+        35 C110       1108 Payment Not done NA
+
+14 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SPOOL OFF;

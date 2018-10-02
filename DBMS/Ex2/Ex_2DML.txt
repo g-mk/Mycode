@@ -1,0 +1,671 @@
+1.Insert the following in Consumer table
+
+SQL> desc consumer
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CON_ID                                    NOT NULL CHAR(4)
+ CON_NAME                                  NOT NULL VARCHAR2(15)
+ GENDER                                    NOT NULL CHAR(1)
+ EB_TYPE                                   NOT NULL CHAR(1)
+ DEPOSIT                                   NOT NULL NUMBER
+ CITY                                               VARCHAR2(10)
+ MOBILE                                    NOT NULL NUMBER(12)
+ EMAIL                                              VARCHAR2(20)
+
+SQL> INSERT INTO CONSUMER VALUES('C101','Pradeep','M','D',2000,'VNR',9786341123,'pradeep@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C102','Siva','M','D',2000,'VNR',9777384718,'siva@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C103','Kumaran','M','D',3000,'SVKS',9756567767,'kumaran@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C104','Sheela','F','D',3500,'SVKS',9876761342,'sheels@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C105','Simran','F','D',6500,'CBE',9766173741,'sim22@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C106','Sankar','M','C',12000,'VNR',9875442616,'sankar@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C107','Karthik','M','C',2000,'CHE',9876762332,'karthik@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C108','Kumar','M','C',15000,'CBE',9987813749,
+  2  null);
+
+1 row created.
+
+SQL> INSERT INTO CONSUMER VALUES('C109','Anu','F','C',10000,'VNR',9878345287,
+  2  null);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO CONSUMER VALUES('C110','Shree','F','D',11500,'VNR',7878237844,
+  2  null);
+
+1 row created.
+
+SQL> select * from Consumer;
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com     
+C102 Siva            M D       2000 VNR        9777384718 siva@gmail.com        
+C103 Kumaran         M D       3000 SVKS       9756567767 kumaran@gmail.com     
+C104 Sheela          F D       3500 SVKS       9876761342 sheels@gmail.com      
+C105 Simran          F D       6500 CBE        9766173741 sim22@gmail.com       
+C106 Sankar          M C      12000 VNR        9875442616 sankar@gmail.com      
+C107 Karthik         M C       2000 CHE        9876762332 karthik@gmail.com     
+C108 Kumar           M C      15000 CBE        9987813749                       
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+10 rows selected.
+
+2.Insert the following in the Employee table
+
+SQL> INSERT INTO EMPLOYEE VALUES('E101','Prabhu','M',9763874613,'prabhu@gmail.com',2000);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES('E102','Kanaga','F',9651274234,'kanaga@gmail.com',25000);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES('E103','Ramesh','M',8723348793,'ramesh@gmail.com',31500);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO EMPLOYEE VALUES('E104','Ramu','M',7887234522,'ramu12@gmail.com',42300);
+
+1 row created.
+
+SQL> select * from Employee;
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY               
+---- --------------- - ---------- -------------------- ----------               
+E101 Prabhu          M 9763874613 prabhu@gmail.com           2000               
+E102 Kanaga          F 9651274234 kanaga@gmail.com          25000               
+E103 Ramesh          M 8723348793 ramesh@gmail.com          31500               
+E104 Ramu            M 7887234522 ramu12@gmail.com          42300               
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;
+
+SQL> CREATE SEQUENCE BILL
+  2  START WITH 1
+  3  INCREMENT BY 1;
+
+Sequence created.
+
+4.Insert the following in the Reading table
+
+SQL> INSERT INTO READING VALUES('C101',2015,12,'E101',198);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C101',2016,1,'E101',200);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C101',2016,2,'E102',30);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C102',2016,1,'E101',250);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C103',2016,1,'E103',298);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C104',2016,1,'E101',40);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C105',2016,1,'E102',350);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C105',2016,2,'E103',290);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C106',2016,1,'E104',105);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C107',2016,1,'E104',1145);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C108',2016,1,'E104',1120);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C109',2015,12,'E103',2200);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C109',2015,1,'E102',1450);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO READING VALUES('C110',2016,1,'E104',450);
+
+1 row created.
+
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+27-JAN-16                                                                       
+
+3.Insert the following in the Bills table
+
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C101',2015,12,450,'Online','22-JAN-16');
+
+1 row created.
+
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C101',2016,1,465,'Direct','20-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C101',2016,2,80,'Online','15-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C102',2016,1,600,null,null);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C103',2016,1,745,'Direct','18-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C104',2016,1,80,'Online','12-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C105',2016,1,912,'Direct','15-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C105',2016,2,480,null,null);
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C106',2016,1,1206,'Direct','19-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C107',2016,1,12050,'Online','12-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C108',2016,1,11420,'Direct','04-FEB-16');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C109',2015,12,26400,'Online','08-JAN-16');
+
+1 row created.
+ 
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C110',2016,1,1108,null,null);
+
+1 row created.
+
+SQL> INSERT INTO BILLS VALUES(BILL.NEXTVAL,'C109',2015,1,14500,null,null);
+
+1 row created.
+
+SQL> select * from bills;
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+         6 C101       2015         12        450 Online 22-JAN-16               
+         7 C101       2016          1        465 Direct 20-FEB-16               
+         8 C101       2016          2         80 Online 15-FEB-16               
+         9 C102       2016          1        600                                
+        10 C103       2016          1        745 Direct 18-FEB-16               
+        11 C104       2016          1         80 Online 12-FEB-16               
+        12 C105       2016          1        912 Direct 15-FEB-16               
+        13 C105       2016          2        480                                
+        14 C106       2016          1       1206 Direct 19-FEB-16               
+        15 C107       2016          1      12050 Online 12-FEB-16               
+        16 C108       2016          1      11420 Direct 04-FEB-16               
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+        17 C109       2015         12      26400 Online 08-JAN-16               
+        19 C110       2016          1       1108                                
+        20 C109       2015          1      14500                                
+
+14 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;
+
+5.Insert the following in the History table
+
+No Data is given to insert into the History Table. 
+
+6.Display all records available in the Consumer table.
+
+SQL> SELECT * FROM CONSUMER;
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com     
+C102 Siva            M D       2000 VNR        9777384718 siva@gmail.com        
+C103 Kumaran         M D       3000 SVKS       9756567767 kumaran@gmail.com     
+C104 Sheela          F D       3500 SVKS       9876761342 sheels@gmail.com      
+C105 Simran          F D       6500 CBE        9766173741 sim22@gmail.com       
+C106 Sankar          M C      12000 VNR        9875442616 sankar@gmail.com      
+C107 Karthik         M C       2000 CHE        9876762332 karthik@gmail.com     
+C108 Kumar           M C      15000 CBE        9987813749                       
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+10 rows selected.
+
+7.Display the list of Consumers belonging to the ‘Virudhunagar’ city.
+
+SQL> SELECT * FROM CONSUMER
+  2  WHERE CITY = 'VNR';
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C101 Pradeep         M D       2000 VNR        9786341123 pradeep@gmail.com     
+C102 Siva            M D       2000 VNR        9777384718 siva@gmail.com        
+C106 Sankar          M C      12000 VNR        9875442616 sankar@gmail.com      
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+8.Display the employee id and corresponding employee name for all employee.
+
+SQL> SELECT EMP_ID,EMP_NAME FROM EMPLOYEE;
+
+EMP_ EMP_NAME                                                                   
+---- ---------------                                                            
+E101 Prabhu                                                                     
+E102 Kanaga                                                                     
+E103 Ramesh                                                                     
+E104 Ramu                                                                       
+
+9.Display the details of the employees whose salary is in the range 
+  from 30000 to 40000.
+
+SQL> SELECT * FROM EMPLOYEE
+  2  WHERE SALARY BETWEEN 30000 AND 40000;
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY               
+---- --------------- - ---------- -------------------- ----------               
+E103 Ramesh          M 8723348793 ramesh@gmail.com          31500               
+
+10.Display the bill details sorted based on amount.
+
+SQL> SELECT * FROM BILLS
+  2  ORDER BY AMOUNT;
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+         3 C101       2016          2         80 Online 15-FEB-16               
+         6 C104       2016          1         80 Online 12-FEB-16               
+         1 C101       2015         12        450 Online 22-JAN-16               
+         2 C101       2016          1        465 Direct 20-FEB-16               
+         8 C105       2016          2        480                                
+         4 C102       2016          1        600                                
+         5 C103       2016          1        745 Direct 18-FEB-16               
+         7 C105       2016          1        912 Direct 15-FEB-16               
+        14 C110       2016          1       1108                                
+         9 C106       2016          1       1206 Direct 19-FEB-16               
+        11 C108       2016          1      11420 Direct 04-FEB-16               
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+        10 C107       2016          1      12050 Online 12-FEB-16               
+        13 C109       2015          1      14500                                
+        12 C109       2015         12      26400 Online 08-JAN-16               
+
+14 rows selected.
+
+11.Display the bill details sorted based on year in ascending order 
+   and month in descending order.
+
+SQL> SELECT * FROM BILLS
+  2  ORDER BY YEAR,MONTH DESC;
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+        12 C109       2015         12      26400 Online 08-JAN-16               
+         1 C101       2015         12        450 Online 22-JAN-16               
+        13 C109       2015          1      14500                                
+         8 C105       2016          2        480                                
+         3 C101       2016          2         80 Online 15-FEB-16               
+         9 C106       2016          1       1206 Direct 19-FEB-16               
+        10 C107       2016          1      12050 Online 12-FEB-16               
+        11 C108       2016          1      11420 Direct 04-FEB-16               
+        14 C110       2016          1       1108                                
+         6 C104       2016          1         80 Online 12-FEB-16               
+         5 C103       2016          1        745 Direct 18-FEB-16               
+
+   BILL_ID CON_       YEAR      MONTH     AMOUNT STATUS PAY_DATE                
+---------- ---- ---------- ---------- ---------- ------ ---------               
+         4 C102       2016          1        600                                
+         2 C101       2016          1        465 Direct 20-FEB-16               
+         7 C105       2016          1        912 Direct 15-FEB-16               
+
+14 rows selected.
+
+12.List the cities from where Consumers registered in this database.
+
+SQL> SELECT DISTINCT CITY FROM CONSUMER;
+
+CITY                                                                            
+----------                                                                      
+VNR                                                                             
+SVKS                                                                            
+CBE                                                                             
+CHE                                                                             
+
+13.Display the details of Consumers who cant receive any email alerts 
+   from the EB.
+
+SQL> SELECT * FROM CONSUMER
+  2  WHERE EMAIL IS NULL;
+
+CON_ CON_NAME        G E    DEPOSIT CITY           MOBILE EMAIL                 
+---- --------------- - - ---------- ---------- ---------- --------------------  
+C108 Kumar           M C      15000 CBE        9987813749                       
+C109 Anu             F C      10000 VNR        9878345287                       
+C110 Shree           F D      11500 VNR        7878237844                       
+
+14.Display the details of employees whose names start with ‘k’ 
+   and does not have the letter ‘e’.
+
+SQL> SELECT * FROM EMPLOYEE
+  2  WHERE EMP_NAME LIKE 'K%' AND EMP_NAME NOT LIKE '%e%';
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY               
+---- --------------- - ---------- -------------------- ----------               
+E102 Kanaga          F 9651274234 kanaga@gmail.com          25000               
+
+15.Display the Consumers’ names with exactly six letters.
+
+SQL> SELECT CON_NAME FROM CONSUMER
+  2  WHERE CON_NAME LIKE '______';
+
+CON_NAME                                                                        
+---------------                                                                 
+Sheela                                                                          
+Simran                                                                          
+Sankar                                                                          
+
+16.Delete details of Consumer with con_id is ‘C102’
+
+SQL> DELETE FROM CONSUMER
+  2  WHERE CON_ID = 'C102';
+DELETE FROM CONSUMER
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (HR.READ_CID_FK) violated - child record found 
+
+REASON: Since CON_ID act as the foreign key for other entity it cannot be
+        removed;
+
+
+17.Describe the following with test case (Use Consumer table).
+a.ON DELETE CASCADE:
+
+SQL> CREATE TABLE supplier
+  2  ( supplier_id numeric(10) not null,
+  3    supplier_name varchar2(50) not null,
+  4    contact_name varchar2(50),
+  5    CONSTRAINT supplier_pk PRIMARY KEY (supplier_id)
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE products
+  2  ( product_id numeric(10) not null,
+  3    supplier_id numeric(10) not null,
+  4    CONSTRAINT fk_supplier
+  5      FOREIGN KEY (supplier_id)
+  6      REFERENCES supplier(supplier_id)
+  7      ON DELETE CASCADE
+  8  );
+
+Table created.
+
+SQL> INSERT INTO SUPPLIER VALUES(1001,'Mano','Manohar');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES(1002,'Raj','Mohan');
+
+1 row created.
+
+SQL> INSERT INTO SUPPLIER VALUES(1003,'Hari','Ram');
+
+1 row created.
+
+SQL> SELECT * FROM SUPPLIER;
+
+SUPPLIER_ID SUPPLIER_NAME                                                       
+----------- --------------------------------------------------                  
+CONTACT_NAME                                                                    
+--------------------------------------------------                              
+       1001 Mano                                                                
+Manohar                                                                         
+                                                                                
+       1002 Raj                                                                 
+Mohan                                                                           
+                                                                                
+       1003 Hari                                                                
+Ram                                                                             
+                                                                                
+SQL> INSERT INTO PRODUCTS VALUES (2000,1001);
+
+1 row created.
+
+SQL> INSERT INTO PRODUCTS VALUES (2001,1002);
+
+1 row created.
+
+SQL> DELETE FROM SUPPLIER
+  2  WHERE SUPPLIER_ID = 1001;
+
+1 row deleted.
+
+SQL> SELECT * FROM SUPPLIER;
+
+SUPPLIER_ID SUPPLIER_NAME                                                       
+----------- --------------------------------------------------                  
+CONTACT_NAME                                                                    
+--------------------------------------------------                              
+       1002 Raj                                                                 
+Mohan                                                                           
+                                                                                
+       1003 Hari                                                                
+Ram                                                                             
+                                                                                
+
+SQL> SELECT * FROM PRODUCTS;
+
+PRODUCT_ID SUPPLIER_ID                                                          
+---------- -----------                                                          
+      2001        1002                                                          
+
+SQL> INSERT INTO SUPPLIER VALUES(1001,'Mano','Manohar');
+
+1 row created.
+
+SQL> TRUNCATE TABLE PRODUCTS;
+
+Table truncated.
+
+SQL> DROP TABLE PRODUCTS;
+
+Table dropped.
+
+b. ON DELETE SET NULL:
+
+SQL> CREATE TABLE products
+  2  ( product_id numeric(10) not null,
+  3    supplier_id numeric(10) not null,
+  4    CONSTRAINT fk_supplier
+  5      FOREIGN KEY (supplier_id)
+  6      REFERENCES supplier(supplier_id)
+  7      ON DELETE SET NULL
+  8  );
+
+Table created.
+
+SQL> INSERT INTO PRODUCTS VALUES (2000,1001);
+
+1 row created.
+
+SQL> INSERT INTO PRODUCTS VALUES (2001,1002);
+
+1 row created.
+
+SQL> SELECT * FROM PRODUCTS;
+
+PRODUCT_ID SUPPLIER_ID                                                          
+---------- -----------                                                          
+      2000        1001                                                          
+      2001        1002                                                          
+
+SQL> DELETE FROM SUPPLIER
+  2  WHERE SUPPLIER_ID = 1002;
+
+1 row deleted.
+
+SQL> SELECT * FROM SUPPLIER;
+
+SUPPLIER_ID SUPPLIER_NAME                                                       
+----------- --------------------------------------------------                  
+CONTACT_NAME                                                                    
+--------------------------------------------------                              
+       1003 Hari                                                                
+Ram                                                                             
+                                                                                
+       1001 Mano                                                                
+Manohar                                                                         
+
+SQL> SELECT * FROM PRODUCTS;
+
+PRODUCT_ID SUPPLIER_ID                                                          
+---------- -----------                                                          
+      2000        1001                                                          
+      2001                                                                      
+
+SQL> TRUNCATE TABLE PRODUCTS;
+
+Table truncated.
+
+SQL> DROP TABLE PRODUCTS;
+
+Table dropped.
+
+SQL> TRUNCATE TABLE SUPPLIER;
+
+Table truncated.
+
+SQL> DROP TABLE SUPPLIER;
+
+Table dropped.
+
+18.Delete all Female Consumer details.
+
+SQL> DELETE FROM CONSUMER
+  2  WHERE GENDER ='F';
+DELETE FROM CONSUMER
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (HR.READ_CID_FK) violated - child record found 
+
+REASON: Since CON_ID act as the foreign key for other entity it cannot be
+        removed;
+
+19.Update the salary of all employees based on Employee as follows:
+
+EmpId	Increment
+E101	10%
+E102	15%
+E103	20%
+E104	25%
+E105	10%
+
+SQL> update employee
+  2  set salary =
+  3  case
+  4  WHEN EMP_ID = 'E101' THEN SALARY * 1.10
+  5  WHEN EMP_ID = 'E102' THEN SALARY * 1.15
+  6  WHEN EMP_ID = 'E103' THEN SALARY * 1.20
+  7  WHEN EMP_ID = 'E104' THEN SALARY * 1.25
+  8  WHEN EMP_ID = 'E105' THEN SALARY * 1.10
+  9  END;
+
+4 rows updated.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+EMP_ EMP_NAME        G     MOBILE EMAIL                    SALARY               
+---- --------------- - ---------- -------------------- ----------               
+E101 Prabhu          M 9763874613 prabhu@gmail.com           2200               
+E102 Kanaga          F 9651274234 kanaga@gmail.com          28750               
+E103 Ramesh          M 8723348793 ramesh@gmail.com          37800               
+E104 Ramu            M 7887234522 ramu12@gmail.com          52875               
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;

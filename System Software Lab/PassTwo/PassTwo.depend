@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1458897455 source:f:\studies\iv sem\ss lab\ex3\ipassone.c
+	"hPassOne.h"
+
+1454932875 f:\studies\iv sem\ss lab\ex3\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\ss lab\ex3\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1456145524 source:f:\studies\iv sem\ss lab\ex3\isymbol.c
+	"hSymbol.h"
+
+1457414181 source:f:\studies\iv sem\ss lab\passtwo\apasstwo.c
+	"hPassTwo.h"
+
+1456944008 f:\studies\iv sem\ss lab\passtwo\hpasstwo.h
+	"../Ex3/hPassOne.h"
+
+1458896957 source:f:\studies\iv sem\ss lab\passtwo\ipasstwo.c
+	"hPassTwo.h"
+
+1462114885 source:f:\studies\iv sem\lab\ss lab\ex3\ipassone.c
+	"hPassOne.h"
+
+1454932875 f:\studies\iv sem\lab\ss lab\ex3\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\lab\ss lab\ex3\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1456145524 source:f:\studies\iv sem\lab\ss lab\ex3\isymbol.c
+	"hSymbol.h"
+
+1457414181 source:f:\studies\iv sem\lab\ss lab\passtwo\apasstwo.c
+	"hPassTwo.h"
+
+1456944008 f:\studies\iv sem\lab\ss lab\passtwo\hpasstwo.h
+	"../Ex3/hPassOne.h"
+
+1462116766 source:f:\studies\iv sem\lab\ss lab\passtwo\ipasstwo.c
+	"hPassTwo.h"
+

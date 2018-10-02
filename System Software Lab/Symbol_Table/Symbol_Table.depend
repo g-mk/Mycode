@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1454819727 source:f:\studies\iv sem\ss lab\symbol_table\asymbol.c
+	"hSymbol.h"
+
+1454819727 f:\studies\iv sem\ss lab\symbol_table\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1454828593 source:f:\studies\iv sem\ss lab\symbol_table\isymbol.c
+	"hSymbol.h"
+
+1454828593 source:f:\studies\iv sem\lab\ss lab\symbol_table\isymbol.c
+	"hSymbol.h"
+
+1454819727 f:\studies\iv sem\lab\ss lab\symbol_table\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1462105551 source:f:\studies\iv sem\lab\ss lab\symbol_table\asymbol.c
+	"hSymbol.h"
+

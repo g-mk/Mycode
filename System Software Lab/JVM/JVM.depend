@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1461590785 source:f:\studies\iv sem\lab\ss lab\jvm\ajvm.c
+	"hJVM.h"
+
+1461132833 f:\studies\iv sem\lab\ss lab\jvm\hjvm.h
+	<stdio.h>
+	<string.h>
+
+1461590563 source:f:\studies\iv sem\lab\ss lab\jvm\ijvm.c
+	"hJVM.h"
+
+1385316878 source:f:\studies\iv sem\lab\ss lab\jvm\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1461829697 source:f:\studies\iv sem\lab\ss lab\jvm\java.cpp
+	"java.h"
+
+1461829619 f:\studies\iv sem\lab\ss lab\jvm\java.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1461693994 source:f:\studies\iv sem\lab\ss lab\jvm\javaapp.cpp
+	<stdio.h>
+	"java.h"
+

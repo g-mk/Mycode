@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Candidate</title>
+      <link href="css/background.css" type="text/css" rel="stylesheet"/>
+      <script src="javascript/navigateTop.js" type="text/javascript"></script>
+      <script src="javascript\jquery-1.11.3.min.js"></script>
+      <script>
+        $(document).ready(function(){
+          $("a").on('click', function(event) {
+            if (this.hash !== "") {
+              event.preventDefault();
+              var hash = this.hash;
+              $('html, body').animate({
+                scrollTop: $(hash).offset().top
+              }, 600, function(){
+                window.location.hash = hash;
+              });
+            } // End if
+          });
+        });
+      </script>
+      <style>
+         table img{
+            width: 80px;
+            height: 120px;
+         }
+         table{
+            width:70%;
+            cellpadding:4px;
+            cellspacing:2px;
+            text-align:center;
+         }
+         th{
+            background: #293e6a;
+            color: #fcfcfc;
+         }
+         td{
+            font-family:"Lucida Grande",cursive;
+            font-size: 25px;
+         }
+         tr:nth-child(odd){
+            background-color:#293e6a;
+            color: #fcfcfc;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="topDiv">
+         <h2 align="center">Candidate for the Election</h2>
+         <table id = "candidate" border="1" align="center" cellpadding="2" 
+                     cellspacing="2">
+            <header>
+               <th>Candidate</th>
+               <th>Name</th>
+               <th>Symbol</th>
+            <header>
+            <tr>
+               <td><img src="image\dj.jpg" alt="Not found"/></td>
+               <td>Baby</td>
+               <td><img src="image\image.png" alt="Not found"/></td>
+            </tr>
+         </table>
+      </div>
+      <div>
+         <a href="#topDiv" >
+            <img id="goTop" src="image\arrow.jpg" width="50px" height="50px" 
+               alt="Not Found"/>
+         </a>
+      </div>
+   </body>
+</html>

@@ -1,0 +1,521 @@
+1.Set the save point (savept).
+
+SAVEPOINT SAVEPT;
+
+SAVEPOINT SAVEPT succeeded.
+
+
+2.Create a view named employeeView which 
+  contains only id, name, gender, mobile and salary.
+
+
+CREATE VIEW EMPLOYEEVIEW AS
+SELECT EMP_ID AS ID,EMP_NAME AS NAME,GENDER,MOBILE,SALARY FROM EMPLOYEE;
+
+CREATE VIEW succeeded.
+
+
+a.Display the Male employee details.
+
+SELECT * FROM employeeview
+WHERE gender = 'M';
+
+ID   NAME            GENDER MOBILE                 SALARY                 
+---- --------------- ------ ---------------------- ---------------------- 
+E101 Prabhu          M      9763874613             2000                   
+E103 Ramesh          M      8723348793             31500                  
+E104 Ramu            M      7887234522             42300                  
+
+3 rows selected
+
+b.Count the no. of Female employees.
+
+SELECT count(*) AS NO_OF_FEMALE from employeeview;
+
+NO_OF_FEMALE           
+---------------------- 
+4                      
+
+1 rows selected
+
+c.Insert the new record with following data ('E105’,'Sridhar','M',9675467611,
+  25000) and analyse this data inserted in original table or not. Justify.
+
+insert into employeeview 
+values('E105','SRIDHAR','M',9675467611,25000);
+1 row inserted.
+SELECT * from employeeview;
+
+ID   NAME            GENDER MOBILE                 SALARY                 
+---- --------------- ------ ---------------------- ---------------------- 
+E101 Prabhu          M      9763874613             2000                   
+E102 Kanaga          F      9651274234             25000                  
+E103 Ramesh          M      8723348793             31500                  
+E104 Ramu            M      7887234522             42300                  
+E105 SRIDHAR         M      9675467611             25000                  
+
+5 rows selected
+
+
+
+SELECT * from employee;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E101   Prabhu          M      9763874613             prabhu@gmail.com     2000                   
+E102   Kanaga          F      9651274234             kanaga@gmail.com     25000                  
+E103   Ramesh          M      8723348793             ramesh@gmail.com     31500                  
+E104   Ramu            M      7887234522             ramu12@gmail.com     42300                  
+E105   SRIDHAR         M      9675467611                                  25000                  
+
+5 rows selected
+
+Reason: Since it has all the not null constraint attribute and primary key attribute
+        values will be inserted into the view and the base table will be updated.
+
+d.Insert the new record in original table with the data (‘E106’, ’Murugan’, ’Male’, 
+  9654367234, ‘muruga@gmail.com’, 45000) and analyse this data inserted in the view. Justify.
+
+insert into employee
+values('E106','Murugan','M',9654367234,'murugan@gmail.com',45000);
+
+1 rows inserted
+
+select * from employeeview;
+
+ID   NAME            GENDER MOBILE                 SALARY                 
+---- --------------- ------ ---------------------- ---------------------- 
+E101 Prabhu          M      9763874613             2000                   
+E102 Kanaga          F      9651274234             25000                  
+E103 Ramesh          M      8723348793             31500                  
+E104 Ramu            M      7887234522             42300                  
+E105 SRIDHAR         M      9675467611             25000                  
+E106 Murugan         M      9654367234             45000                  
+
+6 rows selected
+
+select * from employee;
+
+ID   NAME            GENDER MOBILE                 SALARY                 
+---- --------------- ------ ---------------------- ---------------------- 
+E101 Prabhu          M      9763874613             2000                   
+E102 Kanaga          F      9651274234             25000                  
+E103 Ramesh          M      8723348793             31500                  
+E104 Ramu            M      7887234522             42300                  
+E105 SRIDHAR         M      9675467611             25000                  
+E106 Murugan         M      9654367234             45000                  
+
+6 rows selected
+
+Reason: since the view is a substitution it will be updated if is there is
+        any change in the base table.
+
+3.Create a view named salaryDetailView which contains the gender, avg, sum, max, 
+  min of salary of employees, no of persons in each gender. 
+  (Avg should have only 2 fractional digits)
+
+CREATE VIEW SALARYDETAILVIEW AS
+SELECT GENDER,ROUND(AVG(SALARY),2) AS AVERAGE,SUM(SALARY) AS SUMMATION,
+       MAX(SALARY) AS MAX,MIN(SALARY) AS MIN, COUNT(*) AS NO_OF_EMP
+FROM employee
+GROUP BY gender;
+
+CREATE VIEW succeeded.
+
+
+SELECT * FROM salarydetailview;
+
+CREATE VIEW succeeded.
+GENDER AVERAGE                SUMMATION              MAX                    
+MIN                    NO_OF_EMP              
+------ ---------------------- ---------------------- ---------------------- 
+---------------------- ---------------------- 
+M      29160                  145800                 45000                  
+2000                   5                      
+F      25000                  25000                  25000                  
+25000                  1                      
+
+2 rows selected
+
+a.Display all salary details in descending order with respect to number of genders.
+
+SELECT * FROM salarydetailview
+ORDER BY no_of_emp;
+
+GENDER AVERAGE                SUMMATION              MAX                    
+MIN                    NO_OF_EMP              
+------ ---------------------- ---------------------- ---------------------- 
+---------------------- ---------------------- 
+F      25000                  25000                  25000                  
+25000                  1                      
+M      29160                  145800                 45000                  
+2000                   5                      
+
+2 rows selected
+
+
+b.Count no. of employees and summation of salary of all employees.
+
+SELECT SUM(NO_OF_EMP) AS TOTAL_EMP,SUM(SUMMATION) AS TOTAL_SALARY
+FROM salarydetailview;
+
+TOTAL_EMP              TOTAL_SALARY           
+---------------------- ---------------------- 
+6                      170800                 
+
+1 rows selected
+
+
+c.Insert the new record in the original relation with the values 
+  (‘E110’, ‘Kumaran’, ‘M’, 9878763421, ‘kumaran@gmail.com’, 34500) and Justify the changes happened or not in the view and original table.
+
+INSERT INTO employee 
+VALUES('E110','Kumaran','M',98787634221,'kumaram@gmail.com',34500);
+
+1 rows inserted
+
+SELECT * FROM salarydetailview;
+
+GENDER AVERAGE                SUMMATION              MAX                   
+MIN                    NO_OF_EMP              
+------ ---------------------- ---------------------- ---------------------- 
+---------------------- ---------------------- 
+M      30050                  180300                 45000                  
+2000                   6                      
+F      25000                  25000                  25000                  
+25000                  1                      
+
+2 rows selected
+
+d.Insert the new record in the view with (‘M’,20000.35,1200000,80000,14500,5) 
+  and Justify the changes happened or not in the view and original table.
+
+insert into salarydetailview
+VALUE('M',20000.35,1200000,80000,145000,5);
+
+Error starting at line 1 in command:
+insert into salarydetailview
+VALUE('M',20000.35,1200000,80000,145000,5)
+Error at Command Line:2 Column:6
+Error report:
+SQL Error: ORA-00928: missing SELECT keyword
+00928. 00000 -  "missing SELECT keyword"
+*Cause:    
+*Action:
+
+Reason: since the view contains the attribute as the aggregate function
+        we cannot insert the value in the view.
+
+4.Create a view named maleView from employeeView which contains all details about 
+  the employees those who are males.
+
+CREATE VIEW MALEVIEW AS
+SELECT * FROM employee
+WHERE gender='M';
+
+CREATE VIEW succeeded.
+
+
+SELECT * FROM MALEVIEW;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E101   Prabhu          M      9763874613             prabhu@gmail.com     2000                   
+E103   Ramesh          M      8723348793             ramesh@gmail.com     31500                  
+E104   Ramu            M      7887234522             ramu12@gmail.com     42300                  
+E105   SRIDHAR         M      9675467611                                  25000                  
+E106   Murugan         M      9654367234             murugan@gmail.com    45000                  
+E110   Kumaran         M      98787634221            kumaram@gmail.com    34500                  
+
+6 rows selected
+
+a.Delete all records from view, and then check the base table.
+
+DELETE FROM maleview;
+
+6 rows deleted
+
+SELECT * FROM maleview;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+
+0 rows selected
+
+
+SELECT * FROM employee;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E102   Kanaga          F      9651274234             kanaga@gmail.com     25000                  
+
+1 rows selected
+
+b.Apply rollback to undo the delete operation.
+
+ROLLBACK to befdel;
+
+ROLLBACK to Succeed.
+
+c.Insert one record with gender with 'F' and infer the result.
+
+INSERT INTO maleview 
+VALUES('E111','Prema','F',9487723206,'prema@gmail.com',50000);
+
+1 rows inserted
+
+
+select * from maleview;
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E101   Prabhu          M      9763874613             prabhu@gmail.com     2000                   
+E103   Ramesh          M      8723348793             ramesh@gmail.com     31500                  
+E104   Ramu            M      7887234522             ramu12@gmail.com     42300                  
+E105   SRIDHAR         M      9675467611                                  25000                  
+E106   Murugan         M      9654367234             murugan@gmail.com    45000                  
+E110   Kumaran         M      98787634221            kumaram@gmail.com    34500                  
+
+6 rows selected
+
+
+select * from employee;
+
+
+EMP_ID EMP_NAME        GENDER MOBILE                 EMAIL                SALARY                 
+------ --------------- ------ ---------------------- -------------------- ---------------------- 
+E111   Prema           F      9487723206             prema@gmail.com      50000                  
+E101   Prabhu          M      9763874613             prabhu@gmail.com     2000                   
+E102   Kanaga          F      9651274234             kanaga@gmail.com     25000                  
+E103   Ramesh          M      8723348793             ramesh@gmail.com     31500                  
+E104   Ramu            M      7887234522             ramu12@gmail.com     42300                  
+E105   SRIDHAR         M      9675467611                                  25000                  
+E106   Murugan         M      9654367234             murugan@gmail.com    45000                  
+E110   Kumaran         M      98787634221            kumaram@gmail.com    34500                  
+
+8 rows selected
+
+Inference: the recrod inserted into the view is updated in the base table but
+           it doesnt retrived in the view as it doesnt satify the view condition.
+
+d.Apply rollback to undo the insert operation.
+
+Rollback to befins;
+
+rollback to succeeded.
+
+5.Update the maleView ‘with check option’.
+
+create or replace view maleview as
+select * from employee
+where gender = 'M'
+WITH CHECK OPTION;
+
+create or replace view succeeded.
+
+a.Insert one Female employee record. If can’t, specify the reason.
+
+INSERT INTO maleview 
+VALUES('E111','Prema','F',9487723206,'prema@gmail.com',50000);
+
+
+Error starting at line 1 in command:
+INSERT INTO maleview 
+VALUES('E111','Prema','F',9487723206,'prema@gmail.com',50000)
+Error report:
+SQL Error: ORA-01402: view WITH CHECK OPTION where-clause violation
+01402. 00000 -  "view WITH CHECK OPTION where-clause violation"
+*Cause:    
+*Action:
+
+
+REASON: Since the view is created with WITH CHECK OPTION we cannot insert the record which 
+        doesn't satisfy the where condition.
+
+6.Create the read only view named employeeROView 
+  which contain name and mobile of employees.
+
+create view employeeroview as
+select emp_name as name,mobile from employee
+WITH READ ONLY;
+
+create view succeeded.
+
+SELECT * FROM employeeroview;
+
+NAME            MOBILE                 
+--------------- ---------------------- 
+Prabhu          9763874613             
+Kanaga          9651274234             
+Ramesh          8723348793             
+Ramu            7887234522             
+SRIDHAR         9675467611             
+Murugan         9654367234             
+Kumaran         98787634221            
+
+7 rows selected
+
+a.Delete all records from view, if can’t specify the reason.
+
+DELETE FROM employeeroview;
+
+Error starting at line 1 in command:
+DELETE FROM employeeroview
+Error at Command Line:1 Column:12
+Error report:
+SQL Error: ORA-42399: cannot perform a DML operation on a read-only view
+
+REASON: Since the view is read only we cannot do any DML operation on the view.
+
+Working with multiple base tables:
+
+8.Create a view named billDetailView which contains 
+  consumer id, name, bill id, year, month and amount.
+
+create view billdetailview as
+select consumer.con_id,consumer.con_name,bill_id,year,month,amount
+from consumer,bills
+where consumer.con_id = bills.con_id;
+
+create view succeeded.
+
+select * from billdetailview;
+
+CON_ID CON_NAME        BILL_ID                YEAR                   MONTH                  AMOUNT                 
+------ --------------- ---------------------- ---------------------- ---------------------- ---------------------- 
+C103   Kumaran         4                      2016                   1                      745                    
+C104   Sheela          5                      2016                   1                      40                     
+C105   Simran          7                      2016                   2                      725                    
+C105   Simran          6                      2016                   1                      875                    
+C106   Sankar          8                      2016                   1                      210                    
+C107   Karthik         9                      2016                   1                      4580                   
+C108   Kumar           10                     2016                   1                      4480                   
+C109   Anu             12                     2015                   1                      5800                   
+C109   Anu             11                     2015                   12                     8800                   
+C110   Shree           13                     2016                   1                      1125                   
+
+10 rows selected
+
+a.Display the bill details for January 2016.
+
+
+select * from billdetailview
+where year = 2016 and month = 2;
+
+CON_ID CON_NAME        BILL_ID                YEAR                   MONTH                  AMOUNT                 
+------ --------------- ---------------------- ---------------------- ---------------------- ---------------------- 
+C105   Simran          7                      2016                   2                      725                    
+
+1 rows selected
+
+
+b.Insert the new record with following data (‘C113’, 
+  ‘Prakash’, ’15, 2016, 2, 25000). What do you infer?
+
+insert into billdetailview
+values('C113','Prakash',15,2016,2,25000);
+
+Error starting at line 1 in command:
+insert into billdetailview
+values('C113','Prakash',15,2016,2,25000)
+Error at Command Line:1 Column:0
+Error report:
+SQL Error: ORA-01779: cannot modify a column which maps to a non key-preserved table
+01779. 00000 -  "cannot modify a column which maps to a non key-preserved table"
+*Cause:    An attempt was made to insert or update columns of a join view which
+           map to a non-key-preserved table.
+*Action:   Modify the underlying base tables directly.
+
+REASON: Since the view is created form multiple base table it doesnt include all the primary
+        key constrain or not null constraint attribute so we cannot insert the record.
+
+
+c.Try to update the bill amount of the consumer with id ‘C105’ as 
+  double the amount. What do you infer?
+
+update billdetailview
+set amount = amount * 2
+where con_id = 'C105';
+
+2 rows updated
+
+select * from billdetailview;
+
+CON_ID CON_NAME        BILL_ID                YEAR                   MONTH                  AMOUNT                 
+------ --------------- ---------------------- ---------------------- ---------------------- ---------------------- 
+C103   Kumaran         4                      2016                   1                      745                    
+C104   Sheela          5                      2016                   1                      40                     
+C105   Simran          7                      2016                   2                      1450                   
+C105   Simran          6                      2016                   1                      1750                   
+C106   Sankar          8                      2016                   1                      210                    
+C107   Karthik         9                      2016                   1                      4580                   
+C108   Kumar           10                     2016                   1                      4480                   
+C109   Anu             12                     2015                   1                      5800                   
+C109   Anu             11                     2015                   12                     8800                   
+C110   Shree           13                     2016                   1                      1125                   
+
+10 rows selected
+
+Reason: Updation of the record in the view created from multiple table 
+        will update the content of the base table also so the consumer with
+        id 'C105' will be update with the new amount.
+
+Working with Index:
+
+10.Display the consumer details who are residing in the city ‘VNR’.
+
+select * from consumer
+where city = 'VNR';
+
+CON_ID CON_NAME        GENDER EB_TYPE DEPOSIT                CITY       MOBILE                 EMAIL                
+------ --------------- ------ ------- ---------------------- ---------- ---------------------- -------------------- 
+C101   Pradeep         M      D       2000                   VNR        9786341123             pradeep@gmail.com    
+C102   Siva            M      D       2000                   VNR        9777384718             siva@gmail.com       
+C106   Sankar          M      C       12000                  VNR        9875442616             sankar@gmail.com     
+C109   Anu             F      C       10000                  VNR        9878345287                                  
+C110   Shree           F      D       11500                  VNR        7878237844                                  
+C111   Prabhu          M      D       1500                   VNR        7869721548                                  
+C112   Ramu            M      C       2000                   VNR        7867062777                                  
+
+7 rows selected
+
+
+11.Create the index for the city in consumer table.
+
+
+CREATE INDEX CON_INDEX ON CONSUMER(CITY);
+
+CREATE INDEX succeeded.
+
+
+12.Display the consumer details who are residing in the city ‘VNR’. 
+   (Illustrate difference of Query 10 & 12)
+
+select * from consumer
+where city = 'VNR';
+
+
+CON_ID CON_NAME        GENDER EB_TYPE DEPOSIT                CITY       MOBILE                 EMAIL                
+------ --------------- ------ ------- ---------------------- ---------- ---------------------- -------------------- 
+C101   Pradeep         M      D       2000                   VNR        9786341123             pradeep@gmail.com    
+C102   Siva            M      D       2000                   VNR        9777384718             siva@gmail.com       
+C106   Sankar          M      C       12000                  VNR        9875442616             sankar@gmail.com     
+C109   Anu             F      C       10000                  VNR        9878345287                                  
+C110   Shree           F      D       11500                  VNR        7878237844                                  
+C111   Prabhu          M      D       1500                   VNR        7869721548                                  
+C112   Ramu            M      C       2000                   VNR        7867062777                                  
+
+7 rows selected
+
+NOTE: Index is used to improve the efficiency in searching are retriving in the relation,
+      here the time taken to compute the 10 query will be more than the time required for
+      the 12 query to execute.
+
+
+13.Drop the index in consumer table.
+
+
+DROP INDEX CON_INDEX;
+
+DROP INDEX CON_INDEX succeeded.
+

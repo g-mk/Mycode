@@ -1,0 +1,220 @@
+SQL> create table consumer(con_id int,con_name varchar(20) not null,
+  2  eb_type varchar(20),deposite numeric(10) default 0,street varchar(20) not null,
+  3  city varchar(20),mobile numeric(10), email varchar(30),
+  4  constraint type_check check(eb_type in ('Domestic','Commercial')),
+  5  constraint pk_cid primary key(con_id));
+
+Table created.
+
+SQL> desc consumer
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CON_ID                                    NOT NULL NUMBER(38)
+ CON_NAME                                  NOT NULL VARCHAR2(20)
+ EB_TYPE                                            VARCHAR2(20)
+ DEPOSITE                                           NUMBER(10)
+ STREET                                    NOT NULL VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ MOBILE                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(30)
+
+SQL> create table employee(
+  2  emp_id int,
+  3  emp_name varchar(20) not null,
+  4  mobile numeric(10),
+  5  email varchar(30),
+  6  salary numeric(10) not null,
+  7  constraint empid primary key(emp_id));
+
+Table created.
+
+SQL> desc employee
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(38)
+ EMP_NAME                                  NOT NULL VARCHAR2(20)
+ MOBILE                                             NUMBER(10)
+ EMAIL                                              VARCHAR2(30)
+ SALARY                                    NOT NULL NUMBER(10)
+
+SQL> create table bill(
+  2  bill_id int,
+  3  con_id int,
+  4  year int,
+  5  month varchar(3),
+  6  amount numeric(10,2),
+  7  status varchar(10),
+  8  constraint uniq_billid unique(bill_id),
+  9  constraint fk_bill foreign key(con_id) references consumer(con_id),
+ 10  constraint comppk primary key(con_id,year,month),
+ 11  constraint statecheck check(status in('paid','not paid')));
+
+Table created.
+
+SQL> desc bill
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+ STATUS                                             VARCHAR2(10)
+
+SQL> create table reading(
+  2  con_id int,
+  3  year int not null,
+  4  month varchar(3) not null,
+  5  employee int,
+  6  unit int default 0,
+  7  constraint pk_reading primary key(con_id,year,month),
+  8  constraint fk_reading foreign key(employee) references employee(emp_id),
+  9  constraint fk_readcon foreign key(con_id) references consumer(con_id));
+
+Table created.
+
+SQL> desc reading
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ EMPLOYEE                                           NUMBER(38)
+ UNIT                                               NUMBER(38)
+
+SQL> create table history(
+  2  history_id int,
+  3  con_id int,
+  4  year int,
+  5  month varchar(3),
+  6  unit int,
+  7  amount numeric(10,2) default 0,
+  8  constraint pk_historyid primary key(history_id));
+
+Table created.
+
+SQL> desc history
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ HISTORY_ID                                NOT NULL NUMBER(38)
+ CON_ID                                             NUMBER(38)
+ YEAR                                               NUMBER(38)
+ MONTH                                              VARCHAR2(3)
+ UNIT                                               NUMBER(38)
+ AMOUNT                                             NUMBER(10,2)
+
+SQL> alter table bill modify status not null;
+
+Table altered.
+
+SQL> desc bill
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+ STATUS                                    NOT NULL VARCHAR2(10)
+
+SQL> rename bill to bills
+  2  ;
+
+Table renamed.
+
+SQL> alter table bills modify status null;
+
+Table altered.
+
+SQL> desc bills
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+ STATUS                                             VARCHAR2(10)
+
+SQL> alter table bills drop column status;
+
+Table altered.
+
+SQL> desc bills
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+
+
+SQL> desc reading
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ EMPLOYEE                                           NUMBER(38)
+ UNIT                                               NUMBER(38)
+
+SQL> desc bills
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+ STATUS                                             VARCHAR2(10)
+
+SQL> alter table consumer modify con_name varchar(25);
+
+Table altered.
+
+SQL> alter table employee modify emp_name varchar(25);
+
+Table altered.
+
+
+SQL> alter table bills add status varchar(10);
+
+Table altered.
+
+SQL> alter table bills add constraint statecheck check(status in('paid','not paid'));
+
+Table altered.
+
+SQL> desc bills;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BILL_ID                                            NUMBER(38)
+ CON_ID                                    NOT NULL NUMBER(38)
+ YEAR                                      NOT NULL NUMBER(38)
+ MONTH                                     NOT NULL VARCHAR2(3)
+ AMOUNT                                             NUMBER(10,2)
+ STATUS                                             VARCHAR2(10)
+
+
+SQL> alter table consumer add constraint cid check(con_id like 'c%');
+
+Table altered.
+
+SQL> alter table employee add constraint eid check(emp_id like 'e%');
+
+Table altered.
+
+SQL> alter table bills add constraint bid check(bill_id like 'b%');
+
+Table altered.
+
+SQL> alter table employee drop constraint eid;
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;

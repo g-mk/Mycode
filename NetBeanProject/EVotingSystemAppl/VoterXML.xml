@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type = "text/xsl" href = "src/java/VoterXSLT.xsl"?>
+<!DOCTYPE voters SYSTEM "./src/java/VoterDTD.dtd">
+<voters>
+    <voter voterid="INDVTR1">
+        <fname>Guru</fname>
+        <mname> </mname>
+        <lname>Manikandan N</lname>
+        <fathername>Natarajan P</fathername>
+        <dob>1996-07-30</dob>
+        <age>20</age>
+        <gender>MALE</gender>
+        <mobile>7867062777</mobile>
+        <email>gmk3071996@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Subangan</fname>
+        <mname> </mname>
+        <lname>Rao K M</lname>
+        <fathername>Madava Rao</fathername>
+        <dob>1997-06-26</dob>
+        <age>19</age>
+        <gender>MALE</gender>
+        <mobile>9786453122</mobile>
+        <email>subangan97@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR3">
+        <fname>Senthil</fname>
+        <mname> </mname>
+        <lname>Arumugam</lname>
+        <fathername>Ramalingam</fathername>
+        <dob>1997-02-17</dob>
+        <age>19</age>
+        <gender>MALE</gender>
+        <mobile>9786454587</mobile>
+        <email>senthil@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Prema</fname>
+        <mname> </mname>
+        <lname>N</lname>
+        <fathername>Audaiappan</fathername>
+        <dob>1968-08-13</dob>
+        <age>48</age>
+        <gender>FEMALE</gender>
+        <mobile>7598219527</mobile>
+        <email>prema@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Viji</fname>
+        <mname> </mname>
+        <lname>P</lname>
+        <fathername>Ravi</fathername>
+        <dob>1968-05-21</dob>
+        <age>48</age>
+        <gender>FEMALE</gender>
+        <mobile>7594587658</mobile>
+        <email>viji@gmail.com</email>
+    </voter>
+</voters>

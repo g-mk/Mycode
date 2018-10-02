@@ -1,0 +1,26 @@
+
+Enter the Double Constant: 2110
+
+Enter the Double Constant: 1100
+
+Returned:3210
+**********************BINARY CLASS************************
+
+Magin Number:33
+Version:1.000000
+Constant Size:2
+Access Flag:1
+This Class Name:Sum
+Super Class Name:OBJECT
+Stack Depth:2
+Method Count:1
+Method Name:sum
+Methods:
+0 dload_1
+1 dload_3
+2 dadd
+3 dreturn
+
+
+Attribute Count:13
+*********************************************************

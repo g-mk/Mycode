@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1446053648 source:f:\studies\ds lab\file\binary\abinary.cpp
+	"hBinary.h"
+
+1446054819 f:\studies\ds lab\file\binary\hbinary.h
+	<iostream>
+	<string.h>
+	<stdio.h>
+
+1446054960 source:f:\studies\ds lab\file\binary\binary.cpp
+	"hBinary.h"
+

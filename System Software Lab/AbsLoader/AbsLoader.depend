@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1385316878 source:f:\studies\iv sem\ss lab\absloader\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1459427133 source:f:\studies\iv sem\ss lab\absloader\aloder.c
+	"hLoader.h"
+
+1459339295 f:\studies\iv sem\ss lab\absloader\hloader.h
+	<stdio.h>
+	<string.h>
+
+1459449204 source:f:\studies\iv sem\ss lab\absloader\iloader.c
+	"hLoader.h"
+
+1459427133 source:f:\studies\iv sem\lab\ss lab\absloader\aloder.c
+	"hLoader.h"
+
+1459339295 f:\studies\iv sem\lab\ss lab\absloader\hloader.h
+	<stdio.h>
+	<string.h>
+
+1459449204 source:f:\studies\iv sem\lab\ss lab\absloader\iloader.c
+	"hLoader.h"
+

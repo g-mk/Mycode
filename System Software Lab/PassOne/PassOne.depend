@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1456651999 source:f:\studies\iv sem\ss lab\ex3\apassone.c
+	"hPassOne.h"
+
+1454932875 f:\studies\iv sem\ss lab\ex3\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\ss lab\ex3\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1458897455 source:f:\studies\iv sem\ss lab\ex3\ipassone.c
+	"hPassOne.h"
+
+1456145524 source:f:\studies\iv sem\ss lab\ex3\isymbol.c
+	"hSymbol.h"
+
+1456651999 source:f:\studies\iv sem\lab\ss lab\ex3\apassone.c
+	"hPassOne.h"
+
+1454932875 f:\studies\iv sem\lab\ss lab\ex3\hpassone.h
+	"hSymbol.h"
+
+1454827192 f:\studies\iv sem\lab\ss lab\ex3\hsymbol.h
+	<stdio.h>
+	<string.h>
+
+1462114885 source:f:\studies\iv sem\lab\ss lab\ex3\ipassone.c
+	"hPassOne.h"
+
+1456145524 source:f:\studies\iv sem\lab\ss lab\ex3\isymbol.c
+	"hSymbol.h"
+

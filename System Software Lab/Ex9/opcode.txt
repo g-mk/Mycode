@@ -1,0 +1,5 @@
+ad_1 0 6A
+dload_3 0 6A
+dadd 0 6B
+dreturn 0 6C
+

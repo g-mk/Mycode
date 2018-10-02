@@ -1,0 +1,16 @@
+SMAP
+RemoveCandidate_jsp.java
+JSP
+*S JSP
+*F
++ 0 RemoveCandidate.jsp
+RemoveCandidate.jsp
+*L
+5,18:54
+23,3:17
+25,2:72
+27,13:75
+39,3:88
+42,23:92
+64,4:115
+*E

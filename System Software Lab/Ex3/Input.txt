@@ -1,0 +1,4 @@
+Alpha DW 2000H
+ MOV AX,BX
+
+

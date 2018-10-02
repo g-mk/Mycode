@@ -1,0 +1,83 @@
+DROP TABLE History;
+DROP TABLE Bills;
+DROP TABLE Reading;
+DROP TABLE Employee;
+DROP TABLE Consumer;
+
+CREATE TABLE Consumer (
+con_id CHAR(4)
+	CONSTRAINT con_cid_pk PRIMARY KEY
+	CONSTRAINT con_cid_ck CHECK ( con_id LIKE 'C%' ),
+con_name VARCHAR2(15)
+	CONSTRAINT con_cname_nn NOT NULL,
+gender CHAR(1)
+	CONSTRAINT con_gen_nn NOT NULL
+	CONSTRAINT con_gen_ck CHECK ( gender IN ('M','F') ),
+eb_type CHAR(1)
+	CONSTRAINT con_type_nn NOT NULL
+	CONSTRAINT con_type_ck CHECK ( eb_type IN ('D','C') ),
+deposit NUMBER
+	CONSTRAINT con_dep_nn NOT NULL,
+city VARCHAR2(10),
+mobile NUMBER(12)
+	CONSTRAINT con_mob_nn NOT NULL,
+email VARCHAR2(20) );
+
+CREATE TABLE Employee (
+emp_id CHAR(4)
+	CONSTRAINT emp_eid_pk PRIMARY KEY
+	CONSTRAINT emp_eid_ck CHECK ( emp_id LIKE 'E%' ),
+emp_name VARCHAR2(15)
+	CONSTRAINT emp_ename_nn NOT NULL,
+gender CHAR(1)
+	CONSTRAINT emp_gen_nn NOT NULL
+	CONSTRAINT emp_gen_ck CHECK ( gender IN ('M','F') ),
+mobile NUMBER(12)
+	CONSTRAINT emp_mob_nn NOT NULL,
+email VARCHAR2(20),
+salary NUMBER
+	CONSTRAINT emp_sal_nn NOT NULL );
+
+CREATE TABLE Reading (
+con_id CHAR(4)
+	CONSTRAINT read_cid_fk REFERENCES Consumer(con_id),
+year NUMBER(4),
+month NUMBER(2),
+employee CHAR(4)
+	CONSTRAINT read_emp_fk REFERENCES Employee(emp_id),
+units NUMBER
+	CONSTRAINT read_units_nn NOT NULL,
+CONSTRAINT read_cid_yr_mon_pk PRIMARY KEY(con_id,year,month) );
+
+CREATE TABLE Bills (
+bill_id INT
+	CONSTRAINT bill_bid_pk PRIMARY KEY,
+con_id CHAR(4)
+	CONSTRAINT bill_cid_nn NOT NULL,
+year NUMBER(4)
+	CONSTRAINT bill_yr_nn NOT NULL,
+month NUMBER(2)
+	CONSTRAINT bill_mon_nn NOT NULL,
+amount NUMBER
+	CONSTRAINT bill_amount_nn NOT NULL,
+status CHAR(6)
+	CONSTRAINT bill_sts_ck CHECK ( status IN ('Online','Direct') ),
+pay_date DATE,
+CONSTRAINT bill_cid_yr_mon_fk FOREIGN KEY(con_id,year,month) REFERENCES Reading(con_id,year,month) );
+
+CREATE TABLE History (
+con_id CHAR(4)
+	CONSTRAINT hist_cid_nn NOT NULL,
+bill_id INT
+	CONSTRAINT hist_bid_pk PRIMARY KEY
+	CONSTRAINT hist_bid_nn NOT NULL,
+year NUMBER(4)
+	CONSTRAINT hist_yr_nn NOT NULL,
+month NUMBER(2)
+	CONSTRAINT hist_mon_nn NOT NULL,
+units NUMBER
+	CONSTRAINT hist_units_nn NOT NULL,
+amount NUMBER
+	CONSTRAINT hist_amount_nn NOT NULL,
+paydate DATE
+	CONSTRAINT hist_pdate_nn NOT NULL );

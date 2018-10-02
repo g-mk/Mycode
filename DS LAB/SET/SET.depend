@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1443029890 source:i:\studies\ds lab\ex5\aset.cpp
+	"hSet.h"
+
+1443006400 i:\studies\ds lab\ex5\hset.h
+	<iostream>
+	<string.h>
+
+1443027751 source:i:\studies\ds lab\ex5\iset.cpp
+	"hSet.h"
+

@@ -1,0 +1,5 @@
+Method sum (double,double)
+dload_1
+dload_3
+dadd
+dreturn
