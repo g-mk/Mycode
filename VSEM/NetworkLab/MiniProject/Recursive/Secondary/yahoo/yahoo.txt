@@ -1,0 +1,2 @@
+www.yahoo.com 98.138.253.109 A IN 1800
+login.yahoo.com 98.138.25.150 A IN 2100

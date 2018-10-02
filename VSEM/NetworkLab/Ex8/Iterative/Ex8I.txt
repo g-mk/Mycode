@@ -1,0 +1,262 @@
+***********ITERATIVE***********
+Script started on Wed 05 Oct 2016 11:25:03 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server$ cat out.txt
+#include"hSocket.h"
+char * checkDomain(char *domain)
+{
+    FILE* fp = fopen("DNS.txt","r");
+    char name[50],*ip;  
+    ip = (char*) malloc(15*sizeof(char));
+    while(!feof(fp))
+    {
+        fscanf(fp,"%s ",name);
+        fscanf(fp,"%s",ip);
+        if(strcmp(domain,name)==0)
+            return ip;
+    }
+    
+    fclose(fp);
+    return NULL;
+
+}
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[50],*buf,nline,*temp="9966";
+ struct sockaddr_in sin;
+ 
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ 
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9965);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      len = sizeof(sin);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nDNS Requested Accepted\n");
+      recv(accpt,data,200,0);
+      
+      printf("\nDomain Name: %s\n",data);
+      
+      buf = checkDomain(data);
+      
+      if(buf!=NULL)
+          send(accpt,buf,strlen(buf),0);
+      else
+          send(accpt,temp,strlen(temp),0);        
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+
+Domain Name: www.google.com
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+
+Domain Name: www.gmail.com
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:26:42 AM IST
+Script started on Wed 05 Oct 2016 11:25:29 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server1$ cat out.txt
+#include"hSocket.h"
+char * checkDomain(char *domain)
+{
+    FILE* fp = fopen("DNS.txt","r");
+    char name[50],*ip;  
+    ip = (char*) malloc(15*sizeof(char));
+    while(!feof(fp))
+    {
+        fscanf(fp,"%s ",name);
+        fscanf(fp,"%s",ip);
+        if(strcmp(domain,name)==0)
+            return ip;
+    }
+    
+    fclose(fp);
+    return NULL;
+
+}
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[50],*buf,nline,*temp="9967";
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ memset(buf,'\0',sizeof(buf));
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9966);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nDNS Requested Accepted\n");
+      recv(accpt,data,200,0);
+      
+      printf("\nDomain Name: %s\n",data);
+      
+      buf = checkDomain(data);
+      
+      if(buf!=NULL)
+          send(accpt,buf,strlen(buf),0);
+      else
+          send(accpt,temp,strlen(temp),0);        
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server1$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+
+Domain Name: www.gmail.com
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/server1$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:26:39 AM IST
+Script started on Wed 05 Oct 2016 11:25:48 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/client$ cat out.txt
+#include"hSocket.h"
+int main()
+{
+  int sid,conn,len,loop=0;
+  int port = 9965;
+  char data[50],buf[50],nline;
+  struct sockaddr_in sin;
+  strcpy(buf,"NULL");
+ 
+  printf("\nDomain Name:");
+  scanf("%s",data);
+        
+  while( loop++<2 && (strlen(buf)<6))
+  {
+     memset(buf,'\0',sizeof(buf));
+     sid=socket(PF_INET,SOCK_STREAM,0);
+     if(sid==-1)
+      printf("\n\nSocket failure\n\n");
+     else
+     {
+        printf("\n\nSocket Created\n\n");
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = htonl(INADDR_ANY);
+        sin.sin_port = htons(port);
+        printf("\nConnecting.....\n");
+        conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+        if(conn !=-1)
+        {   
+            printf("\nConnected to port %d\n",port-1);
+            if(send(sid,data,strlen(data),0)<0) 
+              printf("\nRequest Not Send\n");
+            else
+              printf("\nRequest Send\n");
+            
+            if(recv(sid,buf,200,0)<0)
+              printf("\nResponse not Received\n");
+            else
+              printf("\nResponse Received\n");
+            if((strlen(buf)<6)){
+              port = atoi(buf);
+              printf("\nDNS Not Found\n\nRequest transfered\n");
+            }
+            close(sid);
+         }
+        }
+   }   
+  
+  printf("\nResponse Message: %s\n",buf);
+ }
+ 
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/client$ ./aSoClient
+
+Domain Name:www.google.com
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+Response Message: 127.16.189.21
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/client$ ./aSoClient
+
+Domain Name:www.gmail.com
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+DNS Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9965
+
+Request Send
+
+Response Received
+
+Response Message: 162.198.15.30
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Iterative/client$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:26:36 AM IST

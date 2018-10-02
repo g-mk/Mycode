@@ -1,0 +1,421 @@
+Script started on Wed 30 Sep 2015 03:11:43 PM IST
+bash-3.2$ cat hQueue.h
+#include<iostream>
+using namespace std;
+typedef struct Info
+{
+    char CommandName[20];
+    char CommandSyntax[25];
+    char CommandDetails[25];
+    char CommandType[8];
+}Info;
+typedef struct RetInfo
+{
+    int status;
+    Info info;
+}RetInfo;
+class Node
+{
+public:
+    friend class Queue;
+    Info info;
+    Node *next;
+};
+class Queue
+{
+public:
+    Queue();                //Constructor
+    ~Queue();               //Destructor
+    RetInfo DeQueue();      //Delete the element in the Queue
+    int EnQueue(Info info); //Add the Element in the Queue
+    RetInfo ReturnFront();  //Retrive the Front element
+    RetInfo ReturnRear();   //Retrive the Rear element
+    void Display();         //Display the Queue
+    bool IsEmpty();         //To check whether the Queue is empty or not
+private:
+    Node *rear;
+    Node *front;
+
+};
+bash-3.2$ cat iQueue.cpp
+#include"hQueue.h"
+
+Queue :: Queue()
+{
+ front = rear = NULL;
+}
+Queue :: ~Queue()
+{
+
+}
+int Queue :: EnQueue(Info info)
+{
+ Node *newNode = new Node;
+ if(newNode == NULL)
+  return -1;
+else
+   {
+    if(IsEmpty())
+    {
+      front = newNode;
+      rear = newNode;
+      newNode -> next = NULL;
+      newNode -> info = info;
+      return 1;
+    }
+   else
+     { 
+      rear -> next = newNode;
+      newNode -> next  = NULL;
+      newNode -> info = info;
+      rear = newNode;
+      return 1;
+     }  
+}
+}
+RetInfo Queue :: DeQueue()
+{
+ RetInfo rinfo;
+ if(IsEmpty())
+   {
+     rinfo.status = -1;
+     return rinfo;
+   }
+ else 
+  {
+    rinfo.status = 1;
+    rinfo.info = front -> info;
+    Node *temp = front;
+    front = temp -> next;
+    delete temp;
+    if(front == NULL)
+      rear = NULL;
+    return rinfo;
+   }
+}
+RetInfo Queue :: ReturnFront()
+{
+ RetInfo rinfo;
+ if(IsEmpty())
+  {
+   rinfo.status=-1;
+   return rinfo;
+  }
+ else 
+  {
+   rinfo.status = 1;
+   rinfo.info = front -> info;
+   return rinfo;
+  }
+}
+RetInfo Queue :: ReturnRear()
+{
+ RetInfo rinfo;
+ if(IsEmpty())
+  {
+   rinfo.status=-1;
+   return rinfo;
+  }
+ else
+  {
+   rinfo.status = 1;
+   rinfo.info = rear -> info;
+   return rinfo;
+  }
+}
+void Queue :: Display()
+{
+ Node *Current = front;
+ while(Current != NULL)
+  { cout<<"\n****************************************\n";
+    cout<<"\nCommand Name : "<<Current -> info.CommandName;
+    cout<<"\nSyntax: "<<Current -> info.CommandSyntax;
+    cout<<"\nType: "<<Current -> info.CommandType;
+    cout<<"\nDescription: "<<Current -> info.CommandDetails<<endl;
+    cout<<"\n****************************************\n";
+    Current = Current -> next;
+
+  }
+}
+bool Queue :: IsEmpty()
+{
+ if(front == NULL)
+   return 1;
+ else 
+   return 0;
+}
+bash-3.2$ cat aQueue.cpp
+#include"hQueue.h"
+
+main()
+{
+    Queue CQueue;
+    int nStatus;
+    int nChoice;
+    Info info;
+    RetInfo rinfo;
+    do
+    {
+       cout<<"\nEnter the Choice:\n";
+        cout<<"1.Enqueue..\n2.Dequeue\n3.Display Queue..\n4.Retrive Front\n"
+             <<"5.Retrive Last.\n6.Exit..\nEnter the Choice :";
+        cin>>nChoice;
+        switch(nChoice)
+        {
+            case 1:
+                cout<<"\nCommand Name: ";
+                cin>>info.CommandName;
+                cout<<"\nCommand Syntax: ";
+                cin>>info.CommandSyntax;
+                cout<<"\nCommand Type: ";
+                cin>>info.CommandType;
+                cout<<"\nCommand Description: ";
+                cin>>info.CommandDetails;
+                nStatus=CQueue.EnQueue(info);
+                if(nStatus==1)
+                    cout<<"\n*********Object is Queued********\n";
+                else
+                    cout<<"\n*****Object is not Queued ********\n";
+                break;
+            case 2:
+                rinfo=CQueue.DeQueue();
+                if(rinfo.status==1)
+                {
+                    cout<<"\nCommand Name : "<<rinfo.info.CommandName;
+                    cout<<"\nSyntax: "<<rinfo.info.CommandSyntax;
+                    cout<<"\nType: "<<rinfo.info.CommandType;
+                    cout<<"\nDescription: "<<rinfo.info.CommandDetails<<endl;
+                }
+                else
+                {
+                    cout<<"\n*********Queue is Empty*********\n";
+                }
+                break;
+            case 3:
+                if(CQueue.IsEmpty())
+                  {
+                    cout<< "\n*************Queue is Empty**********\n";
+                  }
+                else 
+                 {
+                    cout<<"\n***************List in Queue*************\n";
+                    CQueue.Display();
+                 }
+                 break;
+            case 4:
+                rinfo=CQueue.ReturnFront();
+                if(rinfo.status==1)
+                {
+                    cout<<"\nCommand Name : "<<rinfo.info.CommandName;
+                    cout<<"\nSyntax: "<<rinfo.info.CommandSyntax;
+                    cout<<"\nType: "<<rinfo.info.CommandType;
+                    cout<<"\nDescription: "<<rinfo.info.CommandDetails<<endl;
+                }
+                else
+                {
+                    cout<<"\n*********Queue is Empty*********\n";
+                }
+                break;
+            case 5:
+                rinfo=CQueue.ReturnRear();
+                if(rinfo.status==1)
+                {
+                    cout<<"\nCommand Name : "<<rinfo.info.CommandName;
+                    cout<<"\nSyntax: "<<rinfo.info.CommandSyntax;
+                    cout<<"\nType: "<<rinfo.info.CommandType;
+                    cout<<"\nDescription: "<<rinfo.info.CommandDetails<<endl;
+                }
+                else
+                {
+                    cout<<"\n*********Queue is Empty*********\n";
+                }
+                break;
+            case 6:
+                cout<<"\n***********Thank You************\n";
+
+        }
+    }while(nChoice !=6);
+}
+bash-3.2$ ./Queue
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :1
+
+Command Name: cp
+
+Command Syntax: cp<source><destination>
+
+Command Type: file
+
+Command Description: to_copy_a_file
+
+*********Object is Queued********
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :1
+
+Command Name: rm
+
+Command Syntax: rm<filename>
+
+Command Type: terminal
+
+Command Description: To_Remove_file
+
+*********Object is Queued********
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :3
+
+**********List in Queue*********
+
+****************************************
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file
+
+****************************************
+
+****************************************
+
+Command Name : rm
+Syntax: rm<filename>
+Type: terminal
+Description: To_Remove_file
+
+****************************************
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :1
+
+Command Name: ls
+
+Command Syntax: ls<dir>
+
+Command Type: terminal
+
+Command Description: to_list_the_content
+
+*********Object is Queued********
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :4
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :5
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminalý-
+Description: to_list_the_content
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :2
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :2
+
+Command Name : rm
+Syntax: rm<filename>
+Type: terminal
+Description: To_Remove_file
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :2
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminal
+Description: to_list_the_content
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :2
+
+*********Queue is Empty*********
+
+Enter the Choice:
+1.Enqueue..
+2.Dequeue
+3.Display Queue..
+4.Retrive Front
+5.Retrive Last.
+6.Exit..
+Enter the Choice :6
+
+***********Thank You************
+bash-3.2$ exit
+exit
+
+Script done on Wed 30 Sep 2015 03:14:32 PM IST

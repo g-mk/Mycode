@@ -1,0 +1,7 @@
+total 24
+-rwxrwxr-x 1 os-b-043 os-b-043 7732 Jul  7 14:39 list
+-rw-r--r-- 1 os-b-043 os-b-043  459 Jul  7 14:07 list.c
+-rw-r--r-- 1 os-b-043 os-b-043 1426 Aug  4 14:53 ls.c
+-rw-r--r-- 1 os-b-043 os-b-043 2420 Jul  7 13:54 ls.o
+-rw-rw-r-- 1 os-b-043 os-b-043    0 Aug  4 14:54 out.txt
+drwxrwxr-x 2 os-b-043 os-b-043 4096 Jul  7 13:54 Sample

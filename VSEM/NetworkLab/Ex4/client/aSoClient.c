@@ -1,0 +1,47 @@
+#include"hSocket.h"
+int main()
+{
+ int sid,conn,len;
+ char *data,*buf,nline;
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  printf("\n\nSocket Created\n\n");
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  
+   conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+   if(conn !=-1)
+   {
+    printf("\n\nConnection Established...\n\n");
+    do
+    {
+      data = (char*)malloc(100*sizeof(char));
+      buf = (char*)malloc(100*sizeof(char));
+      printf("\n\nEnter the data to be transmitted: ");
+      scanf("%[^\n]%c",data,&nline);
+      len = strlen(data);
+      if((send(sid,data,len,0))==-1)
+        printf("\n\nData Transmission Failed\n\n");
+      else
+      {
+        printf("\n\nData Transmission Successful\n\n");
+        recv(sid,buf,200,0);
+        printf("\n\nEcho : %s \n\n",buf);
+        if(strcmp(data,"exit")==0)
+          break;
+      }
+      free(buf);
+      free(data);
+     }while(conn!=-1);
+    }
+   else
+    printf("\n\nConnection Not Established...\n\n");
+ }
+ close(sid);
+ 
+}

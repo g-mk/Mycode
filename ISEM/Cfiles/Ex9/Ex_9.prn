@@ -1,0 +1,261 @@
+Script started on Thu 06 Nov 2014 05:18:37 PM IST
+bash-3.2$ cat mdprgm.c
+#include<stdio.h>
+#include<string.h>
+main()
+{
+ char s[30],f;
+ int c,ch,i;
+ printf("\t1.To Search a character in the given String.\n");
+ printf("\t2.To Find the character at specific Position.\n");
+ printf("\t3.To display the Number of occurance of a particular character.\n");
+ printf("\t4.To find No. words in the given String.\n");
+ printf("\t5.Check whether the string is Palindrome or Not.\n");
+ printf("Enter your choice:");
+ scanf("%d",&ch);
+ switch(ch)
+  {
+   case 1:{
+          printf("Enter the string:");
+          scanf("%s",s);
+          printf("Enter the character to be searched:");
+          scanf(" %c",&f);
+          i=0;c=0;
+          while(s[i]!='\0')
+           {
+            if(s[i]==f)
+             {
+              printf("The Given Character %c is found in the given string at %d Position..\n\n",f,i+1);
+              c++;
+             }
+            i++;
+           }
+          if(c==0)
+           printf("The given character %c is not found in the given string..\n\n",f);           
+          break;
+          }
+   case 2:{
+           printf("Enter the string:");
+           scanf("%s",s);
+           printf("Enter the Position to print the character:");
+           scanf("%d",&i);
+           if(i<=(strlen(s)))
+           {
+            printf("The character in the %d position is %c\n\n",i,s[i-1]);
+           }
+           else
+           {
+            printf("No Character was found at %d Position\n\n",i);
+           }
+           break;
+          }
+   case 3:{
+           printf("Enter the string:");
+           scanf("%s",s);
+           printf("Enter the character which the Occurence is to be found: ");
+           scanf(" %c",&f);
+           i=0;c=0;
+           while(s[i]!='\0')
+            {
+             if(s[i]==f)
+              c++;
+             i++;
+            }
+            printf("The character %c occurs %d Times in the given string..\n\n",f,c);
+            break;
+           }
+    case 4:{
+            printf("Enter the statement to count the words:");
+            scanf("%c",&f);            
+            gets(s);
+            i=0;c=1;
+            while(s[i]!='\0')
+             {
+              if(s[i]==32)
+               c++;
+              i++;
+             }
+            printf("No. of words in the given statement is %d\n\n",c);
+            break;
+           }
+    case 5:{
+            printf("Enter the String in lower case:");
+            scanf("%s",s);
+            char temp[20],t;
+            i=0;int l=strlen(s);
+            strcpy(temp,s);
+            while(i<l/2)
+             {
+              t=temp[i];
+              temp[i]=temp[l-i-1];
+              temp[l-i-1]=t;
+              i++;
+             }
+            if(strcmp(temp,s))
+             {
+              printf("Given String %s is NOt a Palindrome..\n\n",s);
+             }
+            else
+             {
+              printf("Given String %s is Palindrome..\n\n");
+             }
+            break;
+            }
+      default: printf("Invalid Option......\n\n");
+   }
+}
+    
+bash-3.2$ ./mdprgm.c[K[K
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:1
+Enter the string:guru
+Enter the character to be searched:u
+The Given Character u is found in the given string at 2 Position..
+
+The Given Character u is found in the given string at 4 Position..
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:1
+Enter the string:guru
+Enter the character to be searched:z
+The given character z is not found in the given string..
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:2
+Enter the string:guru
+Enter the Position to print the character:2
+The character in the 2 position is u
+
+bash-3.2$ com[K[K[K./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:2
+Enter the string:computer
+Enter the Position to print the character:11
+No Character was found at 11 Position
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:3
+Enter the string:saddle
+Enter the character which the Occurence is to be found: d
+The character d occurs 2 Times in the given string..
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:3
+Enter the string:saddle
+Enter the character which the Occurence is to be found: z
+The character z occurs 0 Times in the given string..
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:4
+Enter the statement to count the words:Hi My Name Is Computr er
+No. of words in the given statement is 5
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:5
+Enter the String in lower case:amma
+Given String  is Palindrome..
+
+bash-3.2$ ./mdprgm
+	1.To Search a character in the given String.
+	2.To Find the character at specific Position.
+	3.To display the Number of occurance of a particular character.
+	4.To find No. words in the given String.
+	5.Check whether the string is Palindrome or Not.
+Enter your choice:5
+Enter the String in lower case:dog
+Given String dog is NOt a Palindrome..
+
+bash-3.2$ cat str.c
+#include<stdio.h>
+#include<ctype.h>
+#include<string.h>
+main()
+{
+ char s[20];
+ int up=0,lw=0,al=0,v=0,d=0;
+ int i=0;
+ printf("Enter the string ");
+ gets(s);
+ while(s[i]!='\0')
+  {
+   if(isalnum(s[i]))
+    {
+     if(isalpha(s[i]))
+      {
+       al++;
+       if(isupper(s[i]))
+        {
+         up++;
+        }
+       else 
+        lw++;
+       if(s[i]=='a'||s[i]=='A'||s[i]=='e'||s[i]=='E'||s[i]=='i'||
+            s[i]=='I'||s[i]=='o'||s[i]=='O'||s[i]=='U'||s[i]=='u')
+        {
+         v++;
+        }
+     
+     }
+   if(isdigit(s[i]))
+    d++;
+  }
+  i++;
+}
+ printf("No.of alphabets: %d ",al);
+ printf("\nNo. Vowels: %d",v);
+ printf("\nNo. of Upper Case Letter: %d",up);
+ printf("\nNo. of Lower Case Letter: %d",lw);
+ printf("\nNo. of Numeric Numbers: %d\n\n",d);
+
+}
+
+bash-3.2$ ./str
+Enter the string Guru Manikandan 14BCS068
+No.of alphabets: 17 
+No. Vowels: 6
+No. of Upper Case Letter: 5
+No. of Lower Case Letter: 12
+No. of Numeric Numbers: 5
+
+bash-3.2$ exit
+exit
+
+Script done on Thu 06 Nov 2014 05:21:40 PM IST

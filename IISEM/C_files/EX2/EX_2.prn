@@ -1,0 +1,250 @@
+Script started on Mon 09 Feb 2015 04:31:46 PM IST
+bash-3.2$ cd 2a
+bash-3.2$ cat H[KhRev.h
+#include<stdio.h>
+#include<string.h>
+int * irev(int *,int);
+char * crev(char *);
+bash-3.2$ cat aRev.c
+#include"hRev.h"
+main()
+{
+ int a[25],n,i,ch=0;
+ char c[30];
+// void * r;
+ do
+ {
+ printf("Enter your Choice:\n");
+ printf("1) Reverse Integer array\n2) Reversr String.\n3)Exit.\n");
+ scanf("%d",&ch);
+ if(ch!=3)
+  {
+   switch(ch)
+    {
+     case 1:
+            printf("Enter the No. of Elements:");
+            scanf("%d",&n);
+            printf("Enter the values:\n");
+            for(i=0;i<n;i++)
+              scanf("%d",&a[i]);
+            irev(a,n);
+            printf("Reversed Array:\n");
+            for(i=0;i<n;i++)
+              printf("%d\n",a[i]);
+            break;
+           
+     case 2:
+            printf("Enter the string:");
+            scanf("%s",c);
+            crev(c);
+            printf("Reversed string:\n");
+            printf("%s\n",c);
+            break;
+    case 3:
+           printf("Thank You.....");
+    default:
+            printf("Invalid Option...\n");
+     }
+    
+  }
+ }while(ch!=3);
+
+} 
+bash-3.2$ cat iRev.c
+int * irev(int *a,int n)
+{
+ int i,t;
+ for(i=0;i<n/2;i++)
+ {
+  t=*(a+i);
+  *(a+i)=a[n-i-1];
+  a[n-i-1]=t;
+ }
+ return a;
+}
+
+char *crev(char * c)
+{
+ int i,l;
+ char t;
+ for(i=0;*(c+i)!='\0';i++);
+ l=i;
+ for(i=0;i<l/2;i++)
+  {
+   t=*(c+i);
+  *(c+i)=*(c+(l-i-1));
+  *(c+(l-1-i))=t;
+  }
+ return c;
+}
+
+bash-3.2$ ./Rev
+Enter your Choice:
+1) Reverse Integer array
+2) Reversr String.
+3)Exit.
+1
+Enter the No. of Elements:4
+Enter the values:
+2 3 4 5 
+Reversed Array:
+5
+4
+3
+2
+Enter your Choice:
+1) Reverse Integer array
+2) Reversr String.
+3)Exit.
+2
+Enter the string:Me EPCO
+Reversed string:
+OCPEM
+Enter your Choice:
+1) Reverse Integer array
+2) Reversr String.
+3)Exit.
+3
+bash-3.2$ cd ..
+bash-3.2$ cd 2b
+bash-3.2$ cat hMsort.h
+#include<stdio.h>
+int *merge(int *,int *,int ,int);
+int sort(int *,int);
+int *c;
+bash-3.2$ cat aMsort.c
+#include"hMsort.h"
+main()
+{
+ int a[20],b[20],m,l,n,i, *c;
+ printf("enter the No. of value for array 1:");
+ scanf("%d",&m);
+ printf("enter the No. of value for array 2:");
+ scanf("%d",&n);
+ printf("Enter the values for 1st array:");
+// c=(int*)malloc(m+n*sizeof(int));
+ for(i=0;i<m;i++)
+  scanf("%d",&a[i]);
+ printf("Enter the values for 2st array:");
+ for(i=0;i<n;i++)
+  scanf("%d",&b[i]);
+ c=merge(a,b,m,n);
+ l=sort(c,m+n);
+ printf("\nMerged and sorted list:");
+ for(i=0;i<l;i++)
+  printf("\n%d\n",*(c+i));
+}
+
+
+ 
+
+bash-3.2$ cat iMsort.c
+int *merge(int *a,int *b,int m,int n)
+{
+ int c[20],i;
+ for(i=0;i<m+n;i++)
+ {
+  if(i<m)
+   c[i]=a[i];
+  else 
+   c[i]=b[i-m];
+ }
+ return c;
+}
+int sort(int *c,int l)
+{
+ int i,j,k,t;
+for(i=0;i<l;i++)
+ {
+  for(j=i+1;j<l;j++)
+  {
+   if(c[i]>c[j])
+    { t=c[i];
+      c[i]=c[j];
+      c[j]=t;
+    }
+  }
+ }
+
+for(i=0;i<l;i++)
+ {
+  for(j=i+1;j<l;j++)
+  {
+   if(c[i]==c[j])
+    {
+     for(k=j;k<l;k++)
+      {
+       c[k]=c[k+1];
+      }
+      l--;
+     }
+    }
+  }
+ for(i=0;i<l;i++)
+ {
+   printf("\n%d",c[i]);
+ }
+
+ return l;
+}     
+bash-3.2$ ./Msort
+enter the No. of value for array 1:4
+enter the No. of value for array 2:3
+Enter the values for 1st array:3
+2
+4
+1
+Enter the values for 2st array:2 6 7
+
+1
+2
+3
+4
+6
+7
+Merged and sorted list:
+1
+
+2
+
+3
+
+4
+
+6
+
+7
+bash-3.2$ cd ..
+bash-3.2$ cd 2c
+bash-3.2$ cat hConvert.h
+#include<stdio.h>
+void convert(long int);
+int d,h,m,s;
+bash-3.2$ cat aConvert.h[Kc
+#include"hConvert.h"
+main()
+{
+ long int ss;
+ printf("Enter the time in seconds:");
+ scanf("%ld",&ss);
+ convert(ss);
+ printf("%02d:%02d:%02d:%02d",d,h,m,s);
+}
+bash-3.2$ cat iConvert.c
+#include"hConvert.h"
+void convert(long int ss)
+{
+ d=ss/(24*60*60);
+ ss=ss%(24*60*60);
+ h=ss/(60*60);
+ ss=ss%(60*60);
+ m=ss/60;
+ ss=ss%60;
+ s=ss;
+}
+bash-3.2$ ./Convert
+Enter the time in seconds:86745
+01:00:05:45bash-3.2$ exit
+exit
+
+Script done on Mon 09 Feb 2015 04:34:55 PM IST

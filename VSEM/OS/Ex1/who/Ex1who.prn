@@ -1,0 +1,50 @@
+Script started on Thu 25 Aug 2016 03:20:29 PM IST
+bash-3.2$ cat mywho.c
+/*******************************************************************************
+**Description   : Implementaion of who command using the system call.         **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include<stdio.h>
+#include<sys/utsname.h>
+#include<utmp.h>
+#include<time.h>
+#include<string.h>
+void main(int argc,char*argv[])
+{
+ if(argc==1)
+ {
+  char *logintime;
+  struct utmp *detail;
+  struct tm *t;
+  time_t k;
+  detail = getutent();
+  while(detail!=NULL)
+  {
+   if(strcmp(detail->ut_user,"LOGIN")!=0&&strcmp(detail->ut_user,"")!=0&&
+          strcmp(detail->ut_line,"~")!=0)
+    {
+     printf("%s\t",detail->ut_user);
+     printf("%s\t",detail->ut_line);
+     printf("(%s)\t",detail->ut_host);
+     time(detail);
+     k = detail->ut_tv.tv_sec;
+     logintime = (char *)ctime(&k);
+     printf("%s\n",logintime);
+    }
+    detail = getutent();
+  }
+ }
+} 
+bash-3.2$ ./mywho >> out.txt
+bash-3.2$ head -n 5 out.txt
+14bcs001	pts/1	(172.16.3.95)	  Thu Aug 25 13:22:50 2016
+
+ananthi	  pts/2	(172.16.23.240)	Thu Aug 25 09:34:23 2016
+
+14bcs022	pts/3	(172.16.23.142)	Thu Aug 25 13:45:59 2016
+bash-3.2$ exit
+exit
+
+Script done on Thu 25 Aug 2016 03:21:00 PM IST

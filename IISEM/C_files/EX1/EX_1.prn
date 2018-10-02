@@ -1,0 +1,174 @@
+Script started on Mon 02 Feb 2015 12:50:15 AM IST
+bash-3.2$ cd e1
+bash-3.2$ cat hFact.h
+#include<stdio.h>
+long int fact(int );
+int n,r;
+
+bash-3.2$ vi [K[K[Kcat[Kbash-3.2$ cat ancr.c
+#include"hFact.h"
+main()
+{
+ printf("Enter the Value for n: ");
+ scanf("%d",&n);
+ printf("Enter the Value for r: ");
+ scanf("%d",&r);
+ printf("Value for %dC%d is: ",n,r);
+ printf("%ld \n",(fact(n)/(fact(r)*fact(n-r))));
+}
+bash-3.2$ cat incr.c
+long int fact(int n)
+{
+ if(n==0 || n==1)
+  return 1;
+ else
+  return n*fact(n-1);
+}
+
+bash-3.2$ ./ncr
+Enter the Value for n: 6
+Enter the Value for r: 3
+Value for 6C3 is: 20 
+bash-3.2$ cd ..
+bash-3.2$ cd e2
+bash-3.2$ cat hsort.h[6Pd e2.../ncrcat incr.cancr.chFact.h[6Pd e1logout[1Pcd ..[1Pmakevi asort.c[3P./sort vi asort.c[6Pmakecd ..logout[1Pcd e1at hFact.h[1Pancr.cincr.c[5P./ncrcd ..e2at hsort.h[K[K[K[K[K[KSort.h
+#include<stdio.h>
+#include<string.h>
+void sort(char *c[][20],int);
+char *c[20];
+
+bash-3.2$ cat asort.c
+#include"hSort.h"
+main()
+{
+ int n,i;
+ char a[30][30];
+ printf("\n Enter the no of cities \n");
+ scanf("%d",&n);
+ printf("\n Enter city names \n");
+ for(i=0;i<n;i++)
+ {
+  scanf("%s",a[i]);
+ }
+ swap(a,n);
+ printf("\n City names after sorting \n");
+ for(i=0;i<n;i++)
+ {
+  printf("\n%s\n",a[i]);
+ }
+}
+
+bash-3.2$ cat isort.c
+#include"hSort.h"
+void swap(char a[30][30],int n)
+{
+ int i,j;
+ char b[30];
+ for(i=0;i<n;i++)
+ {
+  for(j=i+1;j<n;j++)
+  {
+   if(strcmp(a[i],a[j])>0)
+   {
+    strcpy(b,a[i]);
+    strcpy(a[i],a[j]);
+    strcpy(a[j],b);
+   }
+  }
+ }
+}
+bash-3.2$ ./sort
+
+ Enter the no of cities 
+4
+
+ Enter city names 
+delhi
+bangaloue re
+aarapl alau yam
+assam
+
+ City names after sorting 
+
+aarapalayam
+
+assam
+
+bangaloure
+
+delhi
+bash-3.2$ cd ..
+bash-3.2$ cd e3
+bash-3.2$ cat hComp.h
+#include<stdio.h>
+#include<string.h>
+int strc(char *a[],char *b[]);
+
+bash-3.2$ cat acomp.c
+#include"hComp.h"
+main(int argc,char *argv[])
+{
+ int f;
+ f=strc(argv[1],argv[2]);
+ if(f==0)
+  printf("String is Equal");
+ else if(f==1)
+  printf("String I is Greater");
+ else if(f==2)
+  printf("String I is Lesser");
+}
+
+bash-3.2$ cat icomp.c
+int strc(char a[],char b[])
+{
+ int i;
+  for(i=0;a[i]!='\0'||b[i]!='\0';i++)
+  {
+   if(a[i]!=b[i])
+     goto x;
+  }
+  return 0;
+  x: if(a[i]>b[i])
+      return 1;
+     else 
+      return 2;
+}
+
+bash-3.2$ ./comp
+bash: ./comp: No such file or directory
+bash-3.2$ ./compare
+Segmentation fault
+bash-3.2$ ./compare Mepco mepco[K[K[K[K[KMepco
+String is Equalbash-3.2$ ./compare Hi Hello
+String I is Greaterbash-3.2$ ./compare Hello Hi
+String I is Lesserbash-3.2$ cd ..
+bash-3.2$ cd e4
+bash-3.2$ cat hSum.h
+#include<stdio.h>
+#include<string.h>
+long int sum(char *,int);
+bash-3.2$ cat aSum.h[Kc
+#include"hSum.h"
+int main(int argc,char*argv[])
+{
+ printf("Sum of the Numbers is %ld",sum(argv,argc));
+}
+
+bash-3.2$ cat iSum.c
+long int sum(char *v[],int n)
+{
+ int i,sum=0;
+for(i=1;i<n;i++)
+ {
+  sum+=strtol(v[i],0,10);
+ }
+ return sum;
+}
+
+bash-3.2$ ./Sum 32 43 54 34 45 [K
+bash: ./Sum: No such file or directory
+bash-3.2$ ./sum 32 43 54 34 45
+Sum of the Numbers is 208bash-3.2$ exit
+exit
+
+Script done on Mon 02 Feb 2015 12:57:27 AM IST

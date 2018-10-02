@@ -1,0 +1,4 @@
+www.google.com 216.58.218.206 A IN 300
+mail.google.com 216.58.218.197 A IN 300
+accounts.google.com 216.58.218.205 A IN 300
+drive.google.com 216.58.218.206 A IN 300

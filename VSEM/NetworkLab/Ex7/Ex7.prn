@@ -1,0 +1,247 @@
+Script started on Wed 07 Sep 2016 12:33:50 PM IST
+bash-3.2$ cat server/Ex7s.prn
+Script started on Wed 07 Sep 2016 12:32:50 PM IST
+bash-3.2$ cat print.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1,i=0;
+ FILE *fp;
+ char data[50],buf[50],nline;
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      while(!b)
+      {
+        if((recv(accpt,data,100,0))==-1)
+            printf("\n\nData Received Failed\n\n");
+        else
+        {
+          printf("\n\nRequest for File:%s \n\n",data);
+          if(strcmp(data,"exit")==0)
+          {
+            printf("\n\nConnection Closed\n\n");
+            break;
+          }
+          fp=fopen(data,"r");
+          if(fp == NULL)
+          {
+            strcpy(buf,"NOT FOUND");
+            send(accpt,buf,strlen(buf),0);
+          }
+          else
+          {
+            strcpy(buf,"\nFILE FOUND\n");
+            send(accpt,buf,strlen(buf),0);
+          
+            while(!feof(fp))
+            {
+                data[i++]=fgetc(fp);
+            }
+            data[i-1]='\0';
+            fclose(fp);
+            strcpy(buf,data);
+            send(accpt,buf,strlen(buf),0);
+            printf("\n\nFile Transmitted\n\n");
+          }
+         }
+         memset(buf,'\0',sizeof(buf));
+         memset(data,'\0',sizeof(data));
+      }
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+bash-3.2$ ./aSoServer
+
+
+Binded
+
+
+
+Request for File:out.txt 
+
+
+
+File Transmitted
+
+
+
+Request for File:hSocket.txt 
+
+
+
+Request for File:exit 
+
+
+
+Connection Closed
+
+bash-3.2$ exit
+exit
+
+Script done on Wed 07 Sep 2016 12:33:43 PM IST
+bash-3.2$ cat client/Ex7c.prn
+Script started on Wed 07 Sep 2016 12:33:06 PM IST
+bash-3.2$ cat print.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,conn,len;
+ char data[1024],buf[1024],nline;
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  printf("\n\nSocket Created\n\n");
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  
+   conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+   if(conn !=-1)
+   {
+    printf("\n\nConnection Established...\n\n");
+    do
+    {
+      printf("\n\nEnter the File Name with extention: ");
+      scanf("%[^\n]%c",data,&nline);
+      
+      len = strlen(data);
+      if((send(sid,data,len,0))==-1)
+        printf("\n\nRequest Transmission Failed\n\n");
+      else
+      {
+        printf("\n\nRequest Transmission Successful\n\n");
+        recv(sid,buf,1024,0);
+        printf("\n\nMessage: %s \n\n",buf);
+        if(strcmp(buf,"NOT FOUND")!=0)
+        {
+          memset(buf,'\0',sizeof(buf));        
+          recv(sid,buf,1024,0);
+          printf("\n\n************Content of the File**************\n\n");
+          printf("\n%s\n",buf);
+        }   
+      }
+
+      if(strcmp(data,"exit")==0)
+      {
+          printf("\n\nConnection Terminated\n\n");
+          break;
+      }
+ 
+      memset(buf,'\0',sizeof(buf));
+      memset(data,'\0',sizeof(data));
+     }while(conn!=-1);
+    }
+   else
+    printf("\n\nConnection Not Established...\n\n");
+ }
+ close(sid);
+ 
+}
+bash-3.2$ ./aSoClient
+
+
+Socket Created
+
+
+
+Connection Established...
+
+
+
+Enter the File Name with extention: out.txt
+
+
+Request Transmission Successful
+
+
+
+Message: 
+FILE FOUND
+ 
+
+
+
+************Content of the File**************
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+
+Enter the File Name with extention: hSocket.txt
+
+
+Request Transmission Successful
+
+
+
+Message: NOT FOUND 
+
+
+
+Enter the File Name with extention: exit
+
+
+Request Transmission Successful
+
+
+
+Message:  
+
+
+
+************Content of the File**************
+
+
+
+
+
+Connection Terminated
+
+bash-3.2$ exit
+exit
+
+Script done on Wed 07 Sep 2016 12:33:40 PM IST
+bash-3.2$ exit
+exit
+
+Script done on Wed 07 Sep 2016 12:34:13 PM IST

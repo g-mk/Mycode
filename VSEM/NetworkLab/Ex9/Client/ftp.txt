@@ -1,0 +1,3 @@
+Secured Message.
+This program simulates ftp.
+using tcp socket.

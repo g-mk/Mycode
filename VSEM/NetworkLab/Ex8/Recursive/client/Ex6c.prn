@@ -1,0 +1,148 @@
+Script started on Tue 27 Sep 2016 05:16:17 PM IST
+]0;guru@ubuntu: ~/Documents/Lab/NetworkLab/Ex6/clientguru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+  int sid,conn,len,loop=0;;
+  int port = 9964;
+  char data[50],buf[50],nline;
+  struct sockaddr_in sin;
+  strcpy(buf,"NULL");
+ 
+  printf("\nIP Address:");
+  scanf("%s",data);
+        
+  while(loop++<3 && (strcmp(buf,"NULL")==0))
+  {
+      memset(buf,'\0',sizeof(buf));
+     sid=socket(PF_INET,SOCK_STREAM,0);
+     if(sid==-1)
+      printf("\n\nSocket failure\n\n");
+     else
+     {
+        printf("\n\nSocket Created\n\n");
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = htonl(INADDR_ANY);
+        sin.sin_port = htons(port++);
+        printf("\nConnecting.....\n");
+        conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+        if(conn !=-1)
+        {   printf("\nConnected to port %d\n",port-1);
+            if(send(sid,data,strlen(data),0)<0) 
+              printf("\nRequest Not Send\n");
+            else
+              printf("\nRequest Send\n");
+            
+            if(recv(sid,buf,200,0)<0)
+              printf("\nResponse not Received\n");
+            else
+              printf("\nResponse Received\n");
+            if(!(strcmp(buf,"NULL"))){
+              printf("\nMAC Not Found\n\nRequest transfered\n");
+            }
+            close(sid);
+         }
+        }
+   }   
+  
+  printf("\nResponse Message: %s\n",buf);
+ }
+ 
+]0;guru@ubuntu: ~/Documents/Lab/NetworkLab/Ex6/clientguru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ ./aSoClient
+
+IP Address:172.16.16.23
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9965
+
+Request Send
+
+Response Received
+
+Response Message: ac:bc:1c:ds:0d:23
+]0;guru@ubuntu: ~/Documents/Lab/NetworkLab/Ex6/clientguru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ ./aSoClient
+
+IP Address:172.16.16.200
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9965
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9966
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+Response Message: NULL
+]0;guru@ubuntu: ~/Documents/Lab/NetworkLab/Ex6/clientguru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:19:21 PM IST

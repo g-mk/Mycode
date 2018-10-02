@@ -1,0 +1,138 @@
+Script started on Fri 17 Oct 2014 11:27:26 AM IST
+bash-3.2$ cat format.c
+#include<stdio.h>
+main()
+{
+	int i,j,n;
+	printf("No of Lines:");
+	scanf("%d",&n);
+	for(i=1;i<=n;i++)
+		{
+			for(j=n;j>=i;j--)
+				{
+					printf("* ");
+				}
+			printf("\n");
+		}
+}
+
+bash-3.2$ ./Format
+No of Lines:5
+* * * * * 
+* * * * 
+* * * 
+* * 
+* 
+bash-3.2$ cat rev.c
+#include<stdio.h>
+main()
+{
+	int rev=0,r,n;
+	printf("Enter the Number:");
+	scanf("%d",&n);
+	while(n!=0)
+		{
+			r=n%10;
+			rev=(rev*10)+r;
+			n=n/10;
+		}
+	printf("The reverse of the given Number is: %d\n",rev);
+	printf("The number Given in words is: ");
+	while(rev!=0)
+		{
+			r=rev%10;
+			switch(r)
+				{
+					case 0:printf("ZERO  ");
+								break;
+					case 1:printf("ONE  ");
+								break;
+					case 2:printf("TWO  ");
+								break;
+					case 3:printf("THREE  ");
+								break;
+					case 4:printf("FOUR  ");
+								break;
+					case 5:printf("FIVE  ");
+								break;
+					case 6:printf("SIX  ");
+								break;
+					case 7:printf("SEVEN  ");
+								break;
+					case 8:printf("EIGHT  ");
+								break;
+					case 9:printf("NINE  ");
+				}
+			rev=rev/10;
+		}
+	printf("\n\n");
+}
+
+
+bash-3.2$ ./rev
+Enter the Number:324
+The reverse of the given Number is: 423
+The number Given in words is: THREE  TWO  FOUR  
+
+bash-3.2$ cat sumofdgt.c
+#include<stdio.h>
+main()
+{
+	int n,r,sum=0;
+	printf("Enter the Number:");
+	scanf("%d",&n);
+	do
+		{
+			r=n%10;
+			sum+=r;
+			n=n/10;
+		}while(n!=0);
+	printf("The sum of the given digits is %d\n\n",sum);
+}
+
+bash-3.2$ ./sumofdgt
+Enter the Number:352
+The sum of the given digits is 10
+
+bash-3.2$ cat prmnt.c
+#include<stdio.h>
+main()
+{
+	int n,i=2,c=0;
+	printf("Enter the Number:");
+	scanf("%d",&n);
+	if(n==1)
+	{
+		printf("Given Number is Neither Prime Nor Composite number\n");
+		c=1;
+	}
+
+	for(;i<=n/2;i++)
+		{
+			if(n%i==0)
+				{ 
+					printf("Given Numberis Not a Prime Number \n ");
+					c=1;
+					break;
+				}
+		}
+	if(c==0)
+		printf("Given Number is Prime Number\n\n");
+
+
+}
+
+bash-3.2$ ./prmnt
+Enter the Number:1
+Given Number is Neither Prime Nor Composite number
+bash-3.2$ ./prmnt
+Enter the Number:2
+Given Number is Prime Number
+
+bash-3.2$ ./prmnt
+Enter the Number:10
+Given Numberis Not a Prime Number 
+ bash-3.2$ exit
+exit
+
+Script done on Fri 17 Oct 2014 11:29:38 AM IST

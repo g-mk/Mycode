@@ -1,0 +1,1174 @@
+/**********************************************************************************************
+Author(s) :     Muneeswaran K
+Purpose :     The data and function declarations for working with List ADT
+ 
+***********************************************************************************************/
+//vi slist.h
+#include<iostream>
+
+using namespace std;
+
+#define TRUE 1
+#define FALSE 0
+#define OK 1
+#define ERROR -1
+#define MEMERROR -2
+#define EMPTY -3
+#define FOUND 1
+#define NOTFOUND 2
+#define teste {cout<<"Test and exit\n";exit(-1);}
+
+typedef struct Info
+{
+  int val;
+} Info;
+
+typedef struct RetInfo
+{
+  int status;
+  Info info;
+}RetInfo;
+
+class Node
+{
+ public:
+  Info info;
+  Node *pNext;            // pointer  to the next node
+
+};
+
+class LList
+                                                                                                                                                      1,0-1         Top
+class LList
+{
+
+public:
+  LList();
+
+  ~LList();
+
+  int insertBeg(Info info);       // Add a node at the beginning of the List
+
+  int insertMid(Info info, int nPos);   // Add a Node at the Middle of the List
+
+  int insertEnd(Info info);       // Add a Node at the end of the List
+
+  int insertCurrentPos(Info info);    // Insert at the current-position
+
+  int deleteBeg();            // Delete the Node at the Beginning
+
+  int deleteMid(int nPos);        // Delete the Node at the Middle
+
+  int deleteEnd();            // Delete the Node at the End
+
+  int display(void (*p)(Info));             // Display the List
+
+  int isEmpty();              // Check Whether the List is Empty
+
+  int makeListEmpty();          // Empty the List
+
+  int findListLength();         // Length of the List
+
+  int moveToFirst();            // Move the CurrentPos Pointer to First-Node in the List
+
+  int moveToEnd();            // Move the CurrentPos Pointer to Last-Node in the List
+
+  int moveToNext();           // Move the CurrentPos Pointer to Next-Node in the List [ If Possible ]
+
+  int moveToN(int nPos);          // Move the CurrentPos Pointer to N th-Node in the List
+
+  int locate(Info, int (*fp)(Info,Info)); // Locate an Element in the List
+
+  RetInfo retrieve();           // Retrieve the Element in the Current-Position
+                                                                      RetInfo retrieveAndDelCurrentPos();   // Retrieve and Delete the Element in the Current-Position
+
+  RetInfo getFirst();           // Get the First-Element
+
+  RetInfo getLast();            // Get the Last-Element
+
+  int reverse();              // Reverse of the List
+
+  int orderInAscending(int (*f)(Info,Info));          // Ascending-Order of the List
+  int getPos();          //  Getting Position of middle element
+
+  private:
+    Node *pHeadNode;            // Pointer to Head-Node
+
+    Node *pTailNode;            // Pointer to Tail-Node
+
+    Node *pCurrentPos;            // Pointer to Current-Position
+
+    int length;                 //  Length of the List
+};
+
+//vi slistapp.cpp
+#include "slist.h"
+
+/**********************************************************************************************
+
+Function Name : getInfo
+
+Prototype : int getInfo()
+
+Parameters Passed : None
+
+Purpose : Get the value for the structure Info( for polynomial operation coeff, power)
+
+Return Values : Info
+
+Globals Used : None
+
+Globals Changed : None
+
+Calls : None
+
+Called By : main()
+
+**********************************************************************************************/
+
+Info getInfo()
+{
+  Info info;
+  printf("\n\n\tEnter the Info. Value \n");
+  scanf("%d",&info.val);
+  return(info);
+}
+
+void dispInfo(Info info)
+{
+  cout<<" "<<info.val;
+}
+
+int compareInfo(Info info1,Info info2)
+{
+  if(info1.val<info2.val)
+  if(info1.val<info2.val)
+    return 1;
+  else
+    return 0;
+}
+
+
+
+
+/**********************************************************************************************
+
+Function Name : getPos
+
+Prototype : int getPos()
+
+Parameters Passed : None
+
+Purpose : Get the Position of the Node to be Inserted
+
+Return Values : int
+
+Globals Used : None
+
+Globals Changed : None
+
+Calls : None
+
+Called By : main()
+
+**********************************************************************************************/
+
+int getPos()
+{
+  int nPos;
+
+  do
+  {
+    cout<<"\n\n\tEnter the Position: ";
+
+    cin>>nPos;
+ if(nPos < 0)
+    {
+      cout<<"\n\n\tPlease... Enter a valid Postion ...\n\n";
+    }
+
+  }while(nPos < 0); // Checking for Negative Position
+
+  return(nPos);
+}
+
+/**********************************************************************************************
+
+Function Name : main
+
+Prototype : main()
+
+Parameters Passed : None
+
+Purpose : Main-Function
+
+Return Values : None
+
+Globals Used : None
+
+Globals Changed : None
+
+Calls : None
+
+Called By : None
+
+**********************************************************************************************/
+
+int main()
+{
+  int ch=0,chi=0,chd=0,ret;
+  Info info;
+  RetInfo rInfo;
+  int chm=0;
+  int flag;
+  int nPos=0;
+                                                                                                                                                         
+LList l;
+
+
+  while(1)
+  {
+    cout<<"\n\n\tLIST-ADT Implementation\n";
+    cout<<"\t=========================\n";
+    cout<<"\n\t1. Insertion";
+    cout<<"\n\t2. Delete";
+    cout<<"\n\t3. Display";
+    cout<<"\n\t4. Move-To";
+    cout<<"\n\t5. Search for term with specific val";
+    cout<<"\n\t6. Check-If-Empty-List";
+    cout<<"\n\t7. Order the list of items in ascending order";
+    cout<<"\n\t8. Exit";
+
+    cout<<"\n\nEnter Ur Choice..";
+    cin>>ch;
+
+    switch(ch)
+    {
+      case 1:                 // List-Insertion
+        cout<<"\n\n LIST-INSERTION\n";
+        cout<<"=================\n";
+        cout<<"\n\t1. Insertion at the Beginning";
+        cout<<"\n\t2. Insertion at the Middle";
+        cout<<"\n\t3. Insertion at the Last-Position";
+        cout<<"\n\t4. Insertion at the Current-Position";
+        cout<<"\n\nEnter Ur Choice..";
+        cin>>chi;
+        switch(chi)
+        {
+ {
+          case 1:
+            info=getInfo();
+            ret=l.insertBeg(info);      // Calls Insert at the Beginning Function
+            if(ret==OK)
+              cout<<"Node inserted at the beginning"<<endl;
+            else if(ret==MEMERROR)
+            {
+              cout<<"Error in memory allocation"; exit(ERROR);
+            }
+            break;
+          case 2:
+            nPos =l.getPos();
+            info=getInfo();
+            ret=l.insertMid(info,nPos);   // Calls Insert at the Middle Function
+            if (ret==OK)
+              cout<<"Node is inserted in the middle "<<nPos<<" position"<<endl;
+
+            else  if(ret==ERROR)
+              cout<<"Insertion could not be performed. The list may have very lesser no. of nodes"<<endl;
+
+            else if(ret==MEMERROR)
+            {
+              cout<<"Error in memory allocation";exit(ERROR);
+            }
+            else if(ret==EMPTY)
+              cout<<"Insertion at the Middle "<<nPos<<" position is not Possible .The List may be Empty"<<endl;
+            break;
+          case 3:
+            info=getInfo();
+            ret=l.insertEnd(info);      // Calls Insert at the End Function
+            if(ret==OK)
+              cout<<"Node inserted at the end\n";
+            else if(ret==MEMERROR)
+            {
+              cout<<"Error in memory allocation";exit(ERROR);
+            }
+            break;
+          case 4:
+            info=getInfo();
+            ret=l.insertCurrentPos(info);   // Calls Insert at the Current-Position
+       if (ret==OK)
+              cout<<"Node is inserted in the current position"<<endl;
+
+            else  if(ret==ERROR)
+              cout<<"Insertion could not be performed. The current position is null"<<endl;
+
+            else if(ret==MEMERROR)
+            {
+              cout<<"Error in memory allocation";exit(ERROR);
+            }
+            else if(ret==EMPTY)
+              cout<<"Insertion at the current position is not Possible .The List may be Empty"<<endl;
+            break;
+        }
+        break;
+      case 2:                 // List-Deletion
+        cout<<"\n\n LIST-DELETION\n";
+        cout<<"=================\n";
+        cout<<"\n\t1. Deletion at the Beginning";
+        cout<<"\n\t2. Deletion at the Middle";
+        cout<<"\n\t3. Deletion at the End";
+        cout<<"\n\t4. Delete the Entire-List";
+        cout<<"\n\nEnter Your Choice.. ";
+        cin>>chd;
+        switch(chd)
+        {
+          case 1:
+            ret=l.deleteBeg();
+            if(ret==OK)
+              cout<<"Deletion Successful";
+            else if(ret==EMPTY)
+              cout<<"Deletion could not be done. The List may be empty\n";
+            break;
+          case 2:
+            nPos = l.getPos();    // Returns an Integer Value
+            ret=l.deleteMid(nPos);    // Calls Delete at the Middle Function
+            if(ret==ERROR)
+              cout<<"Deletion in the middle could not be performed. The List may have lesser no. of nodes\n";
+            else if(ret==EMPTY)
+              cout<<"Deletion in the mid of the list could not be done. The List may be empty\n";
+ else if(ret==OK)
+              cout<<"Deletion Successful";
+
+            break;
+          case 3:
+            ret=l.deleteEnd();      // Call Delete at the End Function
+            if(ret==EMPTY)
+              cout<<"Deletion at the end position could not be done. The List may be empty\n";
+            else if(ret==OK)
+              cout<<"Deletion Successful";
+            break;
+          case 4:
+            ret=l.makeListEmpty();    // Makes the List Empty
+            if(ret==OK)
+              cout<<"The List is emptied";
+            else
+              cout<<"The List is already empty";
+            break;
+        }
+        break;
+      case 3:               // List-Information-Display
+        cout<<"\n\n LIST-DISPLAY\n";
+        cout<<"=================\n";
+        cout<<"\n\t1. Display the List";
+        cout<<"\n\t2. Display the Length";
+        cout<<"\n\t3. Retrieve Current";
+        cout<<"\n\t4. Get-First";
+        cout<<"\n\t5. Get-Last";
+        cout<<"\n\t6. Display the Reverse of the List";
+        cout<<"\n\nEnter Your Choice...";
+        cin>>chd;
+        switch(chd)
+        {
+          case 1:
+            ret=l.display(dispInfo);    // Calls the Display List Function
+            if(ret==EMPTY)
+              cout<<"The List may be empty\n";
+            else
+              cout<<"No. of Elements in the List is: "<<ret<<endl;
+            break;
+case 2:
+            cout<<"\n\n\tLength of the List : "<<l.findListLength();
+            break;
+          case 3:
+            cout<<"\n\n\tElement at Current-Position\n";
+            rInfo = l.retrieve();
+            if(rInfo.status==OK)
+              cout<<"\n\n\tElement at Current: "<<rInfo.info.val;
+            else
+              cout<<"Error in getting the  element in the current position of the list\n";
+            break;
+          case 4:
+            rInfo=l.getFirst();
+            if(rInfo.status==OK)
+              cout<<"\n\n\tElement at First:  " << rInfo.info.val;
+            else
+              cout<<"Error in getting the first element in the list\n";
+            break;
+          case 5:
+            rInfo=l.getLast();
+            if(rInfo.status==OK)
+              cout<<"\n\n\tElement at Last: "<<rInfo.info.val;
+            else
+              cout<<"Error in getting the last element in the list\n";
+            break;
+          case 6:
+            cout<<"\n\n\tReverse of the List";
+            ret=l.reverse();
+            if(ret==OK)
+              cout<<"List reversed";
+            else
+              cout<<"Could not reverse the List. The List may be empty\n";
+            break;
+        }
+        break;
+case 4:               // Move-To Functions
+        cout<<"\n\n Move-To-Functions\n";
+        cout<<"======================\n";
+        cout<<"\n\t1. Move to First-Position";
+        cout<<"\n\t2. Move to End-Position";
+        cout<<"\n\t3. Move to Next-Position";
+        cout<<"\n\t4. Move to Nth position";
+        cout<<"\n\nEnter Ur Choice..";
+        scanf("%d", &chm);
+        switch(chm)
+        {
+          case 1:
+            ret=l.moveToFirst();      // Move to First Position
+            if(ret==OK)
+              cout<<"Moved to first position in the List\n";
+            else if(ret==EMPTY)
+              cout<<"Could not move to first position. The List may be empty\n";
+            break;
+          case 2:
+            ret=l.moveToEnd();      // Move to End Position
+            if(ret==OK)
+              cout<<"Moved to last position in the List\n";
+            else if(ret==EMPTY)
+              cout<<"Could not move to the last position. The List may be empty\n";
+            break;
+          case 3:
+            ret=l.moveToNext();     // Move to Next Position
+            if(ret==OK)
+              cout<<"Moved to next position in the List\n";
+            else if(ret==ERROR)
+              cout<<"\nCurrent pointer is NULL and is not pointing to any node in the List\n";
+            else if(ret==-4)
+              cout<<"Could not move to next node. Current pointer may be at the last position\n";
+            else if(ret==EMPTY)
+              cout<<"Could not Move to Next-Position. The List may be empty\n";
+            break;
+          case 4:
+            nPos = getPos();    // Returns an Integer Value
+            ret=l.moveToN(nPos);      // Move to Nth Position
+            if(ret==OK)
+cout<<"Moved to "<<nPos<<" position in the List\n";
+            else if(ret==ERROR)
+              cout<<"Could not Move to Position: "<<nPos<<". The List may have lesser no. of nodes\n";
+            else if(ret==EMPTY)
+              cout<<"Could not Move to Position: "<<nPos<<". The List may be Empty\n";
+            break;
+        }
+        break;
+      case 5:               // Searching for Element
+        info = getInfo();       // Gets the Node value
+        ret=l.locate(info, compareInfo);    // Search for Element in the List with this Info
+        if(ret==NOTFOUND)
+          cout<<"Element is not found in the List\n";
+        else if(ret==EMPTY)
+          cout<<"Could not Search for Element.  The List may be Empty\n";
+        else
+          cout<<"Element is Found in the position:"<<ret<<"\n";
+        break;
+      case 6:               // Check List Empty
+        flag=FALSE;
+        flag = l.isEmpty();       // Checking List is Empty
+        if(flag == TRUE)
+          cout<<"\n\tList is Empty\n\n";
+        else
+          cout<<"\n\tList is Not Empty\n\n";
+        break;
+      case 7:               // Differentiate the List
+        ret=l.orderInAscending(compareInfo);
+        if(ret==OK)
+          cout<<"The List is sorted in ascending order";
+        else
+          cout<<"The List may be empty";
+        break;
+      case 8: // Exit
+        exit(0);  // Exit from the Main()
+        break;
+      default:
+        cout<<"\n\nEnter Your Choice between 1 & 8\n\n";
+    }
+  }
+
+//vi slist.cpp
+#include"slist.h"
+
+/******************************************************
+Constructor Name : LList
+
+Prototype : LList();
+
+Parameters Passed : None
+
+Data Members Used : pHeadNode, pTailNode, pCurrentPos
+
+Data Members Changed : pHeadNode, pTailNode, pCurrentPos
+
+Calls : None
+
+Called By : main()
+
+*********************************************************/
+
+LList::LList()
+{
+
+  length = 0;
+
+  pHeadNode = new Node;
+
+  if(NULL == pHeadNode) {cout<<"Error in memory allocation";exit(-1);}
+
+  pTailNode=pHeadNode;
+
+  //pHeadNode->pNext = pTailNode;
+
+  //pTailNode->pNext = NULL;
+
+  pCurrentPos = NULL;   // Intializing the Current-Pointer to NULL
+
+}
+/**********************************************************************************************
+
+Destructor Name : LList
+
+Purpose : For freeing the Memory allocated dynamically 
+
+Prototype : ~LList();
+
+Parameters Passed : None
+
+Class Members Used : pHeadNode, pTailNode, pCurrentPos
+
+Class Members Changed : pHeadNode, pTailNode, pCurrentPos
+
+Calls : None
+
+Called By : None
+
+**********************************************************************************************/
+
+LList::~LList()
+{
+
+  Node *pTemp = pHeadNode;
+
+  Node *pTemp1;
+
+  while(pTailNode != pTemp)
+  {
+    pTemp1 = pTemp->pNext;
+
+    delete pTemp;
+
+    pTemp=pTemp1;
+  }
+
+  delete pTailNode;
+
+  delete pHeadNode;
+}
+int LList::deleteBeg()
+{
+  if(isEmpty())
+    return EMPTY;
+  else
+  {
+    Node* temp=pHeadNode->pNext;
+    pHeadNode->pNext=pHeadNode->pNext->pNext;
+    delete temp;
+    return OK;
+  }
+}
+int LList::moveToEnd()
+{
+  if(isEmpty())
+  {
+    return EMPTY;
+  }
+  else
+  {
+    pCurrentPos =pHeadNode->pNext;
+    while(pCurrentPos->pNext!=NULL)
+    {
+       pCurrentPos=pCurrentPos->pNext;
+    }
+    if(pCurrentPos->pNext==NULL)
+    {
+      return OK;
+    }
+
+  }
+}
+int LList::makeListEmpty()
+{
+  Node* temp=pHeadNode->pNext;
+  while(temp)
+  {
+    pHeadNode=temp->pNext;
+    delete temp;
+  }
+  //delete pHeadNode;
+ //delete pTailNode;
+  return OK;
+}
+int LList:: moveToFirst()
+{
+  if(isEmpty())
+  {
+    return EMPTY;
+  }
+  else
+  {
+    pCurrentPos=pHeadNode->pNext;
+    return OK;
+  }
+}
+int LList::deleteEnd( )
+{
+ if(isEmpty())
+  return EMPTY;
+ else if(length==1)
+  {
+   pCurrentPos=pHeadNode;
+   pHeadNode=NULL;
+   delete pCurrentPos;
+  }
+ else
+ {
+  pCurrentPos=pHeadNode;
+  while(pCurrentPos->pNext->pNext!=NULL)
+  {
+   pCurrentPos=pCurrentPos->pNext;
+  }
+  if(pCurrentPos->pNext)
+  {
+   Node *temp=pCurrentPos->pNext;
+   pCurrentPos->pNext=NULL;
+   delete temp;
+  }
+}
+int LList::isEmpty( )
+{
+ if(pHeadNode->pNext==NULL)
+  return TRUE;
+ else
+  return FALSE;
+}
+int LList::deleteMid(int pos)
+{
+ if(isEmpty())
+    return EMPTY;
+ else
+  pCurrentPos=pHeadNode;
+  int i=1;
+  while(pCurrentPos->pNext!=NULL)
+  {
+    pCurrentPos=pCurrentPos->pNext;
+    i++;
+  }
+ if(i==pos)
+ {
+   Node* temp=pCurrentPos->pNext;
+   pCurrentPos->pNext=pCurrentPos->pNext->pNext;
+   return OK;
+ }
+}
+int LList::moveToN(int pos)
+{
+ if(isEmpty())
+ {
+     return EMPTY;
+ }
+ else  if(pos>length)
+ {
+    return FALSE;
+ }
+ else
+ {
+       pCurrentPos=pHeadNode->pNext;
+       int i=1;
+while(i<=pos)
+      {
+           pCurrentPos=pCurrentPos->pNext;
+           i++;
+      }
+ }
+    return OK;
+}
+int LList::insertCurrentPos(Info info)
+{
+  Node *newnode=new Node;
+  Node *ptemp=pHeadNode;
+   newnode->info=info;
+   //int i=1;
+   /*while(ptemp!=NULL&&i<pCurrentPos)
+   {
+    ptemp=ptemp->pNext;
+    i++;
+    }*/
+    newnode->pNext=pCurrentPos->pNext;
+    pCurrentPos->pNext=newnode;
+}
+int LList::moveToNext()
+{
+ if(!isEmpty())
+ {
+  if(pCurrentPos->pNext!=NULL)
+  {
+    pCurrentPos=pCurrentPos->pNext;
+  }
+  else
+  {
+    return -1;//failure case (i.e)cannot point to next node in the list//
+  }
+ }
+else
+{
+   return 0;//empty//
+}
+}
+int LList::findListLength()
+{
+  if(isEmpty())
+     {
+       return EMPTY;
+      }
+  else
+  {
+   pCurrentPos=pHeadNode->pNext;
+   int i=1;
+   while(pCurrentPos->pNext!=NULL)
+   {
+     pCurrentPos=pCurrentPos->pNext;
+     i++;
+   }
+  return i;
+  }
+}
+int LList:: insertBeg(Info info)
+{
+  Node* newnode=new Node;
+  newnode->info=info;
+  if(isEmpty())
+  {
+    pHeadNode->pNext=newnode;
+    newnode->pNext=NULL;
+    pTailNode=pHeadNode->pNext;
+    length++;
+    return OK;
+  }
+  else
+  {
+    newnode->pNext=pHeadNode->pNext;
+    pHeadNode->pNext=newnode;
+    length++;
+    return OK;
+  }
+  return MEMERROR;
+}
+int LList::insertMid(Info info,int npos)
+{
+  if(npos>0)
+  {
+   if(isEmpty())
+   {
+     return EMPTY;
+   }
+   else
+   {
+     pCurrentPos=pHeadNode->pNext;
+     int i=1;
+     while(pCurrentPos->pNext!=NULL&&i<npos-1)
+     {
+       pCurrentPos=pCurrentPos->pNext;
+       i++;
+     }
+     if(pCurrentPos->pNext)
+     {
+      Node *newnode=new Node;
+      //if(newnode==NULL) 
+        //return MEMERROR;
+      newnode->info=info;
+      newnode->pNext=pCurrentPos->pNext;
+      pCurrentPos->pNext=newnode;
+      return OK;
+     }
+   }
+    // return ERROR; 
+ }
+}
+
+int LList::getPos()
+{
+  if(length==0||length==1)
+  {
+    return 1;
+  }
+ else
+  {
+    return ((length/2)+1);
+  }
+}
+
+
+
+int LList:: display(void(*p)(Info))
+{
+  if(isEmpty())
+  {
+    return EMPTY;
+  }
+  else
+  {
+    Node* ptempNode;
+    ptempNode=pHeadNode->pNext;
+    int i=1;
+    while(ptempNode!=NULL)
+    {
+      //cout<<ptempNode->info;
+      (*p)(ptempNode->info);
+      ptempNode=ptempNode->pNext;
+    }
+    return OK;
+  }
+}
+int LList:: insertEnd(Info info)
+{
+  if(isEmpty())
+  {
+    Node* newnode=new Node;
+    if(newnode==NULL)
+    {
+      return MEMERROR;
+    }
+    newnode->info=info;
+    pHeadNode->pNext=newnode;
+    pTailNode=newnode;
+    newnode->pNext=NULL;
+    length++;
+    return OK;
+  }
+  else
+  {
+    Node *newnode=new Node;
+    newnode->info=info;
+    newnode->pNext=NULL;
+    pTailNode->pNext=newnode;
+    pTailNode=newnode;
+    length++;
+    return OK;
+}
+  return ERROR;
+}
+RetInfo LList :: getLast()
+
+{
+
+ RetInfo r;
+
+ if (!isEmpty())
+
+ {
+
+   r.info = pTailNode->info;
+
+   r.status = OK;
+
+   return r;
+
+ }
+
+ else
+
+ {
+
+   r.status = ERROR;
+
+   return r;
+
+ }
+
+}
+
+
+RetInfo LList :: retrieve()
+
+{
+
+  RetInfo rinfo;
+
+  Node *pCurrent = pHeadNode->pNext;
+
+  if (!pCurrent)
+
+  {
+
+    rinfo.info = pCurrent->info;
+
+    rinfo.status = OK;
+
+    return rinfo;
+
+  }
+
+  else
+
+  {
+
+    rinfo.status = ERROR;
+
+    return rinfo;
+
+  }
+
+}
+
+int LList :: orderInAscending(int(*fp)(Info, Info))
+
+{
+
+  Node *pCurrent = pHeadNode;
+
+  for (int i = 0; i < length; i++)
+
+  {
+
+    while (pCurrent->pNext->pNext != NULL)
+
+    {
+
+      if (fp(pCurrent->pNext->info,pCurrent->pNext->pNext->info))
+
+      {
+
+        Node *temp;
+
+        temp->pNext = pCurrent->pNext;
+
+        pCurrent->pNext = pCurrent->pNext->pNext;
+
+        temp->pNext->pNext = pCurrent->pNext->pNext;
+
+        pCurrent->pNext->pNext = temp->pNext;
+
+        delete temp;
+
+        pCurrent = pCurrent->pNext;
+
+
+
+      }
+
+    }
+
+  }
+
+}
+RetInfo LList :: retrieveAndDelCurrentPos()
+
+{
+
+  RetInfo rinfo;
+
+  Node * pCurrent = pHeadNode->pNext;
+
+  if (pCurrentPos)
+
+  {
+
+    int i = 1;
+
+    while (pCurrent != pCurrentPos)
+
+    {
+
+      i++;
+
+      pCurrent = pCurrent->pNext;
+
+    }
+
+    rinfo.info = pCurrent->info;
+
+    rinfo.status = deleteMid(i);
+
+    return rinfo;
+
+  }
+  else
+
+  {
+
+    rinfo.status = ERROR;
+
+    return rinfo;
+
+  }
+
+}
+
+
+
+int LList :: locate(Info info1, int(*fp)(Info, Info))
+
+{
+
+  Node *pCurrent = pHeadNode->pNext;
+
+  while (pCurrent != NULL)
+
+  {
+
+    if ((*fp)(info1, pCurrent->info))
+
+      return FOUND;
+
+    else
+
+      pCurrent = pCurrent->pNext;
+
+  }
+
+  return NOTFOUND;
+
+}
+RetInfo LList::getFirst()
+
+{
+
+  RetInfo retinfo;
+
+  if (!isEmpty())
+
+  {
+
+    retinfo.info = pHeadNode->pNext->info;
+
+      retinfo.status = OK;
+
+  }
+
+  else
+
+    retinfo.status = EMPTY;
+
+  return retinfo;
+
+}
+
+
+
+int LList::reverse()
+
+{
+
+  int b = 1, i;
+
+  Node *Temp;
+
+  Node *Newnode;
+
+  if (isEmpty())
+
+ {
+
+    Newnode = pTailNode;
+
+    for (i = 1; i<length - 2; i++)
+
+    {
+
+      if (b == 1)
+
+       {
+
+        int state=moveToN(i);
+
+        if(state)
+
+          Newnode->pNext = pCurrentPos;
+
+        else
+
+          return 0;
+
+       }
+
+      if(moveToN(i))
+
+       {
+
+        Newnode->pNext = pCurrentPos;
+
+        Newnode = Newnode->pNext;
+
+        b++;
+
+       }
+ else
+
+        return 0;
+
+    }
+
+    Temp = pTailNode;
+
+    pTailNode = pHeadNode;
+
+    delete Temp;
+
+    pHeadNode = Newnode;
+
+    pTailNode->pNext = NULL;
+
+    delete Newnode;
+
+    return 1;
+
+  }
+
+  else
+
+    return 0;
+
+}
+
+
+
+/*int LList::moveToN(int a)
+
+{
+
+  //Node*pCurrentPos;
+
+  int i = 1;
+
+  pCurrentPos = pHeadNode;
+
+  while (pCurrentPos->pNext != NULL && i < length - a)
+ {
+
+    pCurrentPos = pCurrentPos->pNext;
+
+    i++;
+
+  }
+
+  return OK;
+
+}*/
+             
+//vi makefile
+slistexe: slist.o slistapp.o
+  c++ -o slistexe slist.o slistapp.o
+slist.o: slist.cpp
+  c++ -c slist.cpp
+slistapp.o.o: slistapp.cpp
+  c++ -c slistapp.cpp
+
+
+                                                                                                                                                      71,0-1        11%
+

@@ -1,0 +1,283 @@
+Script started on Thu 20 Oct 2016 01:17:17 PM IST
+bash-3.2$ cat Ex10.txt
+Script started on Thu 20 Oct 2016 09:26:59 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/server$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+#include"signal.h"
+char buf[50];
+int main()
+{
+ int sid,ack,len=1024,accpt,b=1,size;
+ char nl;
+ char data[50],nline;
+ struct sockaddr_in sin;
+ printf("Enter the Window Size:");
+ scanf("%d",&size);
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9980);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      while(!b)
+      {
+        if((recv(accpt,data,100,0))==-1)
+            printf("\n\nData Received Failed\n\n");
+        else
+        {
+          printf("\n\nData Received Successful\n\n");
+          printf("\n\nReceived Data:%s \n\n",data);
+          size+=1;
+          printf("\nWindow Size: %d\n",size);
+          if(strcmp(data,"exit")==0)
+          {
+            strcpy(buf,data);
+            send(accpt,buf,strlen(buf),0);
+            printf("\n\nConnection Closed\n\n");
+            break;
+          }
+          printf("\nDo you need to send Acknowledge?(y(1)/n(0)) :");
+          scanf("%d",&ack);
+            if(ack == 0)
+            {
+                strcpy(buf,"-1");
+            }
+            else
+            {
+                size--;
+                strcpy(buf,"1");
+                printf("\nWindow Size: %d\n",size);
+            }
+            
+            send(accpt,buf,strlen(buf),0);
+         }
+         memset(buf,'\0',sizeof(buf));
+         memset(data,'\0',sizeof(data));
+      }
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/server$ ./aSoServer
+Enter the Window Size:7
+
+
+Binded
+
+
+
+Data Received Successful
+
+
+
+Received Data:hi 
+
+
+Window Size: 8
+
+Do you need to send Acknowledge?(y(1)/n(0)) :1
+
+Window Size: 7
+
+
+Data Received Successful
+
+
+
+Received Data:hello 
+
+
+Window Size: 8
+
+Do you need to send Acknowledge?(y(1)/n(0)) :0
+
+
+Data Received Successful
+
+
+
+Received Data:hello 
+
+
+Window Size: 9
+
+Do you need to send Acknowledge?(y(1)/n(0)) :1
+
+Window Size: 8
+
+
+Data Received Successful
+
+
+
+Received Data:exit 
+
+
+Window Size: 9
+
+
+Connection Closed
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/server$ exit
+exit
+
+Script done on Thu 20 Oct 2016 09:28:14 AM IST
+Script started on Thu 20 Oct 2016 09:27:25 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+#include<string.h>
+#include<signal.h>
+int flag =1;
+void alert_signal()
+{
+    printf("\nTime Out\n");
+}
+int main()
+{
+ int sid,conn,len,size;
+ char *data,*buf,nline,temp[50];
+ struct sockaddr_in sin;
+ printf("Enter the Window Size:");
+ scanf("%d%c",&size,&nline);
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  printf("\n\nSocket Created\n\n");
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9980);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  signal(SIGALRM,alert_signal);
+   conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+   if(conn !=-1)
+   {
+    printf("\n\nConnection Established...\n\n");
+    do
+    {
+      data = (char*)malloc(100*sizeof(char));
+      buf = (char*)malloc(100*sizeof(char));
+      if(flag)
+      {
+          printf("\n\nEnter the data to be transmitted: ");
+          scanf("%[^\n]%c",data,&nline);
+          strcpy(temp,data);
+      }
+      else
+      {
+          strcpy(data,temp);
+      }
+      len = strlen(data);
+      if((send(sid,data,len,0))==-1)
+        printf("\n\nData Transmission Failed\n\n");
+      else
+      {
+        alarm(10);
+        printf("\n\nData Transmission Successful\n\n");
+        printf("\nBefor Acknowledge Window Size : %d ",--size);
+        recv(sid,buf,200,0);
+        if(strncmp(buf,"-1",2)==0)
+            flag = 0;
+        else
+        {
+            flag = 1;
+            size++;
+            printf("\nAfter Acknowledge Window Size: %d\n",size);
+        }
+                   
+        if(strcmp(data,"exit")==0)
+          break;
+      }
+      free(buf);
+      free(data);
+     }while(conn!=-1);
+    }
+   else
+    printf("\n\nConnection Not Established...\n\n");
+ }
+ close(sid);
+ 
+}
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/client$ ./aSoClient
+Enter the Window Size:7
+
+
+Socket Created
+
+
+
+Connection Established...
+
+
+
+Enter the data to be transmitted: hi
+
+
+Data Transmission Successful
+
+
+Befor Acknowledge Window Size : 6 
+After Acknowledge Window Size: 7
+
+
+Enter the data to be transmitted: hello
+
+
+Data Transmission Successful
+
+
+Befor Acknowledge Window Size : 6 
+
+Data Transmission Successful
+
+
+Befor Acknowledge Window Size : 5 
+Time Out
+
+After Acknowledge Window Size: 6
+
+
+Enter the data to be transmitted: exit
+
+
+Data Transmission Successful
+
+
+Befor Acknowledge Window Size : 5 
+After Acknowledge Window Size: 6
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex_10/client$ exit
+exit
+
+Script done on Thu 20 Oct 2016 09:28:16 AM IST
+bash-3.2$ exit
+exit
+
+Script done on Thu 20 Oct 2016 01:17:24 PM IST

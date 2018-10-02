@@ -1,0 +1,185 @@
+Script started on Wed 27 Jul 2016 11:14:01 AM IST
+bash-3.2$ cat Ex1bs.prn
+Script started on Wed 20 Jul 2016 11:23:51 AM IST
+bash-3.2$ cat hsender.h
+#include<stdio.h>
+#include<stdlib.h>
+int* calculate_LRC(int **a,int n);
+bash-3.2$ cat isender.c
+#include"hsender.h"
+int* calculate_LRC(int **a,int n) 
+{
+ int j,i,count[8],*parity;
+ parity=(int *) malloc (sizeof(int)*8);
+ for(j=0;j<8;j++)
+  count[j]=0;
+ for(j=0;j<8;j++)
+ {
+  for(i=0;i<n;i++)
+  {
+    if(a[i][j]==1)
+     count[j]++;
+  }
+ }
+ for(i=0;i<8;i++)
+  parity[i]=1;
+ for(i=0;i<8;i++)
+ {
+  if(count[i]%2==0)
+   parity[i]=0;
+ }
+  return parity;
+}
+bash-3.2$ cat asender.c
+#include"hsender.h"
+main()
+{
+
+ int **a,n,i,j,*parity;
+
+  parity=(int*) malloc (sizeof(int)*8);
+
+  a=(int**) malloc (sizeof(int*)*4);
+  for(i=0;i<4;i++)
+    a[i]=(int*) malloc (sizeof(int)*8);
+
+ printf("\nEnter the number of bits: ");
+ scanf("%d",&n);
+ n=n/8;
+
+ for(i=0;i<n;i++)
+ {
+  for(j=0;j<8;j++)
+  {
+    scanf("%d",&a[i][j]);
+  }
+ }
+
+ parity=calculate_LRC(a,n);
+
+ printf("\nThe data to be transmitted is: \n");
+ for(i=0;i<n;i++)
+ {
+  for(j=0;j<8;j++)
+  {
+   printf(" %d",a[i][j]);
+  }
+   printf("\n");
+ }
+
+ for(i=0;i<8;i++)
+  printf(" %d",parity[i]);
+ printf("\n");
+ free(a);
+}
+
+bash-3.2$ ./sender
+Enter the number of bits to be transmitted:16
+Enter the bits to transmit:
+1 0 1 1 0 1 0 1
+1 1 0 1 1 1 0 1
+
+Transmitted Data
+1	0	1	1	0	1	0	1	
+1	1	0	1	1	1	0	1	
+0	1	1	0	1	0	0	0	
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 11:24:22 AM IST
+bash-3.2$ cat Ex1br.prn
+Script started on Wed 20 Jul 2016 11:25:50 AM IST
+bash-3.2$ cat hreceiver.h
+#include<stdio.h>
+#include<stdlib.h>
+int check_LRC(int **a,int n);
+bash-3.2$ cat ireceiver.c
+#include"hreceiver.h"
+
+int check_LRC(int **a,int n)
+{ 
+ int i,j,count[8],parity[8];
+ for(i=0;i<8;i++)
+ {
+   parity[i]=1;
+   count[i]=0;
+ }
+ for(j=0;j<8;j++)
+ {
+  for(i=0;i<n-1;i++)
+  {
+    if(a[i][j]==1)
+     count[j]++;
+  }
+ }
+
+  for(i=0;i<8;i++)
+  {
+   if(count[i]%2==0)
+    parity[i]=0;
+ }
+
+ for(i=0;i<8;i++)
+ {
+   if(parity[i]!=a[n-1][i])
+    break;
+ }
+
+ if(i==8)
+  return 1;
+ else
+  return 0;
+}
+bash-3.2$ cat areceiver.c
+#include"hreceiver.h"
+main()
+{
+ int **a,n,i,j,result;
+
+ printf("\nEnter the number of bits : \n");
+ scanf("%d",&n);
+ a=(int**) malloc (sizeof(int*)*5);
+
+ for(i=0;i<5;i++)
+  a[i]=(int*) malloc (sizeof(int)*8);
+ 
+ n=n/8;
+ for(i=0;i<n;i++)
+ {
+  for(j=0;j<8;j++)
+  {
+   scanf("%d",&a[i][j]);
+  }
+ }
+ result=check_LRC(a,n);
+
+ if(result==0)
+   printf("\nError in transmission \n");
+ else
+   printf("\nNo Error in Transmission\n");
+  free(a);
+}
+bash-3.2$ ./receiver
+Enter the number of bits to be received:24
+Enter the bits to be transmitted:
+1 0 1 0 1 1 0 1 
+1 0 1 1 0 1 1 0 
+0 0 0 1 1 0 1 1
+
+No Error in the data
+bash-3.2$ ./receiver
+Enter the number of bits to be received:24
+Enter the bits to be transmitted:
+1 0 1 0 1 1 0 1
+1 0 1 1 0 1 1 0
+0 0 0 0 1 0 1 1
+
+ Burst Error
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 11:27:03 AM IST
+bash-3.2$ exit
+exit
+
+Script done on Wed 27 Jul 2016 11:14:17 AM IST

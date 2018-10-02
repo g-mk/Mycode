@@ -1,0 +1,76 @@
+Script started on Fri 17 Oct 2014 11:16:26 AM IST
+bash-3.2$ cat area.c
+#include<stdio.h>
+main()
+{
+	float r,area,pi=3.14;
+ 	printf("Give the radius of the Circle:");
+ 	scanf("%f",&r);
+ 	area=pi*r*r;
+ 	printf("Area of the Circle is :%.4f\n\n",area);
+}
+
+bash-3.2$ ./area
+Give the radius of the Circle:17
+Area of the Circle is :907.4600
+
+bash-3.2$ cat arithmetic.c
+
+#include<stdio.h>
+main()
+{
+ 	int a,b,sum,diff,pro,q;
+
+ 	printf("Enter the two numbers:");
+ 	scanf("%d%d",&a,&b);
+ 	sum=a+b;
+ 	diff=((a-b)<0)?-(a-b):(a-b);
+ 	pro=a*b;
+ 	q= a/b;
+ 	printf("Sum of %d and %d is %d",a,b,sum);
+ 	printf("\nDifference of %d and %d is %d",a,b,diff);
+ 	printf("\nProduct of %d and %d is %d",a,b,pro);
+ 	printf("\nQuotient of %d and %d is %d\n\n",a,b,q);
+
+}
+
+bash-3.2$ ./arithmetic
+Enter the two numbers:4
+5
+Sum of 4 and 5 is 9
+Difference of 4 and 5 is 1
+Product of 4 and 5 is 20
+Quotient of 4 and 5 is 0
+
+bash-3.2$ cat grosspay.c
+
+#include<stdio.h>
+main()
+{
+ 	float hra,da,oa=2000,gp,bp;
+	printf("Enter your Basic Pay:");
+	scanf("%f",&bp);
+	hra = bp*.2;
+	da = bp*.1;
+	gp = hra+da+oa;
+	printf(".............................................");
+	printf("\nYour HRA      :%f",hra);
+	printf("\nYour Da       :%f",da);
+	printf("\nYour OA       :%f",oa);
+	printf("\nYour Gross Pay:%f",gp);
+	printf("\n..............................................\n\n");
+}
+
+bash-3.2$ ./grosspay
+Enter your Basic Pay:1200
+.............................................
+Your HRA      :240.000000
+Your Da       :120.000000
+Your OA       :2000.000000
+Your Gross Pay:2360.000000
+..............................................
+
+bash-3.2$ exit
+exit
+
+Script done on Fri 17 Oct 2014 11:17:48 AM IST

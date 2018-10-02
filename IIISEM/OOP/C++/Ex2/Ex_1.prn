@@ -1,0 +1,211 @@
+Script started on Fri 21 Aug 2015 12:12:37 PM IST
+bash-3.2$ cat Name.txt
+****************************************************
+Name    : N.Guru Manikandan   Roll No.:14BCS068
+Year    : II                  SEC     : 'B'
+Ex No.  :1                    Date    : 24/07/2015
+Heading :Functions with Default Arguments
+***************************************************
+
+bash-3.2$ cat hStudent.h
+#include<iostream>
+using namespace std;
+struct SStudent 
+ {
+ char m_sName[30];
+ int m_nAddmissionNo;
+ float m_fMarks[4];
+ };
+
+float CalculateCutoff(struct SStudent Candidate, int nCategory, int nBonus=0);
+
+bash-3.2$ cat iStudent.cpp
+#include"hStudent.h"
+float CalculateCutoff ( struct SStudent Candidate, int nCategory, int nBonus)
+{
+ float fCutoff;
+ switch(nCategory)
+  {
+    case 1: fCutoff = Candidate.m_fMarks[0] * 0.5 + ((Candidate.m_fMarks[1]+
+                     Candidate.m_fMarks[2]) /2) * 0.25 +Candidate.m_fMarks[3] * 0.25;
+                     break;
+    case 2: fCutoff = Candidate.m_fMarks[0] * 0.45 + ((Candidate.m_fMarks[1]
+                     + Candidate.m_fMarks[2])/2) * 0.2 +Candidate.m_fMarks[3] * 0.35;
+                     break;
+    case 3: fCutoff = Candidate.m_fMarks[0] * 0.4 + ((Candidate.m_fMarks[1]
+                     + Candidate.m_fMarks[2])/2) * 0.2 +Candidate.m_fMarks[3] * 0.4;
+                     break;
+   default: cout << "No Such Category...\n";
+            return -1;
+  }
+ 
+ fCutoff += nBonus;
+ if(fCutoff > 200 )
+     return 200;
+ else 
+     return fCutoff;
+}
+
+bash-3.2$ cat i[KaStudent.cpp
+#include"hStudent.h"
+main()
+{
+ std :: locale loc;
+ int nLevel,nCategory;
+ int nCount=1000;
+ char cControl='y';
+ float fTotalCutoff;
+ cout << "Cutoff Calculataion of the Student...\n";
+ do
+  {
+   struct SStudent Candidate;
+   cout<<"Name of the Candidate:";
+   cin>>Candidate.m_sName;
+   
+   cout<<"Addmission No. is ";
+   Candidate.m_nAddmissionNo = ++nCount;
+   cout<<Candidate.m_nAddmissionNo<<endl;
+   
+   cout<<"Enter the Maths Mark:";
+   cin>>Candidate.m_fMarks[0];
+   
+   cout<<"Enter the Physics Mark:";
+   cin>>Candidate.m_fMarks[1];
+   
+   cout<<"Enter the Chemistry Mark:";
+   cin>>Candidate.m_fMarks[2];
+   
+   cout<<"Enter the Campus Entrance Mark:";
+   cin>>Candidate.m_fMarks[3];
+   
+   cout<<"\nEnter the Category to which you belong:\n";
+   cout<<"1.General Category\n2.Sports Category\n3.Physically Challenged\n";
+   cout<<"Category:";
+   cin>>nCategory;
+   switch(nCategory)
+    { 
+     case 1: fTotalCutoff=CalculateCutoff(Candidate,nCategory);
+             cout<<"\nCutoff Of the Student "<<Candidate.m_sName<<" is "<<fTotalCutoff<<endl;
+             break;
+     case 2: cout<<"\nEnter the Level for which you have played.."<<endl;
+             cout<<"1.Intra School Level"<<endl<<"2.Inter School Level"<<endl
+                 <<"3.District Level"<<endl<<"4.State Level"<<endl
+                 <<"5.National Level\n"<<"Level:"<<endl;
+             cin>>nLevel;
+             fTotalCutoff = CalculateCutoff(Candidate, nCategory, nLevel);
+             cout<<"Cutoff Of the Student "<<Candidate.m_sName<<" is "<<fTotalCutoff<<endl;
+             break;
+    case 3: cout<<"\n1.10%-20\%Challenged"<<endl<<"2.20-40\% Challenged"<<endl<<"3.40-50\% Challenged"<<endl
+                <<"4.50-60\% Challenged"<<endl
+                <<"5.above 60\%Challenged"<<endl;
+            cout<<"\nEnter the Physically Challenged Level:";
+            cin>> nLevel;
+            fTotalCutoff=CalculateCutoff(Candidate, nCategory, nLevel);
+            cout<<"\nCutoff Of the Student "<<Candidate.m_sName<<" is "<<fTotalCutoff<<endl;
+            break; 
+   default: cout<<"\nThere is No Such Category......"<<endl;
+   }
+  cout<<"\nDo you wish to Continue.\n";
+  cout<<"Press Y to continue or Press N to STOP:";
+  cin>>cControl;
+  cout<<endl;
+  }while ( cControl == 'y' || cControl == 'Y' );
+ cout<<"\n***********Thank You*********\n\n";
+}
+bash-3.2$ ./Student
+Cutoff Calculataion of the Student...
+Name of the Candidate:Guru
+Addmission No. is 1001
+Enter the Maths Mark:200
+Enter the Physics Mark:198
+Enter the Chemistry Mark:190
+Enter the Campus Entrance Mark:186
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:1
+
+Cutoff Of the Student Guru is 195
+
+Do you wish to Continue.
+Press Y to continue or Press N to STOP:Y
+
+Name of the Candidate:Mani
+Addmission No. is 1002
+Enter the Maths Mark:180
+Enter the Physics Mark:190
+Enter the Chemistry Mark:196
+Enter the Campus Entrance Mark:189
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:2
+
+Enter the Level for which you have played..
+1.Intra School Level
+2.Inter School Level
+3.District Level
+4.State Level
+5.National Level
+Level:
+5
+Cutoff Of the Student Mani is 190.75
+
+Do you wish to Continue.
+Press Y to continue or Press N to STOP:Y
+
+Name of the Candidate:Raj
+Addmission No. is 1003
+Enter the Maths Mark:187
+Enter the Physics Mark:168
+Enter the Chemistry Mark:190
+Enter the Campus Entrance Mark:200
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:3
+
+1.10%-20%Challenged
+2.20-40% Challenged
+3.40-50% Challenged
+4.50-60% Challenged
+5.above 60%Challenged
+
+Enter the Physically Challenged Level:5
+
+Cutoff Of the Student Raj is 195.6
+
+Do you wish to Continue.
+Press Y to continue or Press N to STOP:Y
+
+Name of the Candidate:Krish
+Addmission No. is 1004
+Enter the Maths Mark:145
+Enter the Physics Mark:168
+Enter the Chemistry Mark:196
+Enter the Campus Entrance Mark:200
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:6
+
+There is No Such Category......
+
+Do you wish to Continue.
+Press Y to continue or Press N to STOP:N
+
+
+***********Thank You*********
+
+bash-3.2$ exit
+exit
+
+Script done on Fri 21 Aug 2015 12:15:44 PM IST

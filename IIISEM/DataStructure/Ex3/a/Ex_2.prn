@@ -1,0 +1,307 @@
+Script started on Wed 30 Sep 2015 03:03:03 PM IST
+bash-3.2$ cat hStack.h
+#include<iostream>
+#include<string.h>
+using namespace std;
+typedef struct Info
+{
+    char CommandName[20];
+    char CommandSyntax[25];
+    char CommandDetails[25];
+    char CommandType[8];
+}Info;
+typedef struct RetInfo
+{
+    int status;
+    Info info;
+}RetInfo;
+class Node
+{
+public:
+    friend class Stack;
+    Info info;
+    Node *next;
+};
+class Stack
+{
+public:
+    Stack();
+    ~Stack();
+    RetInfo Pop();  //Pop out the element 
+    int Push(Info info); //Push the element in the Stack
+    RetInfo ReturnTop(); //Retrive the Top Element
+    bool IsEmpty();  //To Check the Stack is empty 
+    bool IsFull(Node *); //To Check the Stack is Full
+private:
+    Node *top;
+    Node *head;
+
+};
+bash-3.2$ cat iStack.cpp
+#include"hStack.h"
+
+Stack::Stack()
+{
+    top =NULL;
+    head =NULL;
+
+}
+Stack::~Stack()
+{
+    while(top)
+        Pop();
+}
+int Stack::Push (Info info)
+{
+    Node *newNode = new Node;
+    if(newNode == NULL )
+        return -1;
+    if(IsEmpty())
+    {
+        head = newNode;
+        newNode -> info = info;
+        newNode ->next = NULL;
+        top = newNode;
+        return 1;
+    }
+    else
+    {
+        newNode -> info = info;
+        newNode -> next = NULL;
+        top -> next = newNode;
+        top = newNode;
+        return 1;
+    }
+}
+RetInfo Stack :: Pop()
+{
+    RetInfo rinfo;
+    if(IsEmpty())
+    {
+        rinfo.status=0;
+        return rinfo;
+    }
+    else
+    {
+        Node *current = head;
+        if(head!=top)
+        {
+        while(current -> next != top)
+        {
+            current = current -> next;
+        }
+        }
+
+        rinfo.status =1;
+        rinfo.info=top->info;
+        delete top;
+        if(head==top)
+         top=NULL;
+        else
+        {
+          top = current;
+          top->next = NULL;
+        }
+          return rinfo;
+    }
+}
+RetInfo Stack :: ReturnTop()
+{
+    RetInfo rinfo;
+    if(IsEmpty())
+    {
+        rinfo.status=0;
+        return rinfo;
+    }
+    else
+    {
+        rinfo.status=1;
+        rinfo.info=top->info;
+        return rinfo;
+    }
+}
+bool Stack :: IsEmpty()
+{
+    if(top == NULL)
+        return 1;
+    else
+        return 0;
+}
+bool Stack :: IsFull(Node * newNode)
+{
+    if(newNode==NULL)
+        return 1;
+    else
+        return 0;
+}
+bash-3.2$ cat aStack.cpp
+#include"hStack.h"
+
+main()
+{
+    Stack CStack;
+    int nStatus;
+    int nChoice;
+    Info info;
+    RetInfo rinfo;
+    do
+    {
+        cout<<"\nEnter the Choice:\n";
+        cout<<"1.Push in Stack\n2.Pop out the Stack\n3.Retrive Top\n4.Exit..\nEnter the Choice :";
+        cin>>nChoice;
+        switch(nChoice)
+        {
+            case 1:
+                cout<<"\nCommand Name: ";
+                cin>>info.CommandName;
+                cout<<"\nCommand Syntax: ";
+                cin>>info.CommandSyntax;
+                cout<<"\nCommand Type: ";
+                cin>>info.CommandType;
+                cout<<"\nCommand Description: ";
+                cin>>info.CommandDetails;
+                nStatus=CStack.Push(info);
+                if(nStatus==1)
+                    cout<<"\n*********Object is Pushed********\n";
+                else
+                    cout<<"\n*****Object is not pushed ********\n";
+                break;
+            case 2:
+                rinfo=CStack.Pop();
+                if(rinfo.status==1)
+                {
+                    cout<<"\nCommand Name : "<<rinfo.info.CommandName;
+                    cout<<"\nSyntax: "<<rinfo.info.CommandSyntax;
+                    cout<<"\nType: "<<rinfo.info.CommandType;
+                    cout<<"\nDescription: "<<rinfo.info.CommandDetails<<endl;
+                }
+                else
+                {
+                    cout<<"\n*********Stack is Empty*********\n";
+                }
+                break;
+            case 3:
+                rinfo=CStack.ReturnTop();
+                if(rinfo.status==1)
+                {
+                   cout<<"\nCommand Name : "<<rinfo.info.CommandName;
+                   cout<<"\nSyntax: "<<rinfo.info.CommandSyntax;
+                   cout<<"\nType: "<<rinfo.info.CommandType;
+                   cout<<"\nDescription: "<<rinfo.info.CommandDetails<<endl;
+                }
+                else
+                {
+                    cout<<"\n*********Stack is Empty*********\n";
+                }
+                break;
+            case 4:
+                cout<<"\n***********Thank You************\n";
+
+        }
+    }while(nChoice !=4);
+}
+bash-3.2$ ./Stack
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :1
+
+Command Name: cp
+
+Command Syntax: cp<source><Destination>
+
+Command Type: file
+
+Command Description: to_copy_a_file
+
+*********Object is Pushed********
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :1
+
+Command Name: rm
+
+Command Syntax: rm<filename>
+
+Command Type: file
+
+Command Description: to_remove_file
+
+*********Object is Pushed********
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :3
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_file
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :2
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_file
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :3
+
+Command Name : cp
+Syntax: cp<source><Destination>
+Type: file
+Description: to_copy
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :2
+
+Command Name : cp
+Syntax: cp<source><Destination>
+Type: file
+Description: to_copy
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :2
+
+*********Stack is Empty*********
+
+Enter the Choice:
+1.Push in Stack
+2.Pop out the Stack
+3.Retrive Top
+4.Exit..
+Enter the Choice :4
+
+***********Thank You************
+bash-3.2$ exit
+exit
+
+Script done on Wed 30 Sep 2015 03:04:44 PM IST

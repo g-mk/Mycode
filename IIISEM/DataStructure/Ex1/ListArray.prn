@@ -1,0 +1,432 @@
+
+
+2015-08-19 13:51                     14bcs068                     Page 1
+
+
+                                                        
+********************************************************
+USER NAME      :14bcs068
+DATE AND TIME  :Wed Aug 19 13:51:03 IST 2015
+SERVER NAME    :mepcolinux.mepcoeng.ac.in
+JOB NAME       :ListArray.prn
+PRINT FROM     :172.16.23.123
+*********************************************************
+Script started on Wed 05 Aug 2015 01:42:41 PM IST
+bash-3.2$ cat hListarray.h
+#include<iostream>
+using namespace std;
+class ListArr
+{
+ public:
+  ListArr(int Arrcap);
+  int Insert(int ele,int pos);
+  int Delet (int pos);
+  void Print();
+  ~ListArr();
+  int FindByEle(int ele);
+  int FindByPos(int pos);
+  void GetData();
+ private:
+  int *array,length,capacity;
+};
+bash-3.2$ cat iListarray.cpp
+#include"hListarray.h"
+ListArr :: ListArr(int Arrcap)        //Constructor 
+{
+ capacity = Arrcap;
+ length=0;
+ array=new int [capacity];
+}
+ListArr :: ~ListArr()             //Destructor
+{
+ delete []array;
+}
+void ListArr :: GetData()            //Geting Data for the List
+{ char c;
+
+ do
+ { 
+   if(length<=capacity)
+   {
+    cout<<"Enter the Element:";
+    cin>>array[length++];
+   }
+  else
+   cout << "Limit Exceeds....\n";
+
+   cout<<"\nPress Y to continue giving value or Press N to Stop ";
+   cin>>c;
+ }while(c == 'y');
+ cout<<"Total element in list "<< length<<"\n";
+ Print();
+}
+int ListArr :: Insert(int ele,int pos)    // Insert the element in the list
+{
+ if(pos==length+1 && pos<=capacity)
+ {
+  array[pos-1]=ele;                        //Inserting the element at last
+
+
+
+
+
+
+
+2015-08-19 13:51                     14bcs068                     Page 2
+
+
+  length++;
+  Print();
+  return 1;
+ }
+ else
+ { 
+  if(pos<=length)
+   { 
+    for(int i=length-1;i>=pos-1;i--)      
+      {
+        array[i+1]=array[i];
+      }
+    array[pos-1]=ele;                     // Inserting in the Middle
+    length++;
+    Print();
+    return 1;
+   }
+  else
+   return 0;
+ }
+}
+int ListArr :: Delet(int pos)           // Deleting the element int the list
+{
+ if(pos<=length)
+ {
+  int temp=array[pos-1];
+  for(int i=pos;i<length;i++)
+   array[i-1]=array[i];
+  length--;
+  Print();
+  return temp;
+ }
+ else
+  return -1;
+}
+int ListArr :: FindByEle(int ele)       //Searching by element in the list
+{
+ for(int i=0;i<length;i++)
+  {
+   if(array[i]==ele)
+     return i;
+  }
+ return -1;
+}
+int ListArr :: FindByPos(int pos)  //Searching the element at the given position
+{
+ if(pos<=length)
+   return array[pos-1];
+ else 
+   return -1;
+} 
+void ListArr :: Print()       //Printing the content in the list
+{
+ cout<<"\nFrom Initial Position"<<endl;
+ for(int i=0;i<length;i++)
+  {
+   cout<<array[i]<<" ";
+  }
+ cout<<"\nFrom Last Position\n";
+ for(int i=length-1;i>=0;i--)
+  {
+   cout<<array[i]<<" ";
+
+
+
+
+
+
+
+2015-08-19 13:51                     14bcs068                     Page 3
+
+
+  }
+  cout <<"\nLength is "<<length;
+  cout <<endl;
+} 
+bash-3.2$ cat aListarray.cpp
+#include"hListarray.h"
+main()
+{
+ int n,p,element,ch=1;
+ cout<<"Enter the Maximum No. Of Elements to Store ";
+ cin>>n;
+ ListArr l(n);
+ l.GetData();
+ while(ch!=6)
+ {
+ cout<<"\n1.Insert\n2.Delete\n3.Find by element\n4.Find by Position\n5.Print\n6.Exit\nEnter your Choice:";
+ cin >> ch;
+  switch(ch)
+  {
+   case 1: cout<<"Enter the element to be inserted ";
+           cin>>element;
+           cout<<"Enter the Position ";
+           cin >> p;
+          int flag;
+          flag = l.Insert(element,p);
+           if(flag==1)
+            {
+             cout<<"Insertion is SUCCESS\n";
+            }
+           else
+             cout<<"Limit Exceeds\n";
+           break;
+   case 2: cout<<"Enter the Position to Delete the Element:";
+           cin>>p;
+           int d;
+           d=l.Delet(p);
+           if(d!=-1)
+            cout<<"Deleted Item is "<< d<<"\n";
+           else
+            cout<<"No such posotion in tha list\n";
+           break;
+   case 3: cout<<"Enter the Element to be found";
+           cin >> element;
+           int f;
+           f= l.FindByEle(element);
+           if(f!=-1)
+            {
+             cout<<"Given element is found at the Position "<< f+1<<endl;
+            }
+           else 
+            cout<<"No such element if found\n ";
+           break;
+   case 4: cout<<"Enter the Position to retrive the element:";
+           cin >> p;
+           f=l.FindByPos(p);
+           if(f!=-1)
+            {
+             cout<<"Element at the position "<<p<<" is "<<f+1<<endl;
+            }
+           else
+            cout<<"No such position is found\n ";
+           break;
+
+
+
+
+
+
+
+2015-08-19 13:51                     14bcs068                     Page 4
+
+
+   case 5: l.Print();
+           break;
+   case 6: cout<<"Thank You\n";
+           break;
+   default: cout << "Invalid Choice";
+  }
+ }
+}
+
+bash-3.2$ ./ListArray
+Enter the Maximum No. Of Elements to Store 10
+Enter the Element:2
+
+Press Y to continue giving value or Press N to Stop y
+Enter the Element:5
+
+Press Y to continue giving value or Press N to Stop y
+Enter the Element:6
+
+Press Y to continue giving value or Press N to Stop y
+Enter the Element:7
+
+Press Y to continue giving value or Press N to Stop y
+Enter the Element:8
+
+Press Y to continue giving value or Press N to Stop n
+Total element in list 5
+
+From Initial Position
+2 5 6 7 8 
+From Last Position
+8 7 6 5 2 
+Length is 5
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:1
+Enter the element to be inserted 25
+Enter the Position 2
+
+From Initial Position
+2 25 5 6 7 8 
+From Last Position
+8 7 6 5 25 2 
+Length is 6
+Insertion is SUCCESS
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:1
+Enter the element to be inserted 7
+Enter the Position 7
+
+From Initial Position
+
+
+
+
+
+
+
+2015-08-19 13:51                     14bcs068                     Page 5
+
+
+2 25 5 6 7 8 7 
+From Last Position
+7 8 7 6 5 25 2 
+Length is 7
+Insertion is SUCCESS
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:1
+Enter the element to be inserted 50
+Enter the Position 20
+Limit Exceeds
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:2
+Enter the Position to Delete the Element:4
+
+From Initial Position
+2 25 5 7 8 7 
+From Last Position
+7 8 7 5 25 2 
+Length is 6
+Deleted Item is 6
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:2
+Enter the Position to Delete the Element:10
+No such posotion in tha list
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:3
+Enter the Element to be found:25
+Given element is found at the Position 2
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:3
+Enter the Element to be found:100
+No such element if found
+
+
+
+
+
+
+
+2015-08-19 13:51                     14bcs068                     Page 6
+
+
+ 
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:4
+Enter the Position to retrive the element:5
+Element at the position 5 is 9
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:4
+Enter the Position to retrive the element:8
+No such position is found
+ 
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:5
+
+From Initial Position
+2 25 5 7 8 7 
+From Last Position
+7 8 7 5 25 2 
+Length is 6
+
+1.Insert
+2.Delete
+3.Find by element
+4.Find by Position
+5.Print
+6.Exit
+Enter your Choice:6
+Thank You
+bash-3.2$ exit
+exit
+
+Script done on Wed 05 Aug 2015 01:45:48 PM IST
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

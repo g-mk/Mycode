@@ -1,0 +1,27 @@
+int compare(char *a,char *b)
+{
+ int l1,l2,i;
+ for(i=0;a[i]!='\0';i++);
+ l1=i;
+ for(i=0;b[i]!='\0';i++);
+ l2=i;
+ i=0;
+ if(l1==l2)
+ {
+  for(i=0;i<l1;i++)
+  {
+   if(a[i]!=b[i])
+     goto x;
+  }
+  return 0;
+ }
+ else 
+ {
+  x: if(a[i]>b[i])
+      return 1;
+     else 
+      return 2;
+ }
+}
+
+ 

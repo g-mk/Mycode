@@ -1,0 +1,211 @@
+Script started on Wed 12 Oct 2016 12:37:08 PM IST
+bash-3.2$ cat Ex9.txt
+Script started on Wed 12 Oct 2016 12:33:45 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Server$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,i=1,accpt,b=1,r,len,k,p;
+ char *data,buffer[100],nl;
+ struct sockaddr_in sin;
+ data=(char *)malloc(200*sizeof(char));
+ strcpy(data,"hi");
+ sid=socket(AF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+   sin.sin_family = AF_INET;
+   sin.sin_port = htons(15003);
+   sin.sin_addr.s_addr = htonl(INADDR_ANY);
+   while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      len=sizeof(struct sockaddr_in);
+      listen(sid,10);
+      p=fork();
+      if(p==0)
+      {
+       accpt = accept(sid,(struct sockaddr *)&sin,&len);
+       if(accpt==-1)
+        printf("Connection not Accepted");
+       else
+        printf("\nConnection Accepted\n");
+       r=recv(accpt,data,50,0);
+       FILE *f;
+       f=fopen(data,"r");
+       if(f==NULL)
+       {
+         send(accpt,"File Not Found",strlen("File Not Found"),0);
+         while(i)
+          i=close(sid);
+         exit(0); 
+       }
+       else
+       {
+        k=0;
+        nl=fgetc(f);
+        while(nl!=EOF)
+        {
+         buffer[k]=nl;
+         nl=fgetc(f);
+         k++;
+        }
+        buffer[k]='\0';
+        send(accpt,buffer,strlen(buffer),0);
+       }
+       fclose(f);
+      }
+      else
+      {
+       accpt = accept(sid,(struct sockaddr *)&sin,&len);
+       if(accpt==-1)
+        printf("Connection not Accepted");
+       else
+        printf("\nConnection Accepted\n");
+       r=recv(accpt,data,50,0);
+       FILE *f;
+       f=fopen(data,"r");
+       if(f==NULL)
+       {
+         send(accpt,"File Not Found",strlen("File Not Found"),0);
+         while(i)
+          i=close(sid);
+         exit(0);
+       }
+       else
+       {
+        k=0;
+        nl=fgetc(f);
+        while(nl!=EOF)
+        {
+         buffer[k]=nl;
+         nl=fgetc(f);
+         k++;
+        }
+        buffer[k]='\0';
+        send(accpt,buffer,strlen(buffer),0);
+       }
+       fclose(f);
+      }
+      while(i)
+       i=close(sid);
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+ }
+}
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Server$ ./server
+
+
+Binded
+
+
+Connection Accepted
+
+Connection Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Server$ exit
+exit
+
+Script done on Wed 12 Oct 2016 12:34:57 PM IST
+Script started on Wed 12 Oct 2016 12:33:57 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<sys/socket.h>
+ 
+void main()
+{
+ int sid,i=1,conn,nsend,nrecv,nclose;
+ char smsg[50],rmsg[2000],nl;
+ struct sockaddr_in server;
+ sid=socket(AF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+ {
+  printf("\nSocket failure\n");
+ }
+ else
+ {
+  server.sin_addr.s_addr = htonl(INADDR_ANY);
+	server.sin_family = AF_INET;
+  server.sin_port = htons( 15003 );
+  conn=connect(sid,(struct sockaddr *)&server,sizeof(server));
+  if(conn==-1)
+   printf("Connection Problem\n");
+  else
+  {
+   printf("\nConnected\n");
+   printf("\n$");
+   scanf("%s",smsg);
+   nsend=send(sid,smsg,strlen(smsg),0);
+   nrecv=recv(sid,rmsg,2000,0);
+   if(strcmp(rmsg,"File Not Found")==0)
+   {
+    printf("\n%s\n",rmsg);
+   }
+   else
+   {
+    FILE *f;
+    f=fopen(smsg,"w");
+    fprintf(f,"%s",rmsg);
+    fclose(f);
+    f=fopen(smsg,"r");
+    printf("\nFile Contents:\n");
+    nl=fgetc(f);
+    while(nl!=EOF)
+    {
+     printf("%c",nl);
+     nl=fgetc(f);
+    }
+    fclose(f);
+   }
+  }
+ }
+ while(i)
+  i=close(sid);
+}
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Client$ ./client
+
+Connected
+
+$ftp.txt
+
+File Contents:
+Secured Message.
+This program simulates ftp.
+using tcp socket.
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Client$ exit
+exit
+
+Script done on Wed 12 Oct 2016 12:34:54 PM IST
+Script started on Wed 12 Oct 2016 12:34:28 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Client$ ./client
+
+Connected
+
+$txt.txt
+
+File Not Found
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex9C/Client$ exit
+exit
+
+Script done on Wed 12 Oct 2016 12:34:50 PM IST
+bash-3.2$ exit
+exit
+
+Script done on Wed 12 Oct 2016 12:37:16 PM IST

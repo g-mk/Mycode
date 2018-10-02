@@ -1,0 +1,79 @@
+Script started on Wed 19 Oct 2016 10:24:09 AM IST
+bash-3.2$ cat sender.c
+#include<stdio.h>
+#include<string.h>
+main()
+{
+ int i,j=1,len;
+ char data[50],sdata[50],flag='f',esc='$',ch;
+ printf("\nEnter the data: ");
+ scanf("%s",data);
+ printf("\nEnter the delimiting character: ");
+ scanf("\n%c",&ch);
+ sdata[0]=flag;
+ for(i=0;data[i]!='\0';i++)
+ {
+  if(data[i]==ch || data[i] == flag)
+  {
+   sdata[j]=esc;
+   j++;
+   sdata[j]=data[i];
+   j++;
+  }
+  else
+  {
+   sdata[j]=data[i];
+   j++;
+  }
+ }
+ sdata[j++]=flag;
+ sdata[j]='\0';
+ printf("\nStuffed Data: %s",sdata);
+}
+bash-3.2$ ./sender
+
+Enter the data: manifkandan
+
+Enter the delimiting character: a
+
+Stuffed Data: fm$ani$fk$and$anf
+bash-3.2$ cat receiver.c
+#include<stdio.h>
+#include<string.h>
+main()
+{
+ int i,j=0,len;
+ char data[50],sdata[50],flag='f',esc='$',ch;
+ printf("\nEnter the data: ");
+ scanf("%s",data);
+ printf("\nEnter the delimiting character: ");
+ scanf("\n%c",&ch);
+ len=strlen(data);
+ for(i=1;i<len-1;i++)
+ {
+  if((data[i]==esc && data[i+1]==ch) || (data[i] == esc && data[i+1]==flag))
+  {
+   sdata[j]=data[i+1];
+   j++;
+   i++;
+  }
+  else
+  {
+   sdata[j]=data[i];
+   j++;
+  }
+ }
+ sdata[j]='\0';
+ printf("\nStuffed Data: %s",sdata);
+}
+bash-3.2$ ./receiver
+
+Enter the data: fm$ani$fk$and$anf
+
+Enter the delimiting character: a
+
+Stuffed Data: manifkandan
+bash-3.2$ exit
+exit
+
+Script done on Wed 19 Oct 2016 10:24:54 AM IST

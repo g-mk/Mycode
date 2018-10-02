@@ -1,0 +1,94 @@
+/*******************************************************************************
+**Description   : Deploying the Shared Memory for the Interprocess            **
+**                Communication between two process/program to share the      **
+**                information(CLIENT PROGRAM)                                 **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 11/08/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#define MEM 50
+
+int isAmstrong(int value)
+{
+    int temp=value,rem,sum=0,digit = 0;
+    
+    while(temp)
+    {
+        temp = temp/10;
+        digit++;
+    }
+    
+    temp = value;
+    
+    while(temp)
+    {
+        rem = temp%10;
+        temp = temp/10;
+        sum += pow(rem,digit);
+    }
+    
+    return (sum == value);
+}
+void main()
+{
+    int shmid,stat;
+    char * shm,*data;
+    int num;
+    key_t key;
+    
+    data = (char *) malloc(MEM*sizeof(char));
+    printf("\nEnter the Key:");
+    scanf("%d",&key);
+    
+    shmid = shmget( key, MEM, 0666 );
+    
+    if( shmid != -1 )
+    {
+        printf("\n\nShared Memory Access is Granted..........\n\n");
+    
+        shm = (char *)shmat(shmid,NULL,0);
+        if(shm > 0)
+        {
+             printf("The Number Sequence is : %s\n\n",shm);
+             
+             strcpy(data,shm);
+             
+             strcpy(shm,"");
+             
+             printf("\n\nAmstrong Number in the Given Sequence are : ");
+             
+             while(strstr(data," "))
+             {
+                sscanf(data,"%d",&num);
+                
+                if(isAmstrong(num))
+                    printf("%d ",num);
+                    
+                data = strstr(data," ")+sizeof(char);
+                
+             } 
+             
+             sscanf(data,"%d",&num);
+                
+             if(isAmstrong(num))
+                 printf("%d ",num);           
+             
+             if(shmdt(shm)==0)
+                printf("\n\nShared Memory Detached\n\n");
+                
+             else
+                printf("\n\nShared Memory Not Detached\n\n");
+            
+    }
+    else
+        printf("\n\nShared Memory is not Created\n\n");
+           
+    }
+}

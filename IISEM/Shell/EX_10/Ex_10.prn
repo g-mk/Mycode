@@ -1,0 +1,294 @@
+Script started on Sun 19 Apr 2015 11:45:47 AM IST
+bash-3.2$ cat calender.sh
+echo -e "Enter the Month:"
+ read m
+echo -e "\nEnter the Year:"
+ read y
+if [ $m -ge 1 -a $m -le 12 ]
+ then
+ if [ $y -ge 2000 -a $y -le 2020 ]
+  then
+  echo -e "Calander is:\n"
+  c=`cal $m $y`;
+  echo -e "$c"
+ else
+   echo -e "Entered year is not valid.\nPlease Give In The Range of 2000-2020";
+ fi
+else
+ echo -e "Entered Month is Not Valid.\nPlease Give in the Range of 1-12 ";
+fi
+bash-3.2$ sh calender.sh
+Enter the Month:
+1
+
+Enter the Year:
+2018
+Calander is:
+
+    January 2018    
+Su Mo Tu We Th Fr Sa
+    1  2  3  4  5  6
+ 7  8  9 10 11 12 13
+14 15 16 17 18 19 20
+21 22 23 24 25 26 27
+28 29 30 31
+bash-3.2$ sh calender.sh
+Enter the Month:
+24
+
+Enter the Year:
+2011
+Entered Month is Not Valid.
+Please Give in the Range of 1-12 
+bash-3.2$ sh calender.sh
+Enter the Month:
+12
+
+Enter the Year:
+2434
+Entered year is not valid.
+Please Give In The Range of 2000-2020
+bash-3.2$ cat Palindrome.sh
+ echo "Enter the String:[press Ctrl + D when finished]"
+ `cat > Data`
+ echo -e "\nContent in File"
+ str=`cat Data`
+ echo $str
+ l=`cat Data | wc -m`
+ n=`expr $l / 2`
+ i=1
+ f=1
+ while [ $i -le $n ]
+ do
+  a=`cat Data |cut -c "$i"`
+ #echo -e "\na=$a"
+  b=`cat Data |cut -c "$l"`
+# echo -e "\nb=$b"
+   if [ $a != $b ]
+    then
+      f=0
+   fi
+  i=`expr $i + 1`
+  l=`expr $l - 1`
+  done
+ if [ $f -eq 1 ]
+  then
+   echo -e "\nGiven string is Palindrome"
+ else 
+   echo -e "\nGiven string is not a Palindorme"
+ fi
+
+bash-3.2$ sh Palindrome.sh
+Enter the String:[press Ctrl + D when finished]
+madam
+Content in File
+madam
+
+Given string is Palindrome
+bash-3.2$ sh Palindrome.sh
+Enter the String:[press Ctrl + D when finished]
+hello
+Content in File
+hello
+
+Given string is not a Palindorme
+bash-3.2$ cat Dirfn.sh
+ch=0
+while [ $ch -ne 5 ]
+ do 
+  echo -e "Enter the choice:\n1)Create new Directory.\n2)Remove a Directory.\n
+                            3)Change working Directory.\n4)Display the content of current Directory.\n5)EXIT.\n"
+  read ch
+ case $ch in 
+  1) echo -e "Enter the name of the Directory:"
+     read name
+    f=`ls | grep -c $name`
+    if [ $f -eq 0 ]
+     then
+         `mkdir $name`
+     echo -e "Directory Created\n"
+    else 
+     echo -e "Directory already Exist\n"
+    fi;;
+  2) echo -e "Enter the name of the Directory:"
+     read name
+     f=`ls | grep -c $name`
+      if [ $f -ne 0 ]
+       then
+          `rmdir $name`
+       echo -e "Directory Removed\n"
+       else 
+       echo -e "Directory does not  Exist\n"
+      fi;;
+  3) echo -e "Enter Whether to go to \n1)Subdirectory\n2)Previous Directory;\n"
+     read m
+     case $m in
+     1) echo -e "Enter the Directory name to Change the working Directory\n"
+        read chng
+        f=`ls | grep -c $chng`
+        if [ $f -ne 0 ]
+          then
+       cd $chng
+         echo -e "Current Directory changed\n"
+        else 
+         echo -e "No Such Directory is Found\n"
+     fi;;
+    2) cd ..
+         echo -e "Enter the Directory name to Change to  Directory in Previous Directory\n"
+        read chng
+        f=`ls | grep -c $chng`
+        if [ $f -ne 0 ]
+          then
+        cd $chng
+         echo -e "Current Directory changed\n"
+        else
+         echo -e "No Such Directory is Found\n"
+     fi;; 
+    esac;;
+
+  4) echo -e "Content of the Current Directory are:\n"
+     c=`pwd | ls`
+     echo -e "$c\n";;
+  5) echo -e "Thank you\n";;
+  *) echo -e "Invalid Option\n"
+ esac
+done
+
+ 
+bash-3.2$ sh Dirfn.sh
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+1
+Enter the name of the Directory:
+Memo
+Directory Created
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+2
+Enter the name of the Directory:
+memo
+Directory does not  Exist
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+2
+Enter the name of the Directory:
+Memo
+Directory Removed
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+3
+Enter Whether to go to 
+1)Subdirectory
+2)Previous Directory;
+
+1
+Enter the Directory name to Change the working Directory
+
+Match
+Current Directory changed
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+4
+Content of the Current Directory are:
+
+Man
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+3
+Enter Whether to go to 
+1)Subdirectory
+2)Previous Directory;
+
+2
+Enter the Directory name to Change to  Directory in Previous Directory
+
+Man
+No Such Directory is Found
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+4
+Content of the Current Directory are:
+
+calender.sh
+Calender.sh
+CSE
+Data
+Dirfn.sh
+Ex_10.prn
+lenth
+madam
+Match
+operation.sh
+Palindrome.sh
+rev.sh
+wc
+
+Enter the choice:
+1)Create new Directory.
+2)Remove a Directory.
+3)Change working Directory.
+4)Display the content of current Directory.
+5)EXIT.
+
+5
+Thank you
+
+bash-3.2$ cat rev.sh
+count=$#
+while [ $count -ge 1 ]
+ do
+ eval echo -e "$count argument is \$$count" 
+  count=`expr $count - 1`;
+done
+bash-3.2$ sh rev.sh 21 12 32 23 12 21
+6 argument is 21
+5 argument is 12
+4 argument is 23
+3 argument is 32
+2 argument is 12
+1 argument is 21
+bash-3.2$ exit
+exit
+
+Script done on Sun 19 Apr 2015 11:49:32 AM IST

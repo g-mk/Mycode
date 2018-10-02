@@ -1,0 +1,208 @@
+Script started on Mon 20 Feb 2017 10:28:52 AM IST
+bash-3.2$ cat head.txt
+<!--
+Name    : N. Guru Manikandan
+Roll No.: 14BCS068
+Ex No.  : 1
+Date    : 02/01/2017
+-->
+bash-3.2$ cat Ex1source.txt
+<!--index.html-->
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>E-Voting</title>
+      <link rel="icon" type="image/png" href="image\Vote-icon.png"/>
+      <link rel="stylesheet" type="text/css" href="css/background.css" />
+   </head>
+   <body>
+      <header>
+         <h1 align="center">E-Voting System</h1>
+      </header>
+      <img id="lbanner" src="image\\vote02.jpg" alt="Image Not Found"/>
+      <img id="rbanner" src="image\\vote02.jpg" alt="Image Not Found"/>
+      <div id = "top">
+         <ul id="menu">
+            <li>
+               <a href="home.html" target="frame">
+                  <strong>Home</strong>
+               </a>
+            </li>
+            <li>
+               <a href="candidate.html" target="frame">
+                  <strong>Candidate</strong>
+               </a>
+            </li>
+            <li>
+               <a href="VotersList.html" target="frame">
+                  <strong>Voters List</strong>
+               </a>
+            </li>
+            <li class="liRight">
+               <a href="login.html" target="frame">
+                  <strong>Login</strong>
+               </a>
+            </li>
+            <li class="liRight">
+               <a href="VotersRegForm.html" target="frame">
+                  <strong>New Electroral Registration</strong>
+               </a>
+            </li>
+         </ul>
+      </div>
+      <iframe id="frame" name="frame" src="home.html" style="border:none" 
+               onload="linkTop()"></iframe>
+   <footer id = "footer">
+      Electronic Voting<br/>
+      Copy Right<sup>&copy;</sup> to N. Guru Manikandan.
+      Created on January 23, 2017.
+   </footer>
+   </body>
+</html>
+
+<!--home.html-->
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>E-Voting</title>
+      <link href="css/background.css" type="text/css" rel="stylesheet"/>
+      <style type="text/css">
+         #gifImg{
+            float:left;
+         }
+         video{
+            float:middle;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="topDiv">
+         <img id="gifImg" src="image\\vote.gif" alt="Image Not Found"/>
+         <h2>E-Voting</h2>
+            . . . 
+         <h2>US Election Procedure</h2>
+         <video width="100%" height="400px" buffered controls>
+            <source src="video\United States of America, elections.mp4" 
+                        type="video/mp4">
+         Your Browser Does not Support the video tag.
+         </video>
+      </div>
+      <br/><br/>
+      <div>
+         <a href="#topDiv" >
+            <img id="goTop" src="image\arrow.jpg" width="50px" height="50px" 
+               alt="Not Found"/>
+         </a>
+      </div>
+   </body>
+</html>
+
+<!--background.css-->
+
+body{
+   background-image:url("image\\wall4_@2X.png");
+}
+#lbanner {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height:100px;
+  width:150px;
+  z-index: -1;
+}
+#rbanner {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height:100px;
+  width:150px;
+  z-index: -1;
+}
+nav{
+   font-style:bold;
+   font-family: "sofia",cursive;
+   font-size:20px
+}
+p{
+   letter-spacing:1px;
+   font-family:"Lucida Grande",cursive;
+   text-indent:50px;
+   font-size:15px;
+}
+header{
+   font-size:20px;
+}
+h1,h2{
+   font-family: "Lucida Grande",cursive;
+   text-shadow: 2px 2px #639bf1;
+}
+#menu{
+   padding: 10px;
+   list-style: none;
+   background-color:#293e6a;
+   font-family:"Lucida Grande",cursive;
+}
+#menu li{
+   display: inline;
+   position: relative;
+   text-align: left;
+   font-size:18px;
+}
+#menu li a{
+   padding: 8px 25px;
+   color: #fcfcfc;
+   text-decoration: none;
+}
+#menu li a:hover{
+   color: black;
+   font-weight:bold;
+   background: #639bf1;
+   text-shadow: 3px 2px #77ba9b;
+   transition: .5s;
+}
+.liRight{
+   float:right;
+}
+footer{
+   background-color:#b0c05e;
+   position:fixed;
+   bottom:5px;
+   float:right;
+   width:100%;
+}
+input, textarea {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #DDDDDD;
+}
+ 
+input:focus, textarea:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(81, 203, 238, 1);
+}
+#topNav{
+  text-decoration: none;
+}
+#goTop{
+   position:fixed;
+   bottom:4px;
+   right:2px;
+   float:right;
+   -webkit-transition: all 1s ease-in-out;
+   -moz-transition: all 1s ease-in-out;
+   transition: all 1s ease-in-out;
+   opacity: 0;
+}
+#goTop:hover{
+   cursor:pointer;
+}bash-3.2$ exit
+exit
+
+Script done on Mon 20 Feb 2017 10:29:06 AM IST

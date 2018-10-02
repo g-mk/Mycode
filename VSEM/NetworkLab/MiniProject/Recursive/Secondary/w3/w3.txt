@@ -1,0 +1,2 @@
+www.w3schools.org 75.52.4.120 A IN 600
+www.w3c.org 128.30.52.45 A IN 172800

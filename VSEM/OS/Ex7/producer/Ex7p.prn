@@ -1,0 +1,152 @@
+Script started on Thu 29 Sep 2016 01:12:05 PM IST
+bash-3.2$ cat producer.c
+/*******************************************************************************
+**Description   : Implementation of Producer Consumer Problem using Semaphoer **
+**                (Producer)                                                  **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 25/08/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include "semProCon.h"
+
+union semaphore
+{
+    int val;
+    struct semid_ds *buf;
+    struct seminfo *_buf;
+    unsigned short *array;
+};
+
+void wait(int sid, short sno)
+{
+    int a;
+    struct sembuf s;
+    s.sem_num = sno;
+    s.sem_op = -1;
+    a = semop(sid,&s,1);
+}
+
+void signal(int sid, short sno)
+{
+    int a;
+    struct sembuf s;
+    s.sem_num = sno;
+    s.sem_op = 1;
+    a = semop(sid,&s,1);
+}
+
+int main()
+{
+    
+    int shmid,stat,semid;
+    union semaphore producer;
+    unsigned short sem[3];
+    int * shm;
+    int i,loop=LIMIT;
+    int num,in=0;
+    key_t key;
+    
+    printf("\nEnter the Key:");
+    scanf("%d",&key);
+    
+    shmid = shmget( key, MEM, 0666 | IPC_CREAT);
+    
+    if( shmid != -1 )
+    {
+        printf("\n\nShared Memory Access is Granted..........\n\n");
+        
+        shm = (int *)shmat(shmid,NULL,0);
+        
+        if(shm > 0)
+        {   
+            semid = semget(SEMKEY,3,0666|IPC_CREAT);
+            
+            if(semid==-1)
+                printf("\nError in creating the semaphore");
+            else
+            {
+            
+                sem[0] = 1;
+                sem[1] = 0;
+                sem[2] = SHMSIZE;
+                producer.array = sem;
+                semctl(semid,0,SETALL,producer);
+                
+                do
+                {
+                    wait(semid,EMPTY);
+                    wait(semid,MUTEX);
+                    
+                    printf("\nEnter the value:");
+                    scanf("%d",&shm[in]);
+                    in = (in + 1)%SHMSIZE;
+                    
+                    signal(semid,MUTEX);
+                    signal(semid,FULL);
+                                        
+                }while(loop--);
+             }
+             
+             if(shmdt(shm)==0)
+                printf("\n\nShared Memory Detached\n\n");
+                
+             else
+                printf("\n\nShared Memory Not Detached\n\n");
+             
+             stat = shmctl(shmid,IPC_RMID,0);
+       
+             if( stat !=-1 )
+                printf("\n\nShared Memory Deleted\n\n");
+             else
+                printf("\n\nShared Memory Not Deleted\n\n");  
+         }
+          else
+            printf("\n\nShared Memory Attachment failed..........\n\n");
+            
+    }
+    else
+        printf("\n\nShared Memory is not Created\n\n");
+        
+         
+}
+bash-3.2$ ./producer
+
+Enter the Key:1002
+
+
+Shared Memory Access is Granted..........
+
+
+Enter the value:5
+
+Enter the value:12
+
+Enter the value:25
+
+Enter the value:45
+
+Enter the value:65
+
+Enter the value:85
+
+Enter the value:99
+
+Enter the value:56
+
+Enter the value:5
+
+Enter the value:122
+
+Enter the value:2
+
+
+Shared Memory Detached
+
+
+
+Shared Memory Deleted
+
+bash-3.2$ exit
+exit
+
+Script done on Thu 29 Sep 2016 01:12:53 PM IST

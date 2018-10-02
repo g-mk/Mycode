@@ -1,0 +1,7 @@
+
+// 100abc 200 300 
+FILE* _ptr = fopen(argv[1],"r");
+yyin = ptr;
+yylex();
+printf("Number of Lines: %d\n",nl);	
+

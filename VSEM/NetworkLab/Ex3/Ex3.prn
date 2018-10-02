@@ -1,0 +1,281 @@
+Script started on Tue 16 Aug 2016 09:45:51 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3$ cat server/Ex3Client.prn
+Script started on Tue 16 Aug 2016 09:44:23 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/server$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include<time.h>
+#include<utmp.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1,choice,flag=1;
+ char *data;
+ time_t rawtime;
+ struct tm *timeinfo;
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      while(flag)
+      {
+        data = (char*)malloc(50*sizeof(char));
+        if((recv(accpt,&choice,sizeof(choice),0))==-1)
+         printf("\n\nData Received Failed\n\n");
+        else
+        {   
+          time ( &rawtime );
+          timeinfo = localtime ( &rawtime );
+          printf("\n\nRequest Received\n\n");
+          switch(choice)
+           {
+             case 1:  printf("\n\nDate\n\n");
+                      sprintf(data,"%02d/%02d/%04d",timeinfo->tm_mday,
+                                timeinfo->tm_mon+1,timeinfo->tm_year+1900);
+                      break;
+             case 2:  printf("\n\nTime\n\n");
+                      sprintf(data,"%02d:%02d:%02d",timeinfo->tm_hour,
+                                 timeinfo->tm_min,timeinfo->tm_sec);
+                      break;
+             case 3:  printf("\n\nDate & Time\n\n");
+                      sprintf(data,"%02d/%02d/%04d  %02d:%02d:%02d",timeinfo->tm_mday,
+                       timeinfo->tm_mon+1,timeinfo->tm_year+1900,timeinfo->tm_hour,
+                      timeinfo->tm_min,timeinfo->tm_sec);
+                      break;
+             case 4:  printf("\n\nExit\n\n");
+                      flag = 0;
+                      strcpy(data,"Thank You");
+                      break;
+             default: strcpy(data,"Request Invalid");
+           }
+          if(send(accpt,data,strlen(data),0)!=-1)
+             printf("\n\nRequest Processed\n\nMessage Send Successfully\n\n");
+          else
+             printf("\n\nMessage Sending Failed\n\n");
+       }
+       free(data);
+      }
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/server$ ./Server
+
+
+Binded
+
+
+
+Request Received
+
+
+
+Date
+
+
+
+Request Processed
+
+Message Send Successfully
+
+
+
+Request Received
+
+
+
+Time
+
+
+
+Request Processed
+
+Message Send Successfully
+
+
+
+Request Received
+
+
+
+Date & Time
+
+
+
+Request Processed
+
+Message Send Successfully
+
+
+
+Request Received
+
+
+
+Exit
+
+
+
+Request Processed
+
+Message Send Successfully
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/server$ exit
+exit
+
+Script done on Tue 16 Aug 2016 09:45:25 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3$ cat client/Ex3Server.prn
+Script started on Tue 16 Aug 2016 09:44:48 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include<time.h>
+#include "hSocket.h"
+int main()
+{
+ int sid,conn,len,opt;
+ char buf[20];
+ struct sockaddr_in sin;
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  printf("\n\nSocket Created\n\n");
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  
+   conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+   if(conn !=-1)
+   {
+    do
+    {
+       printf("\n\nConnection Established\n\n");
+       printf("Request Options\n1.Date\n2.Time\n3.Date & Time\n4.Exit\n");
+       printf("Request: ");
+       scanf("%d",&opt);
+       if((send(sid,&opt,sizeof(opt),0))==-1)
+         printf("\n\nData Transmission Failed\n\n");
+       else
+       {
+         //buf = (char*)malloc(50*sizeof(char));
+         printf("\n\nRequest Transmission Successful\n\n");
+         recv(sid,buf,20,0);
+         printf("Message: %s \n\n",buf);
+         memset(buf,'\0',sizeof(buf));
+         //free(buf);
+       }
+       
+     }while(opt!=4);
+   }
+   else
+    printf("\n\nConnection Not Establishment\n\n");
+ }
+ close(sid);
+ 
+}
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/client$ ./aSoClient
+
+
+Socket Created
+
+
+
+Connection Established
+
+Request Options
+1.Date
+2.Time
+3.Date & Time
+4.Exit
+Request: 1
+
+
+Request Transmission Successful
+
+Message: 16/08/2016@ 
+
+
+
+Connection Established
+
+Request Options
+1.Date
+2.Time
+3.Date & Time
+4.Exit
+Request: 2
+
+
+Request Transmission Successful
+
+Message: 21:45:14 
+
+
+
+Connection Established
+
+Request Options
+1.Date
+2.Time
+3.Date & Time
+4.Exit
+Request: 3
+
+
+Request Transmission Successful
+
+Message: 16/08/2016  21:45:17 
+
+
+
+Connection Established
+
+Request Options
+1.Date
+2.Time
+3.Date & Time
+4.Exit
+Request: 4
+
+
+Request Transmission Successful
+
+Message: Thank You 
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3/client$ exit
+exit
+
+Script done on Tue 16 Aug 2016 09:45:22 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex3$ exit
+exit
+
+Script done on Tue 16 Aug 2016 09:46:59 PM IST

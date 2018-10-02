@@ -1,0 +1,152 @@
+Script started on Mon 03 Apr 2017 10:58:21 AM IST
+bash-3.2$ cat head.txt
+<!--
+Name    : N. Guru Manikandan
+Roll No.: 14BCS068
+Ex No.  : 7
+Date    : 20/03/2017
+-->
+bash-3.2$ cat Ex7.txt
+<!--VoterDTD.dtd-->
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT voter (fname,mname,lname,fathername,dob,age,gender,mobile,email)>
+<!ELEMENT fname (#PCDATA)>
+<!ELEMENT mname (#PCDATA)>
+<!ELEMENT lname (#PCDATA)>
+<!ELEMENT fathername (#PCDATA)>
+<!ELEMENT dob (#PCDATA)>
+<!ELEMENT age (#PCDATA)>
+<!ELEMENT gender (#PCDATA)>
+<!ELEMENT mobile (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ATTLIST voter voterid CDATA #REQUIRED>
+
+<!--VoterXSLT.xsl-->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : VoterXSLT.xsl
+    Created on : 1 April, 2017, 6:01 PM
+    Author     : Guru Manikandan
+    Description:
+        Purpose of transformation follows.
+-->
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output method="html"/>
+    <xsl:template match="/">
+     <html>
+         <head>
+             <title>Voter List</title>
+             <style type="text/css">
+                 tr:hover {
+                     background-color: powderblue;
+                     color: black;
+                     font-style:bold;
+                     transition: .5s;
+                 }
+             </style>
+         </head>
+         <body>
+             <h2 align="center">Senior Citiens</h2>
+             <table align="center" border="1" cellspacing="6px" 
+                     cellpadding="6px">
+                 <header>
+                     <th>Name</th>
+                     <th>Age</th>
+                     <th>Mobile</th>
+                     <th>E-Mail</th>
+                 </header>
+                 <xsl:for-each select = "voters/voter">
+                     <xsl:if test="age >= 20">
+                         <tr>
+                             <td>
+                                 <xsl:value-of select ="fname"/>
+                                 <xsl:value-of select ="mname"/>
+                                 <xsl:value-of select ="lname"/>
+                             </td>
+                             <td>
+                                 <xsl:value-of select ="age"/>
+                             </td>
+                             <td>
+                                 <xsl:value-of select ="mobile"/>
+                             </td>
+                             <td>
+                                 <xsl:value-of select ="email"/>
+                             </td>
+                         </tr>
+                     </xsl:if>
+                 </xsl:for-each>
+             </table>
+         </body>
+     </html>
+    </xsl:template>
+</xsl:stylesheet>
+
+<!--VoterXML.xml-->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type = "text/xsl" href = "VoterXSLT.xsl"?>
+<!DOCTYPE voters SYSTEM "VoterDTD.dtd">
+<voters>
+    <voter voterid="INDVTR1">
+        <fname>Guru</fname>
+        <mname> </mname>
+        <lname>Manikandan N</lname>
+        <fathername>Natarajan P</fathername>
+        <dob>1996-07-30</dob>
+        <age>20</age>
+        <gender>MALE</gender>
+        <mobile>7867062777</mobile>
+        <email>gmk3071996@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Subangan</fname>
+        <mname> </mname>
+        <lname>Rao K M</lname>
+        <fathername>Madava Rao</fathername>
+        <dob>1997-06-26</dob>
+        <age>19</age>
+        <gender>MALE</gender>
+        <mobile>9786453122</mobile>
+        <email>subangan97@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR3">
+        <fname>Senthil</fname>
+        <mname> </mname>
+        <lname>Arumugam</lname>
+        <fathername>Ramalingam</fathername>
+        <dob>1997-02-17</dob>
+        <age>19</age>
+        <gender>MALE</gender>
+        <mobile>9786454587</mobile>
+        <email>senthil@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Prema</fname>
+        <mname> </mname>
+        <lname>N</lname>
+        <fathername>Audaiappan</fathername>
+        <dob>1968-08-13</dob>
+        <age>48</age>
+        <gender>FEMALE</gender>
+        <mobile>7598219527</mobile>
+        <email>prema@gmail.com</email>
+    </voter>
+    <voter voterid="INDVTR2">
+        <fname>Viji</fname>
+        <mname> </mname>
+        <lname>P</lname>
+        <fathername>Ravi</fathername>
+        <dob>1968-05-21</dob>
+        <age>46</age>
+        <gender>FEMALE</gender>
+        <mobile>7594587658</mobile>
+        <email>viji@gmail.com</email>
+    </voter>
+</voters>
+
+bash-3.2$ exit
+exit
+
+Script done on Mon 03 Apr 2017 10:58:33 AM IST

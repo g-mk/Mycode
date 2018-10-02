@@ -1,0 +1,227 @@
+Script started on Wed 12 Apr 2017 12:26:40 PM IST
+bash-3.2$ cat print.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+static int state=0;
+
+typedef struct
+{
+ char input;
+ char startstate;
+ char endstate;
+}trans;
+
+//All states are represented only as numbers like 0,1,2...
+//All inputsymbols are represented as single byte char like a,b,c...
+
+typedef struct
+{
+ int ns,nt,nip;
+ char *states;
+ char *inputsymbols;
+ char startstate;
+ char *finalstates;
+ trans *transitions;
+}E;
+
+typedef struct 
+{
+    E** rel;
+    int size;
+    int top;
+}stack;
+
+void initStack(stack* , int);
+void init(E *r,char input);
+void push(stack *,E*);
+E* pop(stack* s);
+E* orExpression( E* r1, E* r2);
+E* andExpression( E* r1, E* r2);
+#include "hThompsons.h"
+void initStack(stack* s, int n)
+{
+    s->size=n;
+    s->top=-1;
+    s->rel = (E**)malloc(n*sizeof(E*));
+}
+void push(stack* s,E* r)
+{
+    if(s->top<s->size)
+        s->rel[++s->top] = r;
+}
+
+E* pop(stack* s)
+{
+    if(s->top>=0)
+        return s->rel[s->top--];
+}
+void init(E *r,char input)
+{
+  int i;
+  r->ns=2;
+  r->nt=1;
+  r->nip=1;    
+  r->states = (char*)malloc(r->ns*sizeof(char));
+  for(i=0;i<r->ns;i++)
+    r->states[i]=state++;
+  r->inputsymbols = (char*)malloc(sizeof(char));
+  r->inputsymbols[0]=input;
+  r->startstate = r->states[0];
+  r->finalstates = (char*)malloc(sizeof(char));
+  r->finalstates[0]=r->states[1];
+  r->transitions = (trans *) malloc(sizeof(trans));
+  r->transitions->input=input;
+  r->transitions->startstate = r->startstate;
+  r->transitions->endstate = r->finalstates[0];
+}
+
+E* orExpression(E* r1, E* r2)
+{
+    E *r = (E *)malloc(sizeof(E));
+    int i;
+    r->ns= r1->ns + r2->ns + 2;
+    r->nt = r1->nt + r2->nt + 4;
+    r->nip = r1->nip + r2->nip;
+
+    r->states = (char*)malloc(r->ns*sizeof(char));
+    memcpy(r->states,r1->states,r1->ns);
+    memcpy(&r->states[r1->ns],r2->states,r2->ns);
+
+    r->startstate = state++;
+    r->finalstates = (char*)malloc(sizeof(char));
+    r->finalstates[0]=state++;
+
+    r->states[r1->ns+r2->ns] = r->startstate;
+    r->states[r1->ns+r2->ns+1] = r->finalstates[0];
+
+    r->transitions = (trans *) malloc(r->nt*sizeof(trans));
+    memcpy(r->transitions,r1->transitions,sizeof(trans)*r1->nt);
+    memcpy(&r->transitions[r1->nt],r2->transitions,sizeof(trans)*r2->nt);
+    
+    i=r1->nt+r2->nt;
+        
+        r->transitions[i].input = 'e';
+        r->transitions[i].startstate = r->startstate;
+        r->transitions[i].endstate = r1->startstate;
+    
+    i++;
+    
+        r->transitions[i].input = 'e';
+        r->transitions[i].startstate = r->startstate;
+        r->transitions[i].endstate = r2->startstate;
+
+    i++;
+     
+        r->transitions[i].input = 'e';
+        r->transitions[i].startstate = r1->finalstates[0];
+        r->transitions[i].endstate = r->finalstates[0];
+    
+    i++;
+    
+        r->transitions[i].input = 'e';
+        r->transitions[i].startstate = r2->finalstates[0];
+        r->transitions[i].endstate = r->finalstates[0];
+        
+    r->inputsymbols = (char*)malloc(r->nip*sizeof(char));    
+    memcpy(r->inputsymbols,r1->inputsymbols,r1->nip);
+    memcpy(&r->inputsymbols[r1->nip],r2->inputsymbols,r2->nip);    
+    return r;
+    
+}
+
+E* andExpression( E* r1, E* r2)
+{
+    E *r = (E *)malloc(sizeof(E));
+    int i;
+    r->ns= r1->ns + r2->ns;
+    r->nt = r1->nt + r2->nt + 1;
+    r->nip = r1->nip + r2->nip;
+
+    r->states = (char*)malloc(r->ns*sizeof(char));
+    memcpy(r->states,r1->states,r1->ns);
+    memcpy(&r->states[r1->ns],r2->states,r2->ns);
+
+    r->startstate = r1->startstate;
+    r->finalstates = (char*)malloc(sizeof(char));
+    r->finalstates[0]=r2->finalstates[0];
+
+    r->transitions = (trans *) malloc(r->nt*sizeof(trans));
+    memcpy(r->transitions,r1->transitions,sizeof(trans)*r1->nt);
+    memcpy(&r->transitions[r1->nt],r2->transitions,sizeof(trans)*r2->nt);
+    
+    i=r1->nt+r2->nt;
+        
+        r->transitions[i].input = 'e';
+        r->transitions[i].startstate = r1->finalstates[0];
+        r->transitions[i].endstate = r2->startstate;
+      
+    r->inputsymbols = (char*)malloc(r->nip*sizeof(char));    
+    memcpy(r->inputsymbols,r1->inputsymbols,r1->nip);
+    memcpy(&r->inputsymbols[r1->nip],r2->inputsymbols,r2->nip);    
+    
+    return r;
+
+
+}
+#include "hThompsons.h"
+int  main(int count,char *argv[])
+{
+    E* new;
+	int i,len;
+	char exp[20];
+	stack * s = (stack*) malloc(sizeof(stack));
+	printf("Enter the Expression in postfix form: ");
+	scanf("%s", exp);
+	len = strlen(exp);
+	initStack(s,len);	
+	for(i=0;i<len;i++)
+	{
+	    if(exp[i]=='.')
+	    {
+	        E* r2 = pop(s);
+            E* r1 = pop(s);
+            E* r =andExpression(r1,r2);
+            push(s,r);
+	    }
+	    else if(exp[i]=='|')
+	    {
+	        E* r2 = pop(s);
+            E* r1 = pop(s);
+            E* r =orExpression(r1,r2);
+            push(s,r);
+	    }
+	    else 
+	    {
+	        E *n = (E*)malloc(sizeof(E));
+	        init(n,exp[i]);
+	        push(s,n);
+	    }
+	            
+	            
+	}
+	
+	if(s->top==0)
+	{
+	    new = pop(s);
+	    printf("\nNumber of States: %d ",new->ns);
+	    printf("\nInput Symbols: ");
+	    for(i=0;i<new->nip;i++)
+	        printf("%c ",new->inputsymbols[i]);
+	    printf("\nStart State: %d\n",new->startstate);
+	    printf("Final State: %d\n",new->finalstates[0]);
+	    printf("\nTransition: \n");
+	    for(i=0;i<new->nt;i++)
+	    {
+	        printf("\n(%d,%c) = %d\n",new->transitions[i].startstate,
+	                   new->transitions[i].input,new->transitions[i].endstate);
+	    }
+	}
+	else
+	    printf("\nNot a Complete Expression\n");
+	
+}
+bash-3.2$ exit
+exit
+
+Script done on Wed 12 Apr 2017 12:26:48 PM IST

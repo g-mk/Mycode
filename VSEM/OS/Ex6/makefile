@@ -1,0 +1,6 @@
+cpuSchdl: iQueue.o cpuSchdl.o
+	cc -o cpuSchdl iQueue.o cpuSchdl.o
+iQueue.o: iQueue.c
+	cc -c iQueue.c
+cpuSchdl.o: cpuSchdl.c
+	cc -c cpuSchdl.c

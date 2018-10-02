@@ -1,0 +1,191 @@
+Script started on Wed 15 Feb 2017 11:52:28 AM IST
+bash-3.2$ cd Spacerm
+bash-3.2$ cat rmpspace.l
+%{
+#include<stdio.h>
+%}
+%%
+[\t\n ]	;
+.	{
+		ECHO;
+	}
+%%
+main(int argc,char*argv[])
+{
+	FILE *ptr;
+	ptr = fopen(argv[1],"r");
+	yyin = ptr;
+	yylex();
+}
+bash-3.2$ ./rmspace text.txt
+HelloMynameisGurubash-3.2$ cd ..
+bash-3.2$ cd Identify
+bash-3.2$ cat iden.l
+%{
+#include<stdio.h>
+%}
+num [\60-\71]
+alpha   [\101-\132\141-\172]
+%%
+{num}+  {
+            if(yyleng==3)
+              printf("%s is a 3 Digit Number\n",yytext);
+            else
+              printf("%s not a 3 Digit Number\n",yytext);
+        }
+{num}+{alpha}*  {
+            printf("%s is Invalid Identifier\n",yytext);
+}
+
+({alpha}|_)+({alpha}|{num}|_)* {
+					printf("%s is Identifier\n",yytext);
+				}
+.  {
+		printf("%s is invalid\n",yytext);
+	}
+
+%%
+main(int argc,char*argv[])
+{
+	FILE *ptr = fopen(argv[1],"r");
+	yyin = ptr;
+	yylex();
+	fclose(ptr);
+}
+bash-3.2$ ./iden text.txt
+
+/ is invalid
+/ is invalid
+  is invalid
+100abc is Invalid Identifier
+  is invalid
+200 is a 3 Digit Number
+  is invalid
+300 is a 3 Digit Number
+  is invalid
+
+FILE is Identifier
+* is invalid
+  is invalid
+_ptr is Identifier
+  is invalid
+= is invalid
+  is invalid
+fopen is Identifier
+( is invalid
+argv is Identifier
+[ is invalid
+1 not a 3 Digit Number
+] is invalid
+, is invalid
+" is invalid
+r is Identifier
+" is invalid
+) is invalid
+; is invalid
+
+yyin is Identifier
+  is invalid
+= is invalid
+  is invalid
+ptr is Identifier
+; is invalid
+
+yylex is Identifier
+( is invalid
+) is invalid
+; is invalid
+
+printf is Identifier
+( is invalid
+" is invalid
+Number is Identifier
+  is invalid
+of is Identifier
+  is invalid
+Lines is Identifier
+: is invalid
+  is invalid
+% is invalid
+d is Identifier
+\ is invalid
+n is Identifier
+" is invalid
+, is invalid
+nl is Identifier
+) is invalid
+; is invalid
+	 is invalid
+
+
+bash-3.2$ cd ..
+bash-3.2$ cd CountIden
+bash-3.2$ cat count.l
+%{
+#include<stdio.h>
+int nc=0, nw=0,nl=0,iden=0,n=0;
+%}
+num [\60-\71]
+word [^ \t\n]+
+alpha   [\101-\132\141-\172]
+lines [\n]
+%%
+{num}+  {
+            n++;
+            nc+=yyleng;
+            nw++;
+        }
+{alpha}({alpha}|{num})* {
+                    printf("Identifier %s\n",yytext);
+					iden++;
+					nc+=yyleng;
+					nw++;
+				}
+{word}	{
+					nw++;
+					nc+=yyleng;
+				}
+{lines} {
+          nw++;
+          nc+=yyleng;
+          nl++;
+        }
+.	{
+		nc++;
+	}
+%%
+main(int argc, char*argv[])
+{
+    // 100 200 300 
+	FILE *ptr = fopen(argv[1],"r");
+	yyin = ptr;
+	yylex();
+	printf("Number of Lines: %d\n",nl);
+	printf("Number of Words: %d\n",nw-nl);	
+	printf("Number of Character: %d\n",nc);
+	printf("Number of Identifiers: %d\n",iden);
+	printf("Number of Constant: %d\n",n);		
+}
+
+bash-3.2$ ./count count.l
+Identifier int
+Identifier num
+Identifier word
+Identifier alpha
+Identifier lines
+Identifier FILE
+Identifier yyin
+Identifier of
+Identifier of
+Identifier of
+Identifier of
+Identifier of
+Number of Lines: 46
+Number of Words: 83
+Number of Character: 783
+Number of Identifiers: 12
+Number of Constant: 3
+bash-3.2$ exit
+exit
+
+Script done on Wed 15 Feb 2017 11:54:01 AM IST

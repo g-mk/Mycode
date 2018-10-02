@@ -1,0 +1,209 @@
+Script started on Wed 27 Jul 2016 11:18:12 AM IST
+bash-3.2$ cat Ex1ds.prn
+Script started on Wed 20 Jul 2016 11:39:12 AM IST
+bash-3.2$ cat hsender.h
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+int* calculate_checksum(int a[],int b[]);
+bash-3.2$ cat isender.c
+#include"hsender.h"
+int* calculate_checksum(int a[],int b[])
+{
+ int j,i,a_dec=0,b_dec=0,c_dec,*res;
+
+ res=(int*) malloc (sizeof(int)*8);
+  printf("\n1\n");
+ for(i=7;i>=0;i--)
+ {
+   a_dec+=a[i]*pow(2,j);
+   b_dec+=b[i]*pow(2,j);
+   j++;
+ }
+ printf("\n2\n");
+ c_dec=a_dec+b_dec;
+
+for(i=0;c_dec!=1;i++)
+ {
+   res[i]=(c_dec%2);
+   c_dec=c_dec/2;
+ }
+  printf("\n3\n");
+ if(c_dec==1)
+   res[i]=1;
+ printf("\n4\n");
+ for(j=0;j<=i;j++)
+ {
+   if(res[j]==1)
+     res[j]=0;
+   else
+     res[j]=1;
+ }
+  printf("\n5\n");
+
+ return res;
+}
+bash-3.2$ cat asender.c
+#include"hsender.h"
+main()
+{
+ int j=0,a[8],b[8],*res,i;
+
+ res=(int*) malloc (sizeof(int)*8);
+ printf("\nEnter the first 8 bits: ");
+ for(i=0;i<8;i++)
+   scanf("%d",&a[i]);
+
+ printf("\nEnter the second 8 bits: ");
+ for(i=0;i<8;i++)
+   scanf("%d",&b[i]);
+
+
+ printf("\nThe data to be transmitted is: \n");
+ for(i=0;i<8;i++)
+  printf(" %d",a[i]);
+  printf("\n");
+
+ for(i=0;i<8;i++)
+  printf(" %d",b[i]);
+ printf("\n");
+
+ res=calculate_checksum(a,b); 
+
+ printf("\nCheck Sum: ");
+ for(i=7;i>=0;i--)
+ {
+   printf(" %d",res[i]);
+ }
+ printf("\n");
+ free(res);
+}
+bash-3.2$ ./csSender
+Enter the Number of bits to be transmitted: 16
+Enter the Data
+
+1 0 1 1 0 1 1 0
+1 1 0 1 1 1 1 1
+
+Sender Data: 1 0 1 1 0 1 1 0 1 1 0 1 1 1 1 1 
+
+Check Sum: 0 1 1 0 1 0 1 0 
+
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 11:40:05 AM IST
+bash-3.2$ cat Ex1dr.prn
+Script started on Wed 20 Jul 2016 11:55:37 AM IST
+bash-3.2$ cat hreceiver.h
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+int* calculate_checksum(int a[],int b[]);
+bash-3.2$ cat ireceiver.c
+#include"hsender.h"
+int* calculate_checksum(int a[],int b[])
+{
+ int j,i,a_dec=0,b_dec=0,c_dec,*res;
+
+ res=(int*) malloc (sizeof(int)*8);
+  printf("\n1\n");
+ for(i=7;i>=0;i--)
+ {
+   a_dec+=a[i]*pow(2,j);
+   b_dec+=b[i]*pow(2,j);
+   j++;
+ }
+ printf("\n2\n");
+ c_dec=a_dec+b_dec;
+
+for(i=0;c_dec!=1;i++)
+ {
+   res[i]=(c_dec%2);
+   c_dec=c_dec/2;
+ }
+  printf("\n3\n");
+ if(c_dec==1)
+   res[i]=1;
+ printf("\n4\n");
+ for(j=0;j<=i;j++)
+ {
+   if(res[j]==1)
+     res[j]=0;
+   else
+     res[j]=1;
+ }
+  printf("\n5\n");
+
+ return res;
+}
+bash-3.2$ cat areceiver.c
+#include"hsender.h"
+main()
+{
+ int j=0,a[8],b[8],*res,i;
+
+ res=(int*) malloc (sizeof(int)*8);
+ printf("\nEnter the first 8 bits: ");
+ for(i=0;i<8;i++)
+   scanf("%d",&a[i]);
+
+ printf("\nEnter the second 8 bits: ");
+ for(i=0;i<8;i++)
+   scanf("%d",&b[i]);
+
+
+ printf("\nThe data to be transmitted is: \n");
+ for(i=0;i<8;i++)
+  printf(" %d",a[i]);
+  printf("\n");
+
+ for(i=0;i<8;i++)
+  printf(" %d",b[i]);
+ printf("\n");
+
+ res=calculate_checksum(a,b); 
+
+ for(i=7;i>=0;i--)
+ {
+  if(res[i]!=0)
+    break;
+ }
+ if(i==-1)
+  printf("\nData is Correct\n");
+ else
+  printf("\nData is Incorrect\n");
+ free(res);
+}
+bash-3.2$ ./csReceiver
+bash: ./csReceiver: No such file or directory
+bash-3.2$ ./csReceive
+Enter the Number of bits to be transmitted: 24
+Enter the Data
+
+1 0 1 1 0 1 1 0
+1 1 0 1 1 1 1 1
+0 1 1 0 1 0 1 0
+Received Data: 1 0 1 1 0 1 1 0 1 1 0 1 1 1 1 1 
+
+Received data is Correct
+
+bash-3.2$ ./csReceive
+Enter the Number of bits to be transmitted: 24
+Enter the Data
+
+1 0 1 1 0 1 1 0
+1 1 0 1 1 1 1 1
+0 0 1 0 1 0 1 0
+Received Data: 1 0 1 1 0 1 1 0 1 1 0 1 1 1 1 1 
+
+Received data is InCorrect
+
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 11:57:47 AM IST
+bash-3.2$ exit
+exit
+
+Script done on Wed 27 Jul 2016 11:18:30 AM IST

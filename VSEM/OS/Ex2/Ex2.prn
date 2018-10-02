@@ -1,0 +1,198 @@
+Script started on Thu 18 Aug 2016 12:01:45 AM IST
+bash-3.2$ cat childmap.c
+/*******************************************************************************
+**Description   : Creating a Process Hierachy using the fork() system call.   **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 14/07/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include<stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+void main()
+{
+   pid_t p2,p3,p4,p5,p6;   
+      if((p2=fork())==0)
+         {
+            printf("Process 2 Id : %d Parent Id: %d\n\n",getpid(),getppid());
+            if((p5=fork())==0)
+            {
+               printf("Process 5 Id : %d Parent Id; %d\n\n",getpid(),getppid());
+            }
+            else
+             {
+               if((p6=fork())==0)
+                {
+                 printf("Process 6 Id : %d Parent Id: %d\n\n",getpid(),getppid());
+                }
+             } 
+          }
+       else
+        {
+          printf("Process 1 Id : %d Parent Id: %d\n\n",getpid(),getppid());
+          if((p3=fork())==0)
+          {
+            if((p4=fork())==0)
+             printf("Process 4 Id : %d Parent Id: %d\n\n",getpid(),getppid());
+            else
+             printf("Process 3 Id : %d Parent Id: %d\n\n",getpid(),getppid());
+          }
+         
+        }         
+
+}  
+
+bash-3.2$ ./process
+Process 2 Id : 8478 Parent Id: 8477
+
+Process 5 Id : 8479 Parent Id; 8478
+
+Process 6 Id : 8480 Parent Id: 8478
+
+Process 1 Id : 8477 Parent Id: 8472
+
+Process 4 Id : 8482 Parent Id: 8481
+
+Process 3 Id : 8481 Parent Id: 8477
+
+bash-3.2$ cat oddeven.c
+/*******************************************************************************
+**Description   : Generating the 'n' odd and even numbers in separate process **
+**                using the fork() system call.                               **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         ** 
+*******************************************************************************/
+#include<stdio.h>
+#include<unistd.h>
+void main()
+{
+   pid_t p1;
+   int odd=1,even=0,count,count1;
+   printf("Enter the number of odd and even numbers to display: ");
+   scanf("%d",&count);
+   count1 = count;
+   p1 = fork();
+   if(p1==0)
+   {
+      printf("Child Process\n\n");
+      while(count)
+      {
+         printf("%d ",odd+=2);
+         count--;
+       }
+      printf("\n");
+   }
+   else
+   {
+      printf("Parent Process\n\n");
+      while(count1)
+      {
+         printf("%d ",even+=2);
+         count1--;
+       }
+       printf("\n\n");
+   }
+}
+bash-3.2$ ./oddeven
+Enter the number of odd and even numbers to display: 6
+Child Process
+
+3 5 7 9 11 13 
+Parent Process
+
+2 4 6 8 10 12 
+
+bash-3.2$ cat smallsum.c
+/******************************************************************************
+**Description   : Finding the smallest number in even position and sum of all**
+**                the number in the odd position in two different process    **
+**                using the fork() system call.                              **
+**Author        : N. Guru Manikandan.                                        **
+**Date Created  : 30/06/2016.                                                **
+**Version       : 0.1                                                        **
+******************************************************************************/
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+void main()
+{
+   int *array,size,loop,it,sum=0,small;
+   pid_t id;
+   printf("Enter the array size: ");
+   scanf("%d",&size);
+   array = (int *)malloc(sizeof(int)*size);
+   for(loop=0;loop<size;loop++)
+   {
+      printf("Ente the element %d: ",loop+1);
+      scanf("%d",&array[loop]);
+   }
+   
+   id = fork();
+   if(id==0)
+   {
+      printf("\n\nChild Process\n\n");
+      for(loop=0;loop<size;loop++)
+       if(loop%2==0)
+         sum+=array[loop];
+      printf("Sum of odd place number: %d\n\n",sum);
+   }
+   else
+   {
+      printf("\n\nParent Process\n\n");
+      small = array[1];
+      for(it=2;it<size;it++)
+      {
+         if(it%2==1)
+         {
+            if(array[it]<small)
+               small=array[loop];
+         }
+      }
+      printf("Smallest number in the even position is %d\n\n",small);
+   }      
+}
+
+bash-3.2$ ./smallsum
+Enter the array size: 6
+Ente the element 1: 2
+Ente the element 2: -1
+Ente the element 3: 2
+Ente the element 4: 5
+Ente the element 5: 6
+Ente the element 6: 1
+
+
+Child Process
+
+Sum of odd place number: 10
+
+
+
+Parent Process
+
+Smallest number in the even position is -1
+
+bash-3.2$ cat execDate.c
+/*******************************************************************************
+**Description   : Executing a new Process/Program using the execv()           **
+**                system call.                                                **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 14/07/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <stdio.h>
+#include <unistd.h>
+void main(int argc,char* argv[])
+{
+   int flag;
+    flag = execv("/bin/date",argv);
+    if(flag<0)
+      printf("\nCommand Not Found \n");
+}
+bash-3.2$ ./Date
+Thu Aug 18 00:04:19 IST 2016
+bash-3.2$ exit
+exit
+
+Script done on Thu 18 Aug 2016 12:04:23 AM IST

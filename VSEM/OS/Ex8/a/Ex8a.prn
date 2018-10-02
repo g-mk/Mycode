@@ -1,0 +1,400 @@
+Script started on Thu 29 Sep 2016 01:16:08 PM IST
+bash-3.2$ cat memAlloc.c
+/*******************************************************************************
+**Description   : Implementation of the contegious memory allocation          **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 01/09/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#define ASCEND 1
+#define DESCEND 2
+
+typedef struct{
+    int stat;
+    int size;
+    int number;
+}mem;
+
+mem* copy(mem t[],int n)
+{
+    mem* temp = (mem*) malloc(n*sizeof(mem));
+    int i;
+    
+    for(i=0;i<n;i++)
+        temp[i] = t[i];
+    
+    return temp;
+}
+
+void swap(mem *p1,mem *p2 )
+{
+    mem temp = *p1;
+    *p1 = *p2;
+    *p2 = temp;
+}
+
+void sort(mem *temp,int size,int flag)
+{
+    int i,j;
+    for(i=0;i<size;i++)
+    {
+        for(j=i+1;j<size;j++)
+        {
+            switch(flag)
+            {
+                case ASCEND :
+                      if(temp[i].size>temp[j].size)
+                        swap(&temp[i],&temp[j]);
+                      break;
+                case DESCEND:
+                      if(temp[i].size<temp[j].size)
+                        swap(&temp[i],&temp[j]);
+                      break;
+            }
+        }
+    }
+}
+
+void firstFit(mem process[],mem holes[],int pSize,int hSize)
+{
+    
+    int i,j=0,flag=1;
+    int internal=0,external=0;
+    
+    printf("\n\n********************First Fit****************************\n\n");    
+    printf("\n\n**************Process to Memory Allocation***************\n\n");
+    for(i=0;i<pSize;i++)
+    {
+        for(j=0; (j<hSize) && (process[i].stat!=1) ;j++)
+        {
+            if( (holes[j].stat==0) && (process[i].size<holes[j].size) )
+            {
+                printf("\nProcess %d -> Hole %d \n",process[i].number,holes[j].number);
+                process[i].stat = holes[j].stat = 1;
+                holes[j].size = holes[j].size - process[i].size;
+            }
+        }
+    
+    }
+    
+    
+    printf("\n\n****************Unallocated Process**********************\n\n");
+    
+    for(i=0;i<pSize;i++)
+    {
+        if(process[i].stat==0)
+        {
+            printf("\nProcess %d \n",i+1);
+            flag = 0;
+        }
+    }
+    
+    if(flag)
+        printf("\nNo Process are left Unallocated\n");
+    for(i=0;i<hSize;i++)
+    {
+        if(holes[i].stat==0)
+            external += holes[i].size;
+        else if(holes[i].stat==1)
+            internal += holes[i].size;
+    }
+    
+    printf("\nTotal Internal Fragments %d\n",internal);
+    printf("\nTotal External Fragments %d\n",external);
+
+}
+
+void bestFit(mem process[],mem holes[],int pSize,int hSize)
+{
+    int i,j=0,flag = 1;
+    int internal=0,external=0;
+    
+    printf("\n\n********************Best Fit****************************\n\n");    
+    
+    sort(holes,hSize,ASCEND);
+    
+    printf("\n\n**************Process to Memory Allocation***************\n\n");
+    for(i=0;i<pSize;i++)
+    {
+        for(j=0; (j<hSize) && (process[i].stat!=1) ;j++)
+        {
+            if( (holes[j].stat==0) && (process[i].size<holes[j].size) )
+            {
+                printf("\nProcess %d -> Hole %d \n",process[i].number,holes[j].number);
+                process[i].stat = holes[j].stat = 1;
+                holes[j].size = holes[j].size - process[i].size;
+            }
+        }
+    
+    }
+    
+    
+    printf("\n\n****************Unallocated Process**********************\n\n");
+    
+    for(i=0;i<pSize;i++)
+    {
+        if(process[i].stat==0)
+        {
+            printf("\nProcess %d \n",i+1);
+            flag = 0;
+        }
+    }
+    
+    if(flag)
+        printf("\nNo Process are left Unallocated\n");
+    for(i=0;i<hSize;i++)
+    {
+        if(holes[i].stat==0)
+            external += holes[i].size;
+        else if(holes[i].stat==1)
+            internal += holes[i].size;
+    }
+    
+    printf("\nTotal Internal Fragments %d\n",internal);
+    printf("\nTotal External Fragments %d\n",external);
+
+}
+
+void worstFit(mem process[],mem holes[],int pSize,int hSize)
+{
+    int i,j=0,flag = 1;
+    int internal=0,external=0;
+    
+    printf("\n\n********************Worst Fit****************************\n\n");    
+    
+    sort(holes,hSize,DESCEND);
+    
+    printf("\n\n**************Process to Memory Allocation***************\n\n");
+    for(i=0;i<pSize;i++)
+    {
+        for(j=0; (j<hSize) && (process[i].stat!=1) ;j++)
+        {
+            if( (holes[j].stat==0) && (process[i].size<holes[j].size) )
+            {
+                printf("\nProcess %d -> Hole %d \n",process[i].number,holes[j].number);
+                process[i].stat = holes[j].stat = 1;
+                holes[j].size = holes[j].size - process[i].size;
+            }
+        }
+    
+    }
+    
+    
+    printf("\n\n****************Unallocated Process**********************\n\n");
+    
+    for(i=0;i<pSize;i++)
+    {
+        if(process[i].stat==0)
+        {
+            printf("\nProcess %d \n",i+1);
+            flag = 0;
+        }
+    }
+    
+    if(flag)
+        printf("\nNo Process are left Unallocated\n");
+        
+    for(i=0;i<hSize;i++)
+    {
+        if(holes[i].stat==0)
+            external += holes[i].size;
+        else if(holes[i].stat==1)
+            internal += holes[i].size;
+    }
+    
+    printf("\nTotal Internal Fragments %d\n",internal);
+    printf("\nTotal External Fragments %d\n",external);
+
+}
+int main()
+{
+    mem *process,*holes,*pTemp,*hTemp;
+    int pSize,hSize;
+    int loop,choice;
+    
+    printf("Enter the Number of Process:");
+    scanf("%d",&pSize);
+    printf("Enter the Number of Holes: ");
+    scanf("%d",&hSize);
+    
+    process = (mem *) malloc(pSize*sizeof(mem));
+    holes = (mem *) malloc(hSize*sizeof(mem));    
+
+    printf("\nEnter the Process size\n");
+    
+    for(loop=0;loop<pSize;loop++)
+    {
+        printf("Process %d Size:",loop+1);
+        scanf("%d",&process[loop].size);
+        process[loop].number = loop+1;
+    }
+    
+    printf("\nEnter the Holes size\n");
+    
+    for(loop=0;loop<hSize;loop++)
+    {
+        printf("Hole %d Size:",loop+1);
+        scanf("%d",&holes[loop].size);
+        holes[loop].number = loop+1;
+    }
+    
+    do
+    {
+        printf("\n\nAlgorithm\n1)First Fit\n2)Best Fit\n3)Worst Fit\n4)Exit\n");
+        printf("\nEnter the Choice for Allocation Process:" );
+        scanf("%d",&choice);
+        
+        pTemp = copy(process,pSize);
+        hTemp = copy(holes,hSize);
+        
+        switch(choice)
+        {
+            case 1: firstFit(pTemp,hTemp,pSize,hSize);
+                    break;
+            case 2: bestFit(pTemp,hTemp,pSize,hSize);   
+                    break;
+            case 3: worstFit(pTemp,hTemp,pSize,hSize);
+                    break;
+            case 4: printf("\nContiguous Memory Alloction Ended\n");
+        }
+    }while(choice!=4);
+    
+    free(process);
+    free(holes);
+    free(pTemp);
+    free(hTemp);
+}
+bash-3.2$ ./memAlloc
+Enter the Number of Process:4
+Enter the Number of Holes: 5
+
+Enter the Process size
+Process 1 Size:125
+Process 2 Size:255
+Process 3 Size:346
+Process 4 Size:75
+
+Enter the Holes size
+Hole 1 Size:400
+Hole 2 Size:100
+Hole 3 Size:350
+Hole 4 Size:270
+Hole 5 Size:210
+
+
+Algorithm
+1)First Fit
+2)Best Fit
+3)Worst Fit
+4)Exit
+
+Enter the Choice for Allocation Process:1
+
+
+********************First Fit****************************
+
+
+
+**************Process to Memory Allocation***************
+
+
+Process 1 -> Hole 1 
+
+Process 2 -> Hole 3 
+
+Process 4 -> Hole 2 
+
+
+****************Unallocated Process**********************
+
+
+Process 3 
+
+Total Internal Fragments 395
+
+Total External Fragments 480
+
+
+Algorithm
+1)First Fit
+2)Best Fit
+3)Worst Fit
+4)Exit
+
+Enter the Choice for Allocation Process:2
+
+
+********************Best Fit****************************
+
+
+
+**************Process to Memory Allocation***************
+
+
+Process 1 -> Hole 5 
+
+Process 2 -> Hole 4 
+
+Process 3 -> Hole 3 
+
+Process 4 -> Hole 2 
+
+
+****************Unallocated Process**********************
+
+
+No Process are left Unallocated
+
+Total Internal Fragments 129
+
+Total External Fragments 400
+
+
+Algorithm
+1)First Fit
+2)Best Fit
+3)Worst Fit
+4)Exit
+
+Enter the Choice for Allocation Process:3
+
+
+********************Worst Fit****************************
+
+
+
+**************Process to Memory Allocation***************
+
+
+Process 1 -> Hole 1 
+
+Process 2 -> Hole 3 
+
+Process 4 -> Hole 4 
+
+
+****************Unallocated Process**********************
+
+
+Process 3 
+
+Total Internal Fragments 565
+
+Total External Fragments 310
+
+
+Algorithm
+1)First Fit
+2)Best Fit
+3)Worst Fit
+4)Exit
+
+Enter the Choice for Allocation Process:4
+
+Contiguous Memory Alloction Ended
+bash-3.2$ exit
+exit
+
+Script done on Thu 29 Sep 2016 01:16:50 PM IST

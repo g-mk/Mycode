@@ -1,0 +1,2 @@
+http://ss64.com/bash/syntax-keyboard.html
+https://www-xray.ast.cam.ac.uk/~jss/lecture/computing/notes/out/commands_basic/

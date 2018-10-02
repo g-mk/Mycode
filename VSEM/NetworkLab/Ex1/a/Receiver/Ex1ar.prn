@@ -1,0 +1,49 @@
+Script started on Wed 20 Jul 2016 10:35:07 AM IST
+bash-3.2$ cat hSBP.h
+#include<stdio.h>
+#include<stdlib.h>
+int parityCheck(int size);
+bash-3.2$ cat iSBP.c
+#include"hSBP.h"
+int ParityCheck(int size)
+{
+ int *data;
+ int count=0,loop,parity;
+ data = (int*)malloc(sizeof(int)*size+1);
+ for(loop=0;loop<size;loop++)
+  {
+   scanf("%d",&data[loop]);
+     count+=data[loop];
+  }
+  parity = count%2;
+ return parity;
+}
+
+bash-3.2$ cat aSBP.c
+#include<stdio.h>
+main()
+{
+ int *data;
+ int size,count=0,loop,parity;
+ printf("Enter the number of bits to be received: ");
+ scanf("%d",&size);
+	parity = ParityCheck(size);
+ if(parity==0)
+  printf("\nNo Error in the data\n");
+ else
+  printf("\nSingle Bit Error is Detected\n");
+}
+bash-3.2$ ./SBP
+Enter the number of bits to be received: 9
+1 0 1 1 0 1 0 1 0
+
+Single Bit Error is Detected
+bash-3.2$ ./SBP
+Enter the number of bits to be received: 9
+1 0 1 1 1 1 0 1 0
+
+No Error in the data
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 10:36:06 AM IST

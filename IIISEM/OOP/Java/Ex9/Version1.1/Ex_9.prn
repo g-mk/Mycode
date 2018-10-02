@@ -1,0 +1,561 @@
+Script started on Fri 23 Oct 2015 12:41:00 PM IST
+bash-3.2$ cat Name.txt
+*******************************************************************
+Name    : N.Guru Manikandan                    Roll No.:14BCS068
+Year    : II                                   SEC     : 'B'
+Ex No.  : 9                                    Date    : 07/10/2015
+Heading : Package Creation and Java Documentation.
+*******************************************************************
+
+bash-3.2$ mkdir payroll
+bash-3.2$ ls payroll/
+CDate.java  CEmployee.java
+bash-3.2$ cat payroll/CDate.java
+package payroll;
+import java.io.*;
+import java.util.*;
+/**
+ * This Class describes the Date field of CEmployee
+ * @author Guru Manikandan
+ */
+public class CDate implements Cloneable
+ {
+    /**
+     * Default Constructor to allocate and assign default value
+     */
+  public CDate()
+  {
+      m_nDate=0;
+      m_nMonth=0;
+      m_nYear=0;
+  }
+  /**
+   * Parametarized Constructor to assign the values given by the user
+   * @param nDate Date of Birth
+   * @param nMonth Month of Birth
+   * @param nYear  Year of Birth
+   */
+  public CDate(int nDate,int nMonth,int nYear)
+  {
+      m_nDate=nDate;
+      m_nMonth=nMonth;
+      m_nYear=nYear;
+  }
+  /**
+   * Set the Date of Birth
+   * @param nDate Birth Date
+   */
+  public void setDate(int nDate)
+  {
+   m_nDate = nDate;
+  }
+  /**
+   * Set the Month
+   * @param nMonth Birth Month
+   */
+  public void setMonth(int nMonth)
+  {
+   m_nMonth = nMonth;
+  }
+  /**
+   * Set the Year
+   * @param nYear Year of Birth
+   */
+  public void setYear(int nYear)
+  {
+   m_nYear = nYear;
+  }
+  /**
+   * Gets the Date
+   * @return m_nDate
+   */
+ public int getDate()
+  {
+   return m_nDate;
+  }
+/**
+ * Gets the Month
+ * @return m_nMonth
+ */
+  public int getMonth()
+  {
+   return m_nMonth;
+  }
+/**
+ * Gets the Year
+ * @return m_nYear
+ */
+  public int getYear()
+  {
+   return m_nYear;
+  }
+  /**
+   * This Method is to Clone the Object
+   * @return Object
+   * @throws CloneNotSupportedException Exception Handling for Cloning
+   */
+   public Object clone()throws CloneNotSupportedException
+   {
+     return super.clone();
+   }
+
+  private int m_nDate;
+  private int m_nMonth;
+  private int m_nYear;
+ }
+bash-3.2$ cat payroll/CEmployee.java
+package payroll;
+import java.io.*;
+import java.util.*;
+/**
+ * This Class describes the Employee details
+ * @author Guru Manikandan
+ */
+public class CEmployee implements Cloneable
+ {
+    /**
+     * Default Constructor to allocate memory
+     */
+   public CEmployee()
+   {
+     m_sName =" ";
+     m_nSalary = 0;
+     m_nAadharNo = m_nAssignAadhar++;
+     m_nDOB = new CDate();
+   }
+   /**
+    * Parametarized Constructor to assign the give values
+    * @param sName Name of the Employee
+    * @param nDate Birth Date of the Employee
+    * @param nMonth Birth Month of the Employee
+    * @param nYear  Birth Year of the Employee
+    */
+   public CEmployee(String sName,int nDate,int nMonth,int nYear)
+   {
+
+     m_sName = sName;
+     m_nSalary = 0;
+     m_nAadharNo=m_nAssignAadhar++;
+     m_nDOB = new CDate(nDate,nMonth,nYear);
+
+   }
+   /**
+    * Clone Function to create a copy of the Object of class CEmployee
+    * @return CEmployee Object
+    * @throws CloneNotSupportedException Exception Handling for Cloning
+    */
+   public CEmployee clone()throws CloneNotSupportedException
+   {
+     CEmployee emp=(CEmployee)super.clone();
+     try
+     {
+     emp.m_nDOB=(CDate)m_nDOB.clone();
+     }
+     catch (CloneNotSupportedException exp)
+     {
+     }
+     return emp;
+   }
+/**
+ * Method to Calculate the Salary of the Employee
+ * @param nType Indicates the Category of the Employee
+ * @param nSalary One Day/Hour Salary of the Employee
+ * @param nWork No of. Days/Hours the Employee Worked
+ * @return 1 or -1
+ */
+   public int calculateWages(int nType,int nSalary,int nWork)
+    {
+      int nCMonth;
+      GregorianCalendar Cal = new GregorianCalendar();
+      nCMonth = Cal.get(Calendar.MONTH)+1;
+      switch(nType)
+      {
+       case 1:
+           m_nSalary = nSalary*nWork;
+           if(m_nDOB.getMonth()== nCMonth)
+             m_nSalary += m_nBonus;
+           break;
+       case 2:
+           if(nWork>208)
+             m_nSalary = nSalary*208 + m_nOTAmount * (nWork-208);
+           else
+             m_nSalary = nSalary * nWork;
+           break;
+       default:
+           return -1;
+      }
+     return 1;
+    }
+   /**
+    * To get the Employee details from the user
+    */
+   public void getDetails()
+   {
+    int nDob;
+    Scanner in = new Scanner(System.in);
+    System.out.printf("\nName:");
+    m_sName=in.next();
+    System.out.println("\nAadhar Number: "+ m_nAadharNo);
+    System.out.printf("\nDate of Birth"+"\n\n"+"Date:");
+    nDob=in.nextInt();
+    m_nDOB.setDate(nDob);
+    System.out.printf("\nMonth:");
+    nDob=in.nextInt();
+    m_nDOB.setMonth(nDob);
+    System.out.printf("\nYear:");
+    nDob=in.nextInt();
+    m_nDOB.setYear(nDob);
+    m_nSalary = 0;
+   }
+   /**
+    * Method to Display the Employee Details
+    */
+   public void displayDetails()
+   {
+     System.out.println("Name "+ m_sName);
+     System.out.println("Aadhar No: "+m_nAadharNo);
+     System.out.println("Salary: "+ m_nSalary);
+   }
+   /**
+ * Static Function to set Bonus Amount
+ * @param nBonus Bonus Amount
+ */
+   public static void setBonus(int nBonus)
+   {
+    m_nBonus = nBonus;
+   }
+   /**
+    * Static Function to set Over Time Amount
+    * @param nOT Over Time Amount
+    */
+   public static void setOTAmount(int nOT)
+   {
+    m_nOTAmount = nOT;
+   }
+   private String m_sName;
+   private int m_nSalary;
+   private int m_nAadharNo;
+   private CDate m_nDOB;
+   private static int m_nBonus;
+   private static int m_nOTAmount;
+   private static int m_nAssignAadhar=1001;
+ }
+bash-3.2$ mkdir payrollmanagement/
+bash-3.2$ ls payrollmanagement/
+CPayRollManagement.java
+bash-3.2$ cat payrollmanagement/CPayRollManagement.java
+package payrollmanagement;
+import payroll.*;
+import java.io.*;
+import java.util.*;
+/**
+ * <h1>Pay Roll Management</h1>
+ * <p><em>To Calculate the Salary for the Employee using package</em>
+ * @author Guru Manikandan
+ */
+public class CPayRollManagement
+{
+    /**
+     * To Implement the Pay Roll Management System (Main Function)
+     * @param args Comment Line Argument Varible
+     */
+ public static void main(String args[])
+  {
+   int nCondition=0;
+   int nCategory;
+   int nWork;
+   String sName;
+   int nMonth;
+   int nSalary;
+   int nDate;
+   int nYear;
+   int nBonus;
+   int nEmployee;
+   int nLoop=0;
+   Scanner input = new Scanner(System.in);
+   System.out.printf("\nEnter the Birthday Bonus Amount: ");
+   nBonus = input.nextInt();
+   CEmployee.setBonus(nBonus);
+   System.out.printf("\nEnter the OT Amount: ");
+   nBonus = input.nextInt();
+   CEmployee.setOTAmount(nBonus);
+   System.out.printf("\nEnter the No. of Employee:");
+   nEmployee=input.nextInt();
+   CEmployee []emp=new CEmployee[nEmployee];
+   do
+   {
+    System.out.println("\n***********************Default Constructor**********************\n");
+    emp[nLoop] = new CEmployee();
+    System.out.println("Enter the Category to which the Employee belong to....\n");
+    System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+    System.out.printf("Category:");
+    nCategory = input.nextInt();
+    emp[nLoop].getDetails();
+    switch(nCategory)
+    {
+     case 1:
+            System.out.printf("\nEnter the Basic Pay for the Employee:");
+            nSalary = input.nextInt();
+            System.out.printf("\nEnter the No. of days the Employee Worked:");
+            nWork = input.nextInt();
+            nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+            break;
+     case 2:
+            System.out.println("\nEnter the Basic Pay for the Employee:");
+            nSalary = input.nextInt();
+            System.out.println("\nEnter the No. of Hours the Employee Worked:");
+            nWork = input.nextInt();
+            nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+            break;
+     default:
+            System.out.println("******************There is no such Category***************");
+    }
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+    if(++nLoop<nEmployee)
+    {
+     System.out.println("\n***********************Parametarized Constructor**********************\n");
+     System.out.println("\nEnter the Category to which the Employee belong to.... \n");
+     System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+     System.out.printf("Category:");
+     nCategory = input.nextInt();
+     System.out.printf("\nName:");
+     sName=input.next();
+     System.out.printf("\nDate of Birth"+"\n\n"+"Date:");
+     nDate = input.nextInt();
+     System.out.printf("\nMonth:");
+     nMonth = input.nextInt();
+     System.out.printf("\nYear:");
+     nYear = input.nextInt();
+     emp[nLoop]= new CEmployee(sName,nDate,nMonth,nYear);
+     switch(nCategory)
+     {
+      case 1:
+             System.out.printf("\nEnter the Basic Pay for the Employee:");
+             nSalary = input.nextInt();
+             System.out.printf("\nEnter the No. of days the Employee Worked:");
+             nWork = input.nextInt();
+             nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+             break;
+      case 2:
+             System.out.printf("\nEnter the Basic Pay for the Employee:");
+             nSalary = input.nextInt();
+             System.out.printf("\nEnter the No. of Hours the Employee Worked:");
+             nWork = input.nextInt();
+             nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+             break;
+      default:
+             System.out.println("******************There is no such Category***************");
+     }
+    }
+    else
+     break;
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+    if(++nLoop<nEmployee)
+    {
+     System.out.println("\n***********************Cloning**********************\n");
+     try
+     {
+      System.out.println("Previous Employee Details has been copied");
+      emp[nLoop] = emp[nLoop-1].clone();
+      System.out.println("Enter the Category to which the Employee belong to....\n ");
+      System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+      System.out.printf("Category:");
+      nCategory = input.nextInt();
+      switch(nCategory)
+      {
+       case 1:
+              System.out.printf("\nEnter the Basic Pay for the Employee:");
+              nSalary = input.nextInt();
+              System.out.printf("\nEnter the No. of days the Employee Worked:");
+              nWork = input.nextInt();
+              nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+              break;
+       case 2:
+              System.out.printf("\nEnter the Basic Pay for the Employee:");
+              nSalary = input.nextInt();
+              System.out.printf("\nEnter the No. of Hours the Employee Worked:");
+              nWork = input.nextInt();
+              nCondition=emp[nLoop].calculateWages(nCategory,nSalary,nWork);
+              break;
+       default:
+              System.out.println("******************There is no such Category***************");
+      }
+     }
+     catch(CloneNotSupportedException exp)
+     {
+       System.out.println("Clone not Created");
+     }
+    }
+    else
+     break;
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+   }while(++nLoop<nEmployee);
+  System.out.println("Employee Details:");
+  for(CEmployee employee : emp)
+   {
+    employee.displayDetails();
+   }
+   System.out.println("********************Thank You******************");
+  }
+ }
+
+bash-3.2$ mkdir class
+bash-3.2$ javac -d class payrollmanagement/CPayRollManagement.java
+bash-3.2$ java -classpath class payrollmanagement.CPayRollManagement
+
+Enter the Birthday Bonus Amount: 1000
+
+Enter the OT Amount: 20
+
+Enter the No. of Employee:4
+
+***********************Default Constructor**********************
+
+Enter the Category to which the Employee belong to....
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:1
+
+Name:guru
+
+Aadhar Number: 1001
+
+Date of Birth
+
+Date:1
+
+Month:10
+
+Year:1982
+
+Enter the Basic Pay for the Employee:1000
+
+Enter the No. of days the Employee Worked:20
+*******************Salary of the Employee Calculated*************
+
+***********************Parametarized Constructor**********************
+
+
+Enter the Category to which the Employee belong to.... 
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:2
+
+Name:Mani
+
+Date of Birth
+
+Date:1
+
+Month:1
+
+Year:1990
+
+Enter the Basic Pay for the Employee:200
+
+Enter the No. of Hours the Employee Worked:300
+*******************Salary of the Employee Calculated*************
+
+***********************Cloning**********************
+
+Previous Employee Details has been copied
+Enter the Category to which the Employee belong to....
+ 
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:1
+
+Enter the Basic Pay for the Employee:1020
+
+Enter the No. of days the Employee Worked:20
+*******************Salary of the Employee Calculated*************
+
+***********************Default Constructor**********************
+
+Enter the Category to which the Employee belong to....
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:2
+
+Name:Mano
+
+Aadhar Number: 1003
+
+Date of Birth
+
+Date:14
+
+Month:11
+
+Year:1995
+
+Enter the Basic Pay for the Employee:
+100
+
+Enter the No. of Hours the Employee Worked:
+209
+*******************Salary of the Employee Calculated*************
+Employee Details:
+Name guru
+Aadhar No: 1001
+Salary: 21000
+Name Mani
+Aadhar No: 1002
+Salary: 43440
+Name Mani
+Aadhar No: 1002
+Salary: 20400
+Name Mano
+Aadhar No: 1003
+Salary: 20820
+********************Thank You******************
+bash-3.2$ mkdir JavaDoc
+bash-3.2$ javadoc -d JavaDoc/ payroll/*.java payrollmanagement/*.java
+Picked up JAVA_TOOL_OPTIONS: -javaagent:/usr/share/java/jayatanaag.jar 
+Loading source file payroll/CDate.java...
+Loading source file payroll/CEmployee.java...
+Loading source file payrollmanagement/CPayRollManagement.java...
+Constructing Javadoc information...
+Standard Doclet version 1.7.0_79
+Building tree for all the packages and classes...
+Generating JavaDoc/payrollmanagement/CPayRollManagement.html...
+Generating JavaDoc/payroll/CDate.html...
+Generating JavaDoc/payroll/CEmployee.html...
+Generating JavaDoc/overview-frame.html...
+Generating JavaDoc/payroll/package-frame.html...
+Generating JavaDoc/payroll/package-summary.html...
+Generating JavaDoc/payroll/package-tree.html...
+Generating JavaDoc/payrollmanagement/package-frame.html...
+Generating JavaDoc/payrollmanagement/package-summary.html...
+Generating JavaDoc/payrollmanagement/package-tree.html...
+Generating JavaDoc/constant-values.html...
+Building index for all the packages and classes...
+Generating JavaDoc/overview-tree.html...
+Generating JavaDoc/index-all.html...
+Generating JavaDoc/deprecated-list.html...
+Building index for all classes...
+Generating JavaDoc/allclasses-frame.html...
+Generating JavaDoc/allclasses-noframe.html...
+Generating JavaDoc/index.html...
+Generating JavaDoc/overview-summary.html...
+Generating JavaDoc/help-doc.html...
+bash-3.2$ exit
+exit
+
+Script done on Fri 23 Oct 2015 12:45:39 PM IST

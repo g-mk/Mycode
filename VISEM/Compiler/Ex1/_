@@ -1,0 +1,19 @@
+#include "hThompsons.h"
+void init(E *r,char input)
+{
+  int i;
+  r->ns=2;
+  r->states = (char*)malloc(r->ns*sizeof(char));
+  for(i=0;i<r->ns;i++)
+    r->states[i]=state++;
+  r->inputsymbols = (char*)malloc(sizeof(char));
+  r->inputsymbols[0]=input;
+  r->startstate = r->states[0];
+  r->finalstates = (char*)malloc(sizeof(char));
+  r->finalstates[0]=r->states[1];
+  r->transitions = (trans *) malloc(sizeof(trans));
+  r->transitions->input=input;
+  r->transitions->startstate = r->startstate;
+  r->transitions->endstate = r->states[1];
+}
+

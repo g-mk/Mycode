@@ -1,0 +1,4 @@
+www.wikipedia.org 208.80.153.224 A IN 600
+www.wikihow.org 173.203.142.5 A IN 1100
+www.wikibooks.org 173.80.153.224 A IN 1100
+

@@ -1,0 +1,106 @@
+Script started on Fri 17 Oct 2014 11:19:21 AM IST
+bash-3.2$ cat profit.c
+#include<stdio.h>
+main()
+{
+	int n;
+	float cp,sp,pl;
+	printf("Enter the Total No. of Items:");
+	scanf("%d",&n);
+	printf("Enter the Cost of the Items:");
+	scanf("%f",&cp);
+	printf("Enter the Selling Price:");
+	scanf("%f",&sp);
+	if(cp==sp)
+	{
+		printf("\nNeither Profit Nor Loss....\n\n");
+	} 
+	else if(cp<sp)
+	{ 
+		printf("\nYou Will Get Profit....");
+		pl=(n*sp)-(n*cp);
+		printf("\nYour Profit is Rs.%f\n\n",pl);
+	}
+	else
+	{
+		printf("\nYou will loss amout....");
+		pl=(n*cp)-(n*sp);
+		printf("\nYour Loss is Rs.%f\n\n",pl);
+	}
+}
+
+bash-3.2$ ./profit
+Enter the Total No. of Items:10
+Enter the Cost of the Items:5.50
+Enter the Selling Price:6.50
+
+You Will Get Profit....
+Your Profit is Rs.10.000000
+
+bash-3.2$ ./profit
+Enter the Total No. of Items:10
+Enter the Cost of the Items:6.50
+Enter the Selling Price:5.50
+
+You will loss amout....
+Your Loss is Rs.10.000000
+
+bash-3.2$ ./profit
+Enter the Total No. of Items:10
+Enter the Cost of the Items:5.50
+Enter the Selling Price:5.50
+
+Neither Profit Nor Loss....
+
+bash-3.2$ cat alpha.c
+#include<stdio.h>
+main()
+{
+	char c;
+	int i;
+	printf("Enter the Character:");
+	scanf("%c",&c);
+	i=c;
+	if(((i>=65)&&(i<=90))||((i>=97)&&(i<=122)))
+	{	
+		printf("The Given Character %c ia an Alphabet......",c);
+		switch(c)
+		{
+			case 'a':
+			case 'A':
+			case 'e':
+			case 'E':
+			case 'i':
+			case 'I':
+			case 'o':
+			case 'O':
+			case 'u':
+			case 'U':printf ("\nThe Given Character %c is a Vowel......\n\n",c);
+							break;
+			default: printf("\nThe Given Character %c is not a Vowel....\n\n",c);
+		}
+	}
+	else
+	{
+		printf("\nThe Given Character %c is Not an Alphabet.....\n\n",c);
+	}
+}
+bash-3.2$ ./alpha
+Enter the Character:a
+The Given Character a ia an Alphabet......
+The Given Character a is a Vowel......
+
+bash-3.2$ ./alpha
+Enter the Character:T
+The Given Character T ia an Alphabet......
+The Given Character T is not a Vowel....
+
+bash-3.2$ ./alpha
+Enter the Character:4
+
+The Given Character 4 is Not an Alphabet.....
+
+bash-3.2$ exit
+exit
+
+Script done on Fri 17 Oct 2014 11:21:10 AM IST

@@ -1,0 +1,141 @@
+<!--index.php-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Candidate Registration</title>
+        <link href="./background.css" type="text/css" rel="stylesheet"/>
+        <style type="text/css">
+            . . .
+        </style>
+    </head>
+    <body>
+        <header>
+         <h1 align="center">E-Voting System</h1>
+      </header>
+      <img id="lbanner" src="vote-election.png" alt="Image Not Found"/>
+      <img id="rbanner" src="vote-election.png" alt="Image Not Found"/>
+      <div id = "top">
+         <ul class="menu">
+             <li>
+                 <a href="./AddCandidateForm.php">
+                   <strong>Add Candidate</strong>
+               </a>
+            </li>
+            <li>
+               <a href="./RemoveCandidateForm.php">
+                  <strong>Remove Candidate</strong>
+               </a>
+            </li>
+            <li>
+                <a href="./ViewCandidate.php">
+                  <strong>View Candidate</strong>
+               </a>
+            </li>
+         </ul>
+      </div>
+      <?php
+        include './home.html';
+      ?>
+   <footer id = "footer">
+      Electronic Voting<br/>
+      Copy Right<sup>&copy;</sup> to N. Guru Manikandan.
+      Created on January 23, 2017.
+   </footer>
+    </body>
+</html>
+
+<!--AddCandidateForm.php>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Candidate Registration</title>
+        <link href="background.css" type="text/css" rel="stylesheet"/>
+        <style type="text/css">
+            . . .
+        </style>
+    </head>
+    <body>
+        <h1 align="center">Register as a candidate</h1>
+        <div align="center">
+            <form name="candidReg" method="POST" 
+                  action = "/AddCandidate.php" 
+                  enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Candidate Information</legend>
+                    <p>
+                        <label for="VoterID">Voter ID</label>
+                        <select id ="VoterID" name="VoterID">
+                            <option>--Select--</option>
+                            <?php 
+                                include './connection.php';
+                                $query = "SELECT voterid FROM 
+                                       14bcs068_voterinfo;";
+                                $result = mysqli_query($conn, $query) or 
+                                        die("SQL EXCEPTION</body></html>");
+                                while($row = mysqli_fetch_row($result))
+                                {
+                                    echo "<option>".$row[0]."</option>";
+                                }
+                                mysqli_close($conn) or 
+                                    die("Connection not Closed</body></html>");
+                            ?>
+                        </select>
+                    </p>
+                    <br/>
+                    <p>
+                        <label for="SymbolName">Symbol Name</label>
+                        <input id ="SymbolName" type="text" name="SymbolName" 
+                            value="" size="15" />
+                    </p><br/>
+                    <p>
+                       <label for="Symbol">Logo</label>
+                       <input type="file" name="Symbol" accept="image/*" 
+                              value=""/>
+                    </p><br/>
+                    <div align="center">
+                       <input type="submit" name="submit" value="Submit"/>&nbsp;
+                       <input type="reset" name="reset" value="Reset"/>
+                    </div>
+                </fieldset>
+            </form>
+            <br/>
+            <a href="./index.php">Back</a>
+        </div>
+    </body>
+</html>
+//connection.php
+
+<?php
+    $host = "localhost";
+    $user = "14bsec1";
+    $password = "14bsec1";
+    $database = "14bsec1db";
+    if(!($conn = mysqli_connect($host, $user, $password)))
+        die("Connection Failed</body></html>");
+    if(!mysqli_select_db($conn, $database))
+        die("Database Failure</body></html>");
+?>
+
+
+//AddCandidate.php
+
+<?php
+   include('connection.php');
+   extract($_POST);
+   $cid = $VoterID.'C';
+   $image = addslashes(file_get_contents($_FILES['Symbol']['tmp_name']));
+   $size = $_FILES['Symbol']['size'];
+   $query = "INSERT INTO 14bcs068_candidate(candid,voterid,"
+           . "symbolname,symbolsize,symbol) VALUES ('$cid',"
+           . "'$VoterID','$SymbolName',$size,'{$image}');";
+   if(!mysqli_query($conn, $query))
+           die("Not inserted into table".mysqli_errno ($conn));
+   echo '<h2 align = "center">Candidate Added to the List</h2>';
+   mysqli_close($conn);
+?>
+        
+        

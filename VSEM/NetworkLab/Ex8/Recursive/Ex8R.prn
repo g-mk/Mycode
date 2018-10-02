@@ -1,0 +1,348 @@
+Script started on Wed 05 Oct 2016 11:48:14 AM IST
+bash-3.2$ cat Ex8R.txt
+*****************RECURSIVE****************
+Script started on Wed 05 Oct 2016 11:35:03 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server$ cat out.txt
+#include"hSocket.h"
+
+char * checkDomain(char *domain)
+{
+    FILE* fp = fopen("DNS.txt","r");
+    char name[50],*ip;  
+    ip = (char*) malloc(15*sizeof(char));
+    while(!feof(fp))
+    {
+        fscanf(fp,"%s ",name);
+        fscanf(fp,"%s",ip);
+        if(strcmp(domain,name)==0)
+            return ip;
+    }
+    
+    fclose(fp);
+    return NULL;
+
+}
+int main()
+{
+ int sid,sid1,len=1024,len1,accpt,accpt1,b=1,b1=1,conn;
+ char data[50],*buf,*buf1,nline;
+ char* temp ="NULL";
+ struct sockaddr_in sin,sin1;
+ memset(data,'\0',50);
+ sid=socket(PF_INET,SOCK_STREAM,0);
+
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      len = sizeof(sin);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nDNS Requested Accepted\n");
+      recv(accpt,data,50,0);
+      
+      buf = checkDomain(data);
+      
+      if(buf != NULL)
+          send(accpt,buf,strlen(buf),0);
+      else
+      {
+        sid1=socket(PF_INET,SOCK_STREAM,0);
+        if(sid1==-1)
+            printf("\n\nSocket failure\n\n");
+        else
+         {
+            printf("\n\nSocket Created\n\n");
+            sin1.sin_family = AF_INET;
+            sin1.sin_addr.s_addr = htonl(INADDR_ANY);
+            sin1.sin_port = htons(9965);
+            printf("\nConnecting.....\n");
+            conn = connect(sid1,(struct sockaddr*)(&sin1),sizeof(sin1));
+            if(conn !=-1)
+            {   
+                if(send(sid1,data,strlen(data),0)<0) 
+                  printf("\nRequest Not Send\n");
+                else
+                  printf("\nRequest Send\n");
+                
+                if(recv(sid1,buf1,50,0)<0)
+                  printf("\nResponse not Received\n");
+                else
+                  printf("\nResponse Received\n");
+                if(!(strcmp(buf1,"NULL"))){
+                  send(accpt,temp,strlen(temp),0);
+                }
+                else
+                   send(accpt,buf1,strlen(buf1),0); 
+             close(sid1);
+         }
+      }
+    }
+  }
+  else 
+     printf("\n\nBinding Failed\n\n");
+  close(sid);
+  }
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+
+
+Socket Created
+
+
+Connecting.....
+
+Request Send
+
+Response Received
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:35:47 AM IST
+Script started on Wed 05 Oct 2016 11:32:07 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server1$ cat out.txt
+#include"hSocket.h"
+
+char * checkDomain(char *domain)
+{
+    FILE* fp = fopen("DNS.txt","r");
+    char name[50],*ip;  
+    ip = (char*) malloc(15*sizeof(char));
+    while(!feof(fp))
+    {
+        fscanf(fp,"%s ",name);
+        fscanf(fp,"%s",ip);
+        if(strcmp(domain,name)==0)
+            return ip;
+    }
+    
+    fclose(fp);
+    return NULL;
+
+}
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[50],*buf,nline;
+ char *temp = "NULL";
+ struct sockaddr_in sin;
+ memset(data,'\0',50);
+ sid=socket(PF_INET,SOCK_STREAM,0);
+
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9965);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nDNS Requested Accepted\n");
+      recv(accpt,data,50,0);
+      
+      buf = checkDomain(data);
+      
+      if(buf != NULL)
+          send(accpt,buf,strlen(buf),0);
+      else
+      {
+        send(accpt,temp,strlen(temp),0);
+      }
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+  
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server1$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server1$ ./aSoServer
+
+
+Binded
+
+
+DNS Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/server1$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:34:02 AM IST
+Script started on Wed 05 Oct 2016 11:31:36 AM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+  int sid,conn,len,loop=0;;
+  int port = 9964;
+  char data[50],buf[50],nline;
+  struct sockaddr_in sin;
+  strcpy(buf,"NULL");
+ 
+  printf("\nIP Address:");
+  scanf("%s",data);
+        
+  while(loop++<3 && (strcmp(buf,"NULL")==0))
+  {
+      memset(buf,'\0',sizeof(buf));
+     sid=socket(PF_INET,SOCK_STREAM,0);
+     if(sid==-1)
+      printf("\n\nSocket failure\n\n");
+     else
+     {
+        printf("\n\nSocket Created\n\n");
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = htonl(INADDR_ANY);
+        sin.sin_port = htons(port++);
+        printf("\nConnecting.....\n");
+        conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+        if(conn !=-1)
+        {   printf("\nConnected to port %d\n",port-1);
+            if(send(sid,data,strlen(data),0)<0) 
+              printf("\nRequest Not Send\n");
+            else
+              printf("\nRequest Send\n");
+            
+            if(recv(sid,buf,200,0)<0)
+              printf("\nResponse not Received\n");
+            else
+              printf("\nResponse Received\n");
+            if(!(strcmp(buf,"NULL"))){
+              printf("\nMAC Not Found\n\nRequest transfered\n");
+            }
+            close(sid);
+         }
+        }
+   }   
+  
+  printf("\nResponse Message: %s\n",buf);
+ }
+ 
+#include"hSocket.h"
+int main()
+{
+  int sid,conn,len,loop=0;;
+  int port = 9964;
+  char data[50],buf[50],nline;
+  struct sockaddr_in sin;
+  strcpy(buf,"NULL");
+ 
+  printf("\nDomain Name:");
+  scanf("%s",data);
+        
+     sid=socket(PF_INET,SOCK_STREAM,0);
+     if(sid==-1)
+      printf("\n\nSocket failure\n\n");
+     else
+     {
+        printf("\n\nSocket Created\n\n");
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = htonl(INADDR_ANY);
+        sin.sin_port = htons(9964);
+        printf("\nConnecting.....\n");
+        conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+        if(conn !=-1)
+        {   
+            if(send(sid,data,strlen(data),0)<0) 
+              printf("\nRequest Not Send\n");
+            else
+              printf("\nRequest Send\n");
+            
+            if(recv(sid,buf,200,0)<0)
+              printf("\nResponse not Received\n");
+            else
+              printf("\nResponse Received\n");
+            if(!(strcmp(buf,"NULL"))){
+              printf("\nDNS Not Found\n");
+            }
+            close(sid);
+         }
+        }
+  
+  printf("\nDNS Response Message: %s\n",buf);
+ }
+ 
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/client$ ./aSoClient
+
+Domain Name:www.gmail.com
+
+
+Socket Created
+
+
+Connecting.....
+
+Request Send
+
+Response Received
+
+DNS Response Message: 162.198.15.30
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/client$ ./aSoClient
+
+Domain Name:www.google.com
+
+
+Socket Created
+
+
+Connecting.....
+
+DNS Response Message: NULL
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/client$ ./aSoClient
+
+Domain Name:www.abcd.txt
+
+
+Socket Created
+
+
+Connecting.....
+
+Request Send
+
+Response Received
+
+DNS Response Message: NULL
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex8/Recursive/client$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:33:59 AM IST
+bash-3.2$ exit
+exit
+
+Script done on Wed 05 Oct 2016 11:48:22 AM IST

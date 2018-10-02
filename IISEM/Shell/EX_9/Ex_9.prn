@@ -1,0 +1,142 @@
+Script started on Sun 19 Apr 2015 11:55:33 AM IST
+bash-3.2$ cat Usercheck.sh
+ user_name=` who | grep -c -w $1 `;
+ 
+ if [ $user_name -ne  0 ]
+  then
+   echo -e "\n$1 is  Logged in at this time";
+ else
+   echo -e "\n $1 is not Logged in at this time";
+ fi
+
+count=` who | grep 14bcs* |wc -l`;
+ echo -e "\n No. of user logged in as 14bcs is $count";
+
+
+bash-3.2$ sh Usercheck.sh 14bcs068
+
+14bcs068 is  Logged in at this time
+
+ No. of user logged in as 14bcs is 17
+bash-3.2$ sh Usercheck.sh 14bec042
+
+ 14bec042 is not Logged in at this time
+
+ No. of user logged in as 14bcs is 17
+bash-3.2$ cat Count.sh
+ echo -e "\n Content in the Given file is\n";
+ cat $1;
+ w=`wc -w $1`
+ l=`wc -l $1`
+ c=`wc -c $1`
+ echo -e "\n No of words:$w \n No. of Lines:$l \n No. of Character:$c\n";
+
+bash-3.2$ sh Count.sh input
+
+ Content in the Given file is
+
+Hi Im N.Guru Manikandan.
+Im Doing My B.E Computer Science.
+Mepco Schlenk Engg. College.
+
+ No of words:14 input 
+ No. of Lines:3 input 
+ No. of Character:88 input
+
+bash-3.2$ cat Subdir.sh
+
+ subdir=`ls -l | tr -s ' '|grep "^d"| cut -d ' ' -f 9`;
+ echo -e "\n Sub directories in the current folder is \n $subdir";
+bash-3.2$ sh Subdir.sh
+
+ Sub directories in the current folder is 
+ dir
+file
+shel
+bash-3.2$ cat Sort.sh
+ echo -e "Enter the File Name: "
+ read f
+ echo -e "Enter the field in which the file is to be sorted: \n 1)Name \n 2)Mark 1 \n 3) Mark 2 \n 4) Mark 3 \n 5) Mark 5 \n: "
+ read c
+ sortlist=`sort -t ' ' -k $c $f`;
+ echo -e  "\n Sorted List \n $sortlist ";
+ echo -e " \n Enter the word to be searched:"
+ read w
+ flag=`grep $w $f | wc -l`;
+ if [ $flag -eq 1 ]
+  then echo -e "\n Found ";
+ else echo -e "\n Not found ";
+ fi
+bash-3.2$ sh Sort.sh
+Enter the File Name: 
+data
+Enter the field in which the file is to be sorted: 
+ 1)Name 
+ 2)Mark 1 
+ 3) Mark 2 
+ 4) Mark 3 
+ 5) Mark 5 
+: 
+1
+
+ Sorted List 
+ 
+Arjun 78 98 90 98
+Guru 98 97 96 87
+Mani 67 76 56 87
+Subangan 78 89 98 87 
+ 
+ Enter the word to be searched:
+mani
+
+ Not found 
+bash-3.2$ sh Sort.sh
+Enter the File Name: 
+data
+Enter the field in which the file is to be sorted: 
+ 1)Name 
+ 2)Mark 1 
+ 3) Mark 2 
+ 4) Mark 3 
+ 5) Mark 5 
+: 
+1
+
+ Sorted List 
+ 
+Arjun 78 98 90 98
+Guru 98 97 96 87
+Mani 67 76 56 87
+Subangan 78 89 98 87 
+ 
+ Enter the word to be searched:
+Arjun
+
+ Found 
+bash-3.2$ cat Swap.sh
+echo -e "\n Enter value for a:"
+read a
+echo -e "\n Enter value for b:"
+read b
+echo -e "Before Swaping \n $a $b"
+a=`expr $a + $b`
+b=`expr $a - $b`
+a=`expr $a - $b`
+echo -e "\n After Swaping \n $a $b"
+
+bash-3.2$ sh Swap.sh
+
+ Enter value for a:
+5
+
+ Enter value for b:
+2
+Before Swaping 
+ 5 2
+
+ After Swaping 
+ 2 5
+bash-3.2$ exit
+exit
+
+Script done on Sun 19 Apr 2015 11:58:55 AM IST

@@ -1,0 +1,45 @@
+Script started on Wed 20 Jul 2016 10:28:47 AM IST
+bash-3.2$ cat hSBP.h
+#include<stdio.h>
+#include<stdlib.h>
+void singleBitParity(int);
+bash-3.2$ cat iSBP.c
+#include"hSBP.h"
+void singleBitParity(int size)
+{
+ int *data;
+ int count=0,loop;
+ data = (int*)malloc(sizeof(int)*size+1);
+ for(loop=0;loop<size;loop++)
+  {
+   scanf("%d",&data[loop]);
+     count+=data[loop];
+  }
+  data[size]=count%2;
+ printf("Data to be transmitted is ");
+ for(loop=0;loop<size+1;loop++)
+  printf("%d",data[loop]);
+ printf("\n");
+}
+bash-3.2$ cat aSBP.c
+#include<stdio.h>
+main()
+{
+ int size;
+ printf("Enter the number of bits to be transmitted: ");
+ scanf("%d",&size);
+ singleBitParity(size);
+ printf("\n\nSingle Bit Parity Check completed\n\n");
+}
+bash-3.2$ ./SBP
+Enter the number of bits to be transmitted: 8
+1 0 1 1 0 1 0 1
+Data to be transmitted is 101101011
+
+
+Single Bit Parity Check completed
+
+bash-3.2$ exit
+exit
+
+Script done on Wed 20 Jul 2016 10:29:24 AM IST

@@ -1,0 +1,346 @@
+Script started on Sun 01 Nov 2015 03:11:23 PM IST
+bash-3.2$ cat hAvl.h
+#include<iostream>
+#include<string.h>
+using namespace std;
+typedef struct Info
+ {
+  char CommandName[20];
+  char CommandSyntax[25];
+  char CommandDetails[25];
+  char CommandType[8];
+ }Info;
+class Node
+ {
+  public:
+       Node();
+       friend class AVL;
+  private:
+       Node* LeftChild;
+       Node* RightChild;
+       Info info;
+       int Height;
+ };
+class AVL
+ {
+  public:
+    AVL();
+    ~AVL();
+    int Height(Node*);
+    Node* Insert(Info,Node*);
+    int Insert(Info);
+    Node* CreateNode();
+    void Postorder(Node*);
+    void Display(Node*);
+    Info GetInfo();
+    Node * GetRoot();
+    void SetRoot(Node *);
+    int IsEmpty();
+    Node* SingleLeftRotation(Node*);
+    Node* DoubleLeftRotation(Node*);
+    Node* SingleRightRotation(Node*);
+    Node* DoubleRightRotation(Node*);
+  private:
+    Node* root;
+ };
+
+
+bash-3.2$ cat iAvl.cpp
+#include"hAvl.h"
+Node:: Node()
+{
+ Height=0;
+}
+AVL::AVL()
+{
+ root=NULL;
+}
+AVL::~AVL()
+{
+
+}
+void AVL::Display(Node* Current)
+{
+ cout<<"\nCommand Name : "<<Current->info.CommandName;
+ cout<<"\nSyntax: "<<Current->info.CommandSyntax;
+ cout<<"\nType: "<<Current->info.CommandType;
+ cout<<"\nDescription: "<<Current->info.CommandDetails<<endl;
+}
+
+void AVL::Postorder(Node *current)
+{
+ if(current)
+ {
+  Postorder(current->LeftChild);
+  Postorder(current->RightChild);
+  Display(current);
+ }
+}
+Info AVL:: GetInfo()
+{
+  Info info;
+ cout<<"\nCommand Name: ";
+ cin>>info.CommandName;
+ cout<<"\nCommand Syntax: ";
+ cin>>info.CommandSyntax;
+ cout<<"\nCommand Type: ";
+ cin>>info.CommandType;
+ cout<<"\nCommand Description: ";
+ cin>>info.CommandDetails;
+ return(info);
+}
+Node* AVL :: GetRoot()
+{
+    return root;
+}
+void AVL:: SetRoot(Node* current)
+{
+ root = current;
+}
+int AVL :: IsEmpty()
+{
+ if(root==NULL)
+   return 1;
+ else
+   return 0;
+}
+
+Node* AVL :: CreateNode()
+{
+    Node* newnode = new Node;
+    newnode->info=GetInfo();
+    newnode->LeftChild=NULL;
+    newnode->RightChild=NULL;
+    return newnode;
+}
+
+int AVL::Height(Node *temp)
+{
+  if(temp==NULL)
+    return -1;
+  else
+    return temp->Height;
+}
+
+int AVL :: Insert(Info info)
+{
+    root=Insert(info,root);
+    return 1;
+}
+
+Node* AVL:: Insert(Info info,Node* temp)
+{
+ if(temp ==NULL)
+  {
+    temp=new Node;
+    temp->info=info;
+    temp->LeftChild=NULL;
+    temp->RightChild=NULL;
+  }
+ else if(strcmp(info.CommandName,temp->info.CommandName)<0)
+  {
+    temp->LeftChild=Insert(info,temp->LeftChild);
+    if(Height(temp->LeftChild)-Height(temp->RightChild)==2)
+    {
+     if(strcmp(info.CommandName,temp->LeftChild->info.CommandName)<0)
+      temp=SingleLeftRotation(temp);
+     else
+      temp=DoubleLeftRotation(temp);
+    }
+  }
+ else if(strcmp(info.CommandName,temp->info.CommandName)>0)
+  {
+    temp->RightChild=Insert(info,temp->RightChild);
+    if(Height(temp->RightChild)-Height(temp->LeftChild)==2)
+    {
+     if(strcmp(info.CommandName,temp->RightChild->info.CommandName)>0)
+      temp=SingleRightRotation(temp);
+     else
+      temp=DoubleRightRotation(temp);
+    }
+  }
+      temp->Height=max(Height(temp->LeftChild),Height(temp->RightChild))+1;
+ return temp;
+}
+
+Node* AVL :: SingleLeftRotation(Node* N1)
+{
+ Node* N2;
+ N2=N1->LeftChild;
+ N1->LeftChild=N2->RightChild;
+ N2->RightChild=N1;
+ N1->Height=Height(N1->LeftChild)-Height(N1->RightChild);
+ N2->Height=Height(N2->LeftChild)-Height(N1->RightChild);
+ return N2;
+}
+
+Node* AVL :: SingleRightRotation(Node* N1)
+{
+ Node* N2;
+ N2=N1->RightChild;
+ N1->RightChild=N2->LeftChild;
+ N2->LeftChild=N1;
+ N1->Height=Height(N1->RightChild)-Height(N1->LeftChild);
+ N2->Height=Height(N2->RightChild)-Height(N1->LeftChild);
+ return N2;
+}
+
+Node* AVL:: DoubleLeftRotation(Node* N1)
+{
+ N1->LeftChild=SingleRightRotation(N1->LeftChild);
+ return SingleLeftRotation(N1);
+}
+
+Node* AVL:: DoubleRightRotation(Node* N1)
+{
+ N1->RightChild=SingleLeftRotation(N1->RightChild);
+ return SingleRightRotation(N1);
+}
+
+bash-3.2$ cat aAvl.cpp
+#include"hAvl.h"
+int main()
+{
+ Info Element;
+ AVL Tree;
+ char cChoice;
+ int nChoice;
+ do
+ {
+     int nFlag=0;
+     cout<<"\nEnter Your Option:\n";
+     cout<<"1)Insert\n2)Traverse\n3)Exit.\nEnter Your Option:";
+     cin>>nChoice;
+     switch(nChoice)
+     {
+     case 1:
+        cout<<"\nEnter the Details of the Command:\n";
+        Element=Tree.GetInfo();
+        nFlag=Tree.Insert(Element);
+        if(nFlag==1)
+            cout<<"\n**********Element Inserted**********\n";
+        else
+            cout<<"\n**********Element Not Inserted**********\n";
+        break;
+     case 2:
+        cout<<"\n**********Element in the AVL Tree**********\n";
+        Tree.Postorder(Tree.GetRoot());
+        break;
+     case 3:
+         cout<<"\n**********Thank You**********\n";
+         break;
+     default:
+        cout<<"\n**********No Such Option Exists**********\n";
+     }
+ }while(nChoice !=3);
+}
+bash-3.2$ ./Avl
+bash: ./Avl: No such file or directory
+bash-3.2$ ./AVL
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:1
+
+Enter the Details of the Command:
+
+Command Name: await
+
+Command Syntax: await()
+
+Command Type: code
+
+Command Description: to_make_waitingstate
+
+**********Element Inserted**********
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:1
+
+Enter the Details of the Command:
+
+Command Name: cp
+
+Command Syntax: cp<source><destination>
+
+Command Type: file
+
+Command Description: to_copy_file
+
+**********Element Inserted**********
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:2
+
+**********Element in the AVL Tree**********
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_file
+
+Command Name : await
+Syntax: await()
+Type: code
+Description: to_make_waitingstate
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:1
+
+Enter the Details of the Command:
+
+Command Name: rm
+
+Command Syntax: rm<source>
+
+Command Type: file
+
+Command Description: to_delete.
+
+**********Element Inserted**********
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:2
+
+**********Element in the AVL Tree**********
+
+Command Name : await
+Syntax: await()
+Type: code
+Description: to_make_waitingstate
+
+Command Name : rm
+Syntax: rm<source>
+Type: file
+Description: to_delete.
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_file
+
+Enter Your Option:
+1)Insert
+2)Traverse
+3)Exit.
+Enter Your Option:3
+
+**********Thank You**********
+bash-3.2$ exit
+exit
+
+Script done on Sun 01 Nov 2015 03:14:21 PM IST

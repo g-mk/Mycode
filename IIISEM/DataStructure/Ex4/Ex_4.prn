@@ -1,0 +1,684 @@
+Script started on Wed 30 Sep 2015 03:23:52 PM IST
+bash-3.2$ cat hBinary.h
+#include<iostream>
+#include<string.h>
+using namespace std;
+namespace HistoryOfCommands
+{
+ typedef struct Info
+ {
+  char CommandName[20];
+  char CommandSyntax[25];
+  char CommandDetails[25];
+  char CommandType[8];
+ }Info;
+
+/* typedef struct RetInfo
+ {
+  Info info;
+  int nStatus;
+ }RetInfo;*/
+
+ class Node
+ {
+  public:
+       friend class BST;
+  private:
+       Node* LeftChild;
+       Node* RightChild;
+       Info info;
+ };
+
+ class BST
+ {
+  public:
+      BST();                          //Constructor
+      ~BST();                         //Destructor
+      Node * CreateNode();            //To Create a Node
+      int InsertBST(Node*);           //To Insert the Node
+      Node* DeleteBST(char *,Node*);  //To Delete the Node
+      int SearchBST(Node*,char *);    //To Search the Element
+      Node* FindMin(Node*);           //To Find the Minimum in the Tree
+      Node* FindMax(Node*);           //To Find the Maximum in the Tree
+      void Inorder(Node*);            //Inorder Traversal
+      void Preorder(Node*);           //Preorder Traversal
+      void Postorder(Node*);          //Postorder Traversal
+      void Display(Node*);            //To display the content
+      Info GetInfo();                 //To Get the information 
+      Node * GetRoot();               //To Get the Root of the Tree
+      int IsEmpty();
+  private:
+      Node* root;
+ };
+}
+bash-3.2$ cat Binary.cpp
+#include"hBinary.h"
+using namespace HistoryOfCommands;
+BST :: BST()
+{
+ root = NULL;
+}
+BST :: ~BST()
+{
+ /*while(root)
+  {
+   DeleteBST(root->info.CommandName,root);
+  }*/
+}
+int BST :: InsertBST(Node* newnode)
+{
+ Node* Current=root;
+ Node* CCurrent=NULL;
+ while(Current)
+ {
+  CCurrent=Current;
+  if(strcmp(newnode->info.CommandName,Current->info.CommandName)<0)
+   Current=Current->LeftChild;
+  else if(strcmp(newnode->info.CommandName,Current->info.CommandName)>0)
+   Current=Current->RightChild;
+  else
+   return -1;
+ }
+ if(root)
+  {
+
+ if(strcmp(newnode->info.CommandName,CCurrent->info.CommandName)<0)
+    {
+
+        CCurrent -> LeftChild = newnode;
+    }
+   else
+   {
+       CCurrent -> RightChild = newnode;
+   }
+  }
+ else
+  root=newnode;
+  return 1;
+}
+
+int BST :: SearchBST(Node* Current ,char *name)
+{
+ if(IsEmpty())
+    return 0;
+ if(!Current)
+   return -1;
+ else if (strcmp(name,Current->info.CommandName)==0)
+   return 1;
+ else if(strcmp(name,Current->info.CommandName)<0)
+   return SearchBST(Current->LeftChild,name);
+ else
+   return SearchBST(Current->RightChild,name);
+}
+
+void BST::Display(Node* Current)
+{
+ cout<<"\nCommand Name : "<<Current->info.CommandName;
+ cout<<"\nSyntax: "<<Current->info.CommandSyntax;
+ cout<<"\nType: "<<Current->info.CommandType;
+ cout<<"\nDescription: "<<Current->info.CommandDetails<<endl;
+}
+
+Node* BST::DeleteBST(char * name,Node *current)
+{
+ Node* returnNode;
+ if(current==NULL)
+ {
+  return NULL;
+ }
+ else
+ {
+     if(root->LeftChild==NULL&&root->RightChild==NULL)
+     {
+         delete root;
+         root=NULL;
+         return returnNode;
+     }
+
+  if(strcmp(name,current->info.CommandName)<0)
+   current->LeftChild=DeleteBST(name,current->LeftChild);
+  else if(strcmp(name,current->info.CommandName)>0)
+   current->RightChild=DeleteBST(name,current->RightChild);
+  else
+  {
+   Node *temp;
+   if(current->LeftChild && current->RightChild)
+   {
+    temp=FindMin(current->RightChild);
+    current->info=temp->info;
+    current->RightChild=DeleteBST(current->info.CommandName,current->RightChild);
+   }
+   else
+   {
+    temp=current;
+     if(current->LeftChild==NULL)
+       {
+        if(current == root)
+        {
+         temp = root;
+         root = current -> RightChild;
+         delete temp;
+        }
+        else
+         current = current->RightChild;
+       }
+    else if(current->RightChild==NULL)
+     {
+      if(current == root)
+        {
+         temp = root;
+         root = current -> LeftChild;
+         delete temp;
+        }
+      else
+       current = current ->LeftChild;
+     }
+   }
+  }
+  return current;
+ }
+ return NULL;
+}
+
+void BST::Inorder(Node *current)
+{
+ if(current)
+ {
+  Inorder(current->LeftChild);
+  Display(current);
+  Inorder(current->RightChild);
+ }
+}
+void BST::Preorder(Node *current)
+{
+ if(current)
+ {
+  Display(current);
+  Preorder(current->LeftChild);
+  Preorder(current->RightChild);
+ }
+}
+void BST::Postorder(Node *current)
+{
+ if(current)
+ {
+  Postorder(current->LeftChild);
+  Postorder(current->RightChild);
+  Display(current);
+ }
+}
+
+Node* BST :: FindMax(Node *current)
+{
+ if(current -> RightChild==NULL)
+   return current;
+ else
+  return FindMax(current->RightChild);
+}
+
+Node* BST :: FindMin(Node *current)
+{
+ if(current -> LeftChild==NULL)
+   return current;
+ else
+  return FindMin(current->LeftChild);
+}
+
+Info BST:: GetInfo()
+{
+  Info info;
+ cout<<"\nCommand Name: ";
+ cin>>info.CommandName;
+ cout<<"\nCommand Syntax: ";
+ cin>>info.CommandSyntax;
+ cout<<"\nCommand Type: ";
+ cin>>info.CommandType;
+ cout<<"\nCommand Description: ";
+ cin>>info.CommandDetails;
+ return(info);
+}
+Node* BST :: GetRoot()
+{
+    return root;
+}
+int BST :: IsEmpty()
+{
+ if(root==NULL)
+   return 1;
+ else
+   return 0;
+}
+
+Node* BST :: CreateNode()
+{
+    Node* newnode = new Node;
+    newnode->info=GetInfo();
+    newnode->LeftChild=NULL;
+    newnode->RightChild=NULL;
+    return newnode;
+}
+bash-3.2$ cat aBinary.cpp
+#include"hBinary.h"
+using namespace HistoryOfCommands;
+main()
+{
+ int Choice,Status;
+ Info info;
+ char *name;
+ Node *NodeStatus;
+ BST Tree;
+ cout<<"\n\n****************Binary Search Tree****************\n";
+ do
+ {
+ cout<<"\nEnter the Operation You are going to Perform:\n1)InsertBST.\n"
+     <<"2)DeleteBST.\n3)SearchBST.\n4)Inorder.\n"
+     <<"5)Preorder.\n6)Postorder.\n7)Exit.\n";
+ cout<<"\nYour Option: ";
+ cin>>Choice;
+ switch(Choice)
+ {
+  case 1:
+   Node *newnode;
+   newnode = Tree.CreateNode();
+   if(newnode)
+   {
+    Status=Tree.InsertBST(newnode);
+    if(Status==1)
+     cout<<"\n******Node Has been inserted Succesfully*********\n";
+    else if (Status=-1)
+        cout<<"Duplicate Element...\n";
+    else
+     cout<<"\n***********Node Has NOT been Inserted**************\n";
+   }
+   else
+    cout<<"\n************MEMORY ERROR**************\n";
+    break;
+  case 2:
+   //info = Tree.GetInfo();
+   cout<<"\nCommand Name: ";
+   cin>>info.CommandName;
+   NodeStatus= Tree.DeleteBST(info.CommandName,Tree.GetRoot());
+   if(NodeStatus)
+   {
+      cout<<"\n*************Node Has been Deleted*********\n";
+   }
+   else if(NodeStatus!=NULL)
+    cout<<"\n**********Tree is Empty******************\n";
+   else
+    cout<<"\n*********Deletion Unsuccessful*************\n";
+   break;
+  case 3:
+   cout<<"Enter the name of the Command to search: ";
+   cin>>info.CommandName;
+   Status=Tree.SearchBST(Tree.GetRoot(),info.CommandName);
+   if(Status==1)
+    cout<<"\n*******Node Found with the give Command*******\n";
+   else if(Status==-1)
+    cout<<"\n**************Node Not Found***********\n";
+   else
+    cout<<"\n*************Tree is Empty*************\n";
+   break;
+  case 4:
+   if(!Tree.IsEmpty())
+    {
+     cout<<"\n************Inorder Travesal**********\n";
+     Tree.Inorder(Tree.GetRoot());
+    }
+   else
+    cout<<"\n*************Tree is Empty*************\n";
+   break;
+  case 5:
+   if(!Tree.IsEmpty())
+    {
+     cout<<"\n************Preorder Travesal**********\n";
+     Tree.Preorder(Tree.GetRoot());
+    }
+   else
+    cout<<"\n*************Tree is Empty*************\n";
+   break;
+  case 6:
+   if(!Tree.IsEmpty())
+    {
+     cout<<"\n************Postorder Travesal**********\n";
+     Tree.Postorder(Tree.GetRoot());
+    }
+   else
+    cout<<"\n*************Tree is Empty*************\n";
+   break;
+  case 7:
+   cout<<"\n******************Thank You*****************\n";
+   break;
+  default:
+   cout<<"\n**********No Such Option***********\n";
+  }
+ }while(Choice!=7);
+}
+bash-3.2$ ./BST
+
+
+****************Binary Search Tree****************
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 1
+
+Command Name: cp
+
+Command Syntax: cp<source><destination>
+
+Command Type: terminal
+
+Command Description: to_copy_the_file
+
+******Node Has been inserted Succesfully*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 1
+
+Command Name: rm
+
+Command Syntax: rm<file>
+
+Command Type: terminal
+
+Command Description: to_remove_the_file
+
+******Node Has been inserted Succesfully*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 1
+
+Command Name: ls
+
+Command Syntax: ls<dir>
+
+Command Type: terminal
+
+Command Description: to_list_the_content
+
+******Node Has been inserted Succesfully*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 1
+
+Command Name: w
+
+Command Syntax: w
+
+Command Type: terminal
+
+Command Description: to_list_the_user
+
+******Node Has been inserted Succesfully*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 4
+
+************Inorder Travesal**********
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: terminal
+Description: to_copy_the_file
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminal
+Description: to_list_the_content
+
+Command Name : rm
+Syntax: rm<file>
+Type: terminal
+Description: to_remove_the_file
+
+Command Name : w
+Syntax: w
+Type: terminal
+Description: to_list_the_user
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 5
+
+************Preorder Travesal**********
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: terminal
+Description: to_copy_the_file
+
+Command Name : rm
+Syntax: rm<file>
+Type: terminal
+Description: to_remove_the_file
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminal
+Description: to_list_the_content
+
+Command Name : w
+Syntax: w
+Type: terminal
+Description: to_list_the_user
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 6
+
+************Postorder Travesal**********
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminal
+Description: to_list_the_content
+
+Command Name : w
+Syntax: w
+Type: terminal
+Description: to_list_the_user
+
+Command Name : rm
+Syntax: rm<file>
+Type: terminal
+Description: to_remove_the_file
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: terminal
+Description: to_copy_the_file
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 3
+Enter the name of the Command to search: cp
+
+*******Node Found with the give Command*******
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 2
+
+Command Name: cp
+
+*************Node Has been Deleted*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 2
+
+Command Name: w
+
+*************Node Has been Deleted*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 4
+
+************Inorder Travesal**********
+
+Command Name : ls
+Syntax: ls<dir>
+Type: terminal
+Description: to_list_the_content
+
+Command Name : rm
+Syntax: rm<file>
+Type: terminal
+Description: to_remove_the_file
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 2
+
+Command Name: rm
+
+*************Node Has been Deleted*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 2
+
+Command Name: ls
+
+*************Node Has been Deleted*********
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 2
+
+Command Name: re
+
+*********Deletion Unsuccessful*************
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 4
+
+*************Tree is Empty*************
+
+Enter the Operation You are going to Perform:
+1)InsertBST.
+2)DeleteBST.
+3)SearchBST.
+4)Inorder.
+5)Preorder.
+6)Postorder.
+7)Exit.
+
+Your Option: 7
+
+******************Thank You*****************
+bash-3.2$ exit
+exit
+
+Script done on Wed 30 Sep 2015 03:26:45 PM IST

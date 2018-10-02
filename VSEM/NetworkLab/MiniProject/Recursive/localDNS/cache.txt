@@ -1,0 +1,4 @@
+www.google.com 216.58.218.206 A IN 300
+login.yahoo.com 98.138.25.150 A IN 2100
+www.yahoo.com 98.138.253.109 A IN 1800
+www.wikipedia.org 208.80.153.224 A IN 600

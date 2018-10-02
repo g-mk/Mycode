@@ -1,0 +1,547 @@
+Script started on Thu 29 Oct 2015 05:49:52 PM IST
+bash-3.2$ cat hMinheap.h
+#include<iostream>
+#include<string.h>
+#include<stdio.h>
+using namespace std;
+ typedef struct Info
+ {
+  char CommandName[20];
+  char CommandSyntax[25];
+  char CommandDetails[25];
+  char CommandType[15];
+ }Info;
+class MinHeap
+{
+public:
+    MinHeap();
+    MinHeap(int nCap);
+    ~MinHeap();
+    int Insert(Info);
+    int Delete();
+    int Display(void (*fpointer)(Info));
+private:
+    int m_nHeapsize;
+    int m_nCapacity;
+    Info *heap;
+};
+bash-3.2$ cat iMinheap.cp
+#include"hMinheap.h"
+MinHeap :: MinHeap()
+{
+    m_nCapacity=0;
+    m_nHeapsize=-1;
+    heap =new Info[1];
+}
+
+MinHeap :: MinHeap(int nCap)
+{
+    m_nCapacity=nCap;
+    m_nHeapsize=-1;
+    heap = new Info[nCap];
+}
+MinHeap :: ~MinHeap()
+{
+    delete []heap;
+}
+int MinHeap :: Insert (Info info)
+{
+    if(m_nHeapsize<m_nCapacity-1)
+    {
+        m_nHeapsize+=1;
+        int nCurrent=m_nHeapsize;
+        while(nCurrent!=0 && strcmp(heap[nCurrent/2].CommandName,info.CommandName)>0)
+        {
+            heap[nCurrent]=heap[nCurrent/2];
+            nCurrent /=2;
+        }
+        heap[nCurrent]=info;
+        return 1;
+    }
+    else
+        return 0;
+}
+
+int MinHeap :: Delete()
+{
+    if(m_nHeapsize>0)
+    {
+        Info LastElement=heap[m_nHeapsize];
+        m_nHeapsize-=1;
+        int nCurrent=0;
+        int nChild=1;
+        while(nChild<m_nHeapsize)
+        {
+            if((nChild<m_nHeapsize) && strcmp(heap[nChild].CommandName,heap[nChild+1].CommandName)>0)
+                nChild=nChild+1;
+            if(strcmp(LastElement.CommandName,heap[nChild].CommandName)<=0)
+                break;
+            heap[nCurrent]=heap[nChild];
+            nCurrent=nChild;
+            nChild*=2;
+        }
+        heap[nCurrent]=LastElement;
+        return 1;
+    }
+    else
+        return 0;
+}
+int MinHeap :: Display(void (*fpointer)(Info))
+{
+    if(m_nHeapsize<=m_nCapacity-1)
+    {
+        for(int i=0;i<=m_nHeapsize;i++)
+            {
+                (*fpointer)(heap[i]);
+            }
+        return 1;
+    }
+    else return 0;
+}
+bash-3.2$ cat aMinheap.cpp
+#include"hMinheap.h"
+
+void display(Info info)
+{
+ cout<<"\nCommand Name : "<<info.CommandName;
+ cout<<"\nSyntax: "<<info.CommandSyntax;
+ cout<<"\nType: "<<info.CommandType;
+ cout<<"\nDescription: "<<info.CommandDetails<<endl;
+}
+
+Info GetInfo(FILE *fp)
+{
+    Info info;
+    fscanf(fp,"%s",info.CommandName);
+    fscanf(fp,"%s",info.CommandSyntax);
+    fscanf(fp,"%s",info.CommandType);
+    fscanf(fp,"%s",info.CommandDetails);
+    return info;
+}
+
+int main()
+{
+    FILE *fp;
+    int nCapacity;
+    int nStatus;
+    int nFStatus;
+    int nControl;
+    Info info;
+    char sFile[10];
+    cout<<"Enter the Input File name(*.txt): ";
+    cin >> sFile;
+    cout<<"Enter the Heap Capacity: ";
+    cin>> nCapacity;
+    MinHeap heap(nCapacity);
+    fp=fopen(sFile,"r");
+
+    do
+    {
+        cout<<"Enter the Choice:\n1.Insert.\n2.Delete\n3.Display.\n4.Exit.\nOption:";
+        cin>>nControl;
+        if(fp==NULL)
+        {
+            cout<<"\n***************Error Opening in File***********\n";
+            break;
+        }
+        switch(nControl)
+        {
+        case 1:
+            nFStatus=feof(fp);
+            if(nFStatus==0)
+                {
+                    info=GetInfo(fp);
+                    nStatus=heap.Insert(info);
+                    if(nStatus==1)
+                        cout<<"\n***********Element Inserted************\n";
+                    else
+                        cout<<"\n***********Heap is Full**********\n";
+                }
+            else
+            {
+                cout<<"\n***********No Input is Available in the File**********\n";
+                break;
+            }
+            break;
+        case 2:
+            nStatus=heap.Delete();
+            if(nStatus==1)
+                cout<<"\n*************Deletion Success*************\n";
+            else
+                cout<<"\n*************Heap is Empty*********\n";
+            break;
+        case 3:
+            nStatus=heap.Display(display);
+            if(nStatus==0)
+                cout<<"\n*************Heap is Empty***********\n";
+            break;
+        case 4
+            cout<<"\n*************Thank You***************\n"
+            break
+        default:
+            cout<<"\n****************No Such Option***************\n";
+        }
+    }while(nControl!=4);
+}
+bash-3.2$ cat Input.txt
+cp cp<source><destination> file to_copy_a_file.
+rm rm<filename> file to_remove_a_file.
+await await() code make_the_thread_wait.
+mkdir mkdir<filename> file to_make_directory.
+rmdir rmdir<filename> file to_remove_directory.
+logout logout terminal_type to_logout_the_session.
+mv mv<source><destination> file to_move/rename_the_file.
+passwd passwd terminal to_change_password.
+bash-3.2$ ./MinHeap
+Enter the Input File name(*.txt): Input.txt
+Enter the Heap Capacity: 5
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : await
+Syntax: await()
+Type: code
+Description: make_the_thread_wait.
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : await
+Syntax: await()
+Type: code
+Description: make_the_thread_wait.
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file.
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file.
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : cp
+Syntax: cp<source><destination>
+Type: file
+Description: to_copy_a_file.
+
+Command Name : logout
+Syntax: logout
+Type: terminal_type
+Description: to_logout_the_session.
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : logout
+Syntax: logout
+Type: terminal_type
+Description: to_logout_the_session.
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : mkdir
+Syntax: mkdir<filename>
+Type: file
+Description: to_make_directory.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : rm
+Syntax: rm<filename>
+Type: file
+Description: to_remove_a_file.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Heap is Empty*********
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:1
+
+***********Element Inserted************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : mv
+Syntax: mv<source><destination>
+Type: file
+Description: to_move/rename_the_file.
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:2
+
+*************Deletion Success*************
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:3
+
+Command Name : rmdir
+Syntax: rmdir<filename>
+Type: file
+Description: to_remove_directory.
+Enter the Choice:
+1.Insert.
+2.Delete
+3.Display.
+4.Exit.
+Option:4
+
+****************Thank You***************
+bash-3.2$ exit
+exit
+
+Script done on Thu 29 Oct 2015 05:53:30 PM IST

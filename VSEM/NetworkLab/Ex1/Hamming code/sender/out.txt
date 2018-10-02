@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int calcTolBit(int);
+void computeHamming(int*,int);
+
+
+#include"hamming.h"
+int lookUp[4][8]={{1,3,5,7,9,11,13,15},
+                  {2,3,6,7,10,11,14,15},
+                  {4,5,6,7,12,13,14,15},
+                  {8,9,10,11,12,13,14,15}};
+int calcTolBit(int size)
+{
+    if(size==1)
+        return 2+size;
+    else if(size <=4)
+        return 3+size;
+    else if(size<=8)
+        return 4+size;
+}
+
+void computeHamming(int* transData,int totSize)
+{
+    int loc,it,in,hamming,flag;
+    for(it=1,loc=0;it<totSize;it=pow(2,++loc))
+    {
+        hamming=0;
+        for(in=0;in<8;in++)
+        {
+            flag = lookUp[loc][in];
+            if(flag<=totSize)
+                hamming^=transData[flag-1];
+        }
+        transData[it-1]=hamming;
+    }
+}
+#include"hamming.h"
+int main()
+{
+    int it,size,totSize,*data,*transData,temp=0;
+    printf("Enter the Number of bits to be transmited: ");
+    scanf("%d",&size);
+    data= (int*)malloc(size*sizeof(int));
+    totSize=calcTolBit(size);
+    transData = (int*)malloc(totSize*sizeof(int));
+    for(it=0;it<totSize;it++)
+        transData[it]=0;
+    printf("Enter the data to transmit: \n");
+    for(it=0;it<size;it++)
+    {
+        scanf("%d",&data[it]);
+    }
+
+    for(it=0;it<totSize;it++)
+    {
+        if((it+1)!=pow(2,temp))
+        {
+            transData[it]=data[size-1];
+            size--;
+        }
+        else
+            temp++;
+    }
+    computeHamming(transData,totSize);
+    printf("Hamming Code Generated for the given data :\n");
+    for(it=totSize-1;it>=0;it--)
+    {
+        printf("%d ",transData[it]);
+    }
+    printf("\nRedundancy Bits: ");
+    for(temp=1;temp<totSize;temp=pow(2,temp))
+      printf("%d  ",transData[temp-1]);
+    printf("\n");
+}

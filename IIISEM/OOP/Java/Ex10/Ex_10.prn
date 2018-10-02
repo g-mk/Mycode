@@ -1,0 +1,602 @@
+Script started on Fri 30 Oct 2015 10:30:55 AM IST
+bash-3.2$ mkdir payroll
+bash-3.2$ ls payroll
+CDate.java	CSalariedEmployee.java	IEmployee.java
+CEmployee.java	CWagedEmployee.java
+bash-3.2$ cat payroll/CEmployee.java
+package payroll;
+import java.io.*;
+import java.util.*;
+/**
+ * This Class describes the Employee details
+ * @author Guru Manikandan
+ */
+public abstract class CEmployee implements Cloneable,IEmployee
+ {
+    /**
+     * Default Constructor to allocate memory
+     */
+   public CEmployee()
+   {
+     m_sName =" ";
+     m_nSalary = 0;
+     m_nAadharNo = m_nAssignAadhar++;
+     m_nDOB = new CDate();
+   }
+   /**
+    * Parametarized Constructor to assign the give values
+    * @param sName Name of the Employee
+    * @param nDate Birth Date of the Employee
+    * @param nMonth Birth Month of the Employee
+    * @param nYear  Birth Year of the Employee
+    */
+   public CEmployee(String sName,int nDate,int nMonth,int nYear)
+   {
+
+     m_sName = sName;
+     m_nSalary = 0;
+     m_nAadharNo=m_nAssignAadhar++;
+     m_nDOB = new CDate(nDate,nMonth,nYear);
+
+   }
+   /**
+    * Clone Function to create a copy of the Object of class CEmployee
+    * @return CEmployee Object
+    * @throws CloneNotSupportedException Exception Handling for Cloning
+    */
+   public CEmployee clone()throws CloneNotSupportedException
+   {
+    CEmployee emp=(CEmployee)super.clone();
+     try
+     {
+     emp.m_nDOB=(CDate)m_nDOB.clone();
+     }
+     catch (CloneNotSupportedException exp)
+     {
+         System.err.println("Error in cloning");
+     }
+     return emp;
+   }
+   /**
+    * To get the Employee details from the user
+    */
+   public void getDetails()
+   {
+    int nDob;
+    Scanner in = new Scanner(System.in);
+    System.out.printf("\nName:");
+    m_sName=in.next();
+    System.out.println("\nAadhar Number: "+ m_nAadharNo);
+    System.out.printf("\nDate of Birth"+"\n\n"+"Date:");
+    nDob=in.nextInt();
+    m_nDOB.setDate(nDob);
+    System.out.printf("\nMonth:");
+    nDob=in.nextInt();
+    m_nDOB.setMonth(nDob);
+    System.out.printf("\nYear:");
+    nDob=in.nextInt();
+    m_nDOB.setYear(nDob);
+   }
+   /**
+    * Method to Display the Employee Details
+    */
+   public void displayDetails()
+   {
+     System.out.println("\nName "+ m_sName);
+     System.out.println("Aadhar No: "+m_nAadharNo);
+     System.out.printf("Salary: %,3d \n",m_nSalary);
+   }
+   public void setSalary(int nSalary)
+   {
+       m_nSalary=nSalary;
+   }
+   public int getDOBMonth()
+   {
+       return m_nDOB.getMonth();
+   }
+   private String m_sName;
+   private int m_nSalary;
+   private int m_nAadharNo;
+   private CDate m_nDOB;
+   private static int m_nAssignAadhar=1001;
+ }
+
+bash-3.2$ cat payroll/CSalariedEmployee.java
+package payroll;
+import java.util.*;
+/**
+ * Salaried Employee class which extend the property of CEmployee class
+ * @author Guru Manikandan
+ */
+public class CSalariedEmployee extends CEmployee
+{
+  /**
+  * Default Constructor for initializing the field 
+  */
+  public CSalariedEmployee()
+  {
+      super();
+  }
+  /**
+  * Parametarized Constructor for initializing the field 
+  * @param sName Name of the Waged Employee
+  * @param nDate Birth Date of the Employee
+  * @param nMonth Birth Month of the Employee
+  * @param nYear  Birth Year of the Employee
+  */
+  public CSalariedEmployee(String sName,int nDate,int nMonth,int nYear)
+  {
+      super(sName,nDate,nMonth,nYear);
+  }
+  /**
+  * Method to Calculate the Salary of the Employee
+  * @param nSalary Daily Wages amount
+  * @param nDays No.of Days the Employee worked
+  * @return Calculated Salary 
+  */
+  public int calculateWages(int nSalary,int nDays)
+    {
+      int nCMonth;
+      GregorianCalendar Cal = new GregorianCalendar();
+      nCMonth = Cal.get(Calendar.MONTH)+1;
+      nSalary = nSalary*nDays;
+      if(getDOBMonth()== nCMonth)
+        nSalary += m_nBonus;
+      setSalary(nSalary);
+      return 1;
+    }
+ /**
+ * Static Function to set Bonus Amount
+ * @param nBonus Bonus Amount
+ */
+   public static void setBonus(int nBonus)
+   {
+    m_nBonus = nBonus;
+   }
+ private static int m_nBonus;
+}
+
+
+bash-3.2$ cat payroll/CWagedEmployee.jav
+package payroll;
+/**
+ * Waged Employee class which exted the property of CEmployee class
+ * @author Guru Manikandan
+ */
+public class CWagedEmployee extends CEmployee
+{
+    /**
+     * Default Constructor for initializing the field
+     */
+    public CWagedEmployee()
+    {
+        super();
+    }
+    /**
+     * Parametarized Constructor for initializing the field 
+     * @param sName Name of the Waged Employee
+     * @param nDate Birth Date of the Employee
+     * @param nMonth Birth Month of the Employee
+     * @param nYear  Birth Year of the Employee
+     */
+    public CWagedEmployee(String sName,int nDate,int nMonth,int nYear)
+    {
+        super(sName,nDate,nMonth,nYear);
+    }
+    /**
+     * Method to Calculate the Salary of the Employee
+     * @param nSalary Daily Wages amount
+     * @param nHours No.of Hours the Employee worked
+     * @return Calculated Salary
+     */
+    public int calculateWages(int nSalary,int nHours)
+    {
+        int nWage;
+        if(nHours>208)
+            nWage = nSalary*208 + m_nOTAmount * (nHours-208);
+        else
+            nWage = nSalary * nHours;
+        setSalary(nWage);
+        return 1;
+    }
+    /**
+    * Static Function to set Over Time Amount
+    * @param nOT Over Time Amount
+    */
+   public static void setOTAmount(int nOT)
+   {
+    m_nOTAmount = nOT;
+   }
+    private static int m_nOTAmount;
+}
+bash-3.2$ cat payroll/CDate.java
+package payroll;
+import java.io.*;
+import java.util.*;
+/**
+ * This Class describes the Date field of CEmployee
+ * @author Guru Manikandan
+ */
+public class CDate implements Cloneable
+ {
+    /**
+     * Default Constructor to allocate and assign default value
+     */
+  public CDate()
+  {
+      m_nDate=0;
+      m_nMonth=0;
+      m_nYear=0;
+  }
+  /**
+   * Parametarized Constructor to assign the values given by the user
+   * @param nDate Date of Birth
+   * @param nMonth Month of Birth
+   * @param nYear  Year of Birth
+   */
+  public CDate(int nDate,int nMonth,int nYear)
+  {
+      m_nDate=nDate;
+      m_nMonth=nMonth;
+      m_nYear=nYear;
+  }
+  /**
+   * Set the Date of Birth
+   * @param nDate Birth Date
+   */
+  public void setDate(int nDate)
+  {
+   m_nDate = nDate;
+  }
+  /**
+   * Set the Month
+   * @param nMonth Birth Month
+   */
+  public void setMonth(int nMonth)
+  {
+   m_nMonth = nMonth;
+  }
+  /**
+   * Set the Year
+   * @param nYear Year of Birth
+   */
+  public void setYear(int nYear)
+  {
+   m_nYear = nYear;
+  }
+  /**
+   * Gets the Date
+   * @return m_nDate
+   */
+ public int getDate()
+  {
+   return m_nDate;
+  }
+/**
+ * Gets the Month
+ * @return m_nMonth
+ */
+  public int getMonth()
+  {
+   return m_nMonth;
+  }
+/**
+ * Gets the Year
+ * @return m_nYear
+ */
+  public int getYear()
+  {
+   return m_nYear;
+  }
+  /**
+   * This Method is to Clone the Object
+   * @return Object
+   * @throws CloneNotSupportedException Exception Handling for Cloning
+   */
+   public Object clone()throws CloneNotSupportedException
+   {
+     return super.clone();
+   }
+
+  private int m_nDate;
+  private int m_nMonth;
+  private int m_nYear;
+ }
+bash-3.2$ cat payroll/IEmployee.java
+package payroll;
+interface IEmployee
+{
+    int calculateWages(int nSalary,int nWork);
+}
+bash-3.2$ mkdir payrollmanagement
+bash-3.2$ ls payrollmanagement/
+CPayRollManagement.java
+bash-3.2$ cat payrollmanagement/CPayRollManagement.java
+ package payrollmanagement;
+import payroll.*;
+import java.io.*;
+import java.util.*;
+/**
+ * To Calculate the Salary for the Employee using package
+ * @author Guru Manikandan
+ */
+public class CPayRollManagement
+{
+    /**
+     * To Implement the Pay Roll Management System (Main Function)
+     * @param args Comment Line Argument Varible
+     */
+ public static void main(String args[])
+  {
+   int nCondition=0;
+   int nCategory;
+   int nWork=0;
+   String sName;
+   int nMonth;
+   int nSalary=0;
+   int nDate;
+   int nYear;
+   int nBonus;
+   int nEmployee;
+   int nLoop=0;
+   Scanner input = new Scanner(System.in);
+   System.out.printf("\nEnter the Birthday Bonus Amount: ");
+   nBonus = input.nextInt();
+   CSalariedEmployee.setBonus(nBonus);
+   System.out.printf("\nEnter the OT Amount: ");
+   nBonus = input.nextInt();
+   CWagedEmployee.setOTAmount(nBonus);
+   System.out.printf("\nEnter the No. of Employee:");
+   nEmployee=input.nextInt();
+   CEmployee []emp=new CEmployee[nEmployee];
+   do
+   {
+    System.out.println("\n***********************Default Constructor**********************\n");
+    System.out.println("Enter the Category to which the Employee belong to....\n");
+    System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+    System.out.printf("Category:");
+    nCategory = input.nextInt();
+    switch(nCategory)
+    {
+     case 1:
+            emp[nLoop] = new CSalariedEmployee();
+            emp[nLoop].getDetails();
+            System.out.printf("\nEnter the Basic Pay for the Employee:");
+            nSalary = input.nextInt();
+            System.out.printf("\nEnter the No. of days the Employee Worked:");
+            nWork = input.nextInt();
+            break;
+     case 2:
+            emp[nLoop] = new CWagedEmployee();
+            emp[nLoop].getDetails();
+            System.out.println("\nEnter the Daily Wage for the Employee:");
+            nSalary = input.nextInt();
+            System.out.println("\nEnter the No. of Hours the Employee Worked:");
+            nWork = input.nextInt();
+            break;
+     default:
+            System.out.println("******************There is no such Category***************");
+    }
+    nCondition=emp[nLoop].calculateWages(nSalary,nWork);
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+    if(++nLoop<nEmployee)
+    {
+     System.out.println("\n***********************Parametarized Constructor**********************\n");
+     System.out.println("\nEnter the Category to which the Employee belong to.... \n");
+     System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+     System.out.printf("Category:");
+     nCategory = input.nextInt();
+     System.out.printf("\nName:");
+     sName=input.next();
+     System.out.printf("\nDate of Birth"+"\n\n"+"Date:");
+     nDate = input.nextInt();
+     System.out.printf("\nMonth:");
+     nMonth = input.nextInt();
+     System.out.printf("\nYear:");
+     nYear = input.nextInt();
+     switch(nCategory)
+     {
+      case 1:
+             emp[nLoop]= new CSalariedEmployee(sName,nDate,nMonth,nYear);
+             System.out.printf("\nEnter the Basic Pay for the Employee:");
+             nSalary = input.nextInt();
+             System.out.printf("\nEnter the No. of days the Employee Worked:");
+             nWork = input.nextInt();
+             break;
+      case 2:
+             emp[nLoop]= new CWagedEmployee(sName,nDate,nMonth,nYear);
+             System.out.printf("\nEnter the Daily Wages for the Employee:");
+             nSalary = input.nextInt();
+             System.out.printf("\nEnter the No. of Hours the Employee Worked:");
+             nWork = input.nextInt();
+             break;
+      default:
+             System.out.println("******************There is no such Category***************");
+     }
+    }
+    else
+     break;
+    nCondition=emp[nLoop].calculateWages(nSalary,nWork);
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+    if(++nLoop<nEmployee)
+    {
+     System.out.println("\n***********************Cloning**********************\n");
+     try
+     {
+      System.out.println("Previous Employee Details has been copied");
+      emp[nLoop] = emp[nLoop-1].clone();
+      System.out.println("Enter the Category to which the Employee belong to....\n ");
+      System.out.println("1.Salaried Employee."+"\n"+"2.Waged Employee."+"\n");
+      System.out.printf("Category:");
+      nCategory = input.nextInt();
+      switch(nCategory)
+      {
+       case 1:
+              System.out.printf("\nEnter the Basic Pay for the Employee:");
+              nSalary = input.nextInt();
+              System.out.printf("\nEnter the No. of days the Employee Worked:");
+              nWork = input.nextInt();
+              break;
+       case 2:
+              System.out.printf("\nEnter the Daily Wages for the Employee:");
+              nSalary = input.nextInt();
+              System.out.printf("\nEnter the No. of Hours the Employee Worked:");
+              nWork = input.nextInt();
+              break;
+       default:
+              System.out.println("******************There is no such Category***************");
+      }
+     }
+     catch(CloneNotSupportedException exp)
+     {
+       System.out.println("Clone not Created");
+     }
+    }
+    else
+     break;
+    nCondition=emp[nLoop].calculateWages(nSalary,nWork);
+    if(nCondition==1)
+        System.out.println("*******************Salary of the Employee Calculated*************");
+    else
+        System.out.println("*******************Salary of the Employee Not Calculated*************");
+   }while(++nLoop<nEmployee);
+  System.out.println("Employee Details:");
+  for(CEmployee employee : emp)
+   {
+    employee.displayDetails();
+   }
+   System.out.println("********************Thank You******************");
+  }
+ }
+
+bash-3.2$ mkdir class
+bash-3.2$ javac -d class payrollmanagement/CPayRollManagement.java
+bash-3.2$ java -classpath class payrollmanagement.CPayRollManagement
+
+Enter the Birthday Bonus Amount: 1000
+
+Enter the OT Amount: 20
+
+Enter the No. of Employee:4
+
+***********************Default Constructor**********************
+
+Enter the Category to which the Employee belong to....
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:1
+
+Name:Guru
+
+Aadhar Number: 1001
+
+Date of Birth
+
+Date:10
+
+Month:10
+
+Year:1990
+
+Enter the Basic Pay for the Employee:1000
+
+Enter the No. of days the Employee Worked:20
+*******************Salary of the Employee Calculated*************
+
+***********************Parametarized Constructor**********************
+
+
+Enter the Category to which the Employee belong to.... 
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:2
+
+Name:Mani
+
+Date of Birth
+
+Date:1
+
+Month:1
+
+Year:1992
+
+Enter the Daily Wages for the Employee:200
+
+Enter the No. of Hours the Employee Worked:209
+*******************Salary of the Employee Calculated*************
+
+***********************Cloning**********************
+
+Previous Employee Details has been copied
+Enter the Category to which the Employee belong to....
+ 
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:1
+
+Enter the Basic Pay for the Employee:2000
+
+Enter the No. of days the Employee Worked:22
+*******************Salary of the Employee Calculated*************
+
+***********************Default Constructor**********************
+
+Enter the Category to which the Employee belong to....
+
+1.Salaried Employee.
+2.Waged Employee.
+
+Category:2
+
+Name:Hari
+
+Aadhar Number: 1003
+
+Date of Birth
+
+Date:1
+
+Month:1
+
+Year:1980
+
+Enter the Daily Wage for the Employee:
+100
+
+Enter the No. of Hours the Employee Worked:
+300
+*******************Salary of the Employee Calculated*************
+Employee Details:
+
+Name Guru
+Aadhar No: 1001
+Salary: 21,000 
+
+Name Mani
+Aadhar No: 1002
+Salary: 41,620 
+
+Name Mani
+Aadhar No: 1002
+Salary: 44,000 
+
+Name Hari
+Aadhar No: 1003
+Salary: 22,640 
+********************Thank You******************
+bash-3.2$ exit
+exit
+
+Script done on Fri 30 Oct 2015 10:37:19 AM IST

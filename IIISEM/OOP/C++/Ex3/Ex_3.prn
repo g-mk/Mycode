@@ -1,0 +1,312 @@
+Script started on Fri 04 Sep 2015 11:45:00 AM IST
+bash-3.2$ cat Name.txt
+*******************************************************************
+Name    : N.Guru Manikandan                    Roll No.:14BCS068
+Year    : II                                   SEC     : 'B'
+Ex No.  : 3                                    Date    : 07/08/2015
+Heading : Class,Objects,Member Function,Constructor & Destructor.
+*******************************************************************
+
+bash-3.2$ cat hStudent.h
+#include<iostream>
+using namespace std;
+struct SDateOfBirth
+{
+ int m_nDate;
+ int m_nMonth;
+ int m_nYear;
+};
+
+class CStudent 
+ {
+  public:
+         CStudent();
+         CStudent(char *,int , float *, int,int,int);
+         CStudent(CStudent &Stud);
+         void SetData(char *,int , float *, int,int,int);
+         int CalculateCutOff(int,int BonusMark =0 );
+         void Display();
+         void CategoryDisplay();
+         ~CStudent();
+  private:
+         char *m_sName;
+         int m_nAddmissionNo;
+         float m_fMarks[4];
+         float m_fCutOff;
+         struct SDateOfBirth m_SBirthDay;
+ };
+bash-3.2$ cat I[KiStudent.cpp
+#include"hStudent.h"
+
+CStudent :: CStudent()
+{
+ m_sName = new char[30];
+ m_sName[0]='\0';
+ m_nAddmissionNo = 0;
+ for(int i=0; i<4; i++)
+  m_fMarks[i] = 0;
+ m_fCutOff = 0.0;
+ m_SBirthDay.m_nDate = 0;
+ m_SBirthDay.m_nMonth = 0;
+ m_SBirthDay.m_nYear = 0;
+}
+
+CStudent :: CStudent(char *sName,int nAddmissionNo,float fMarks[4],int nDay,int nMonth,int nYear)
+{
+ strcpy(m_sName,sName);
+ m_nAddmissionNo = nAddmissionNo;
+  for(int i=0; i<4; i++)
+  m_fMarks[i] = fMarks[i];
+ m_fCutOff = 0.0;
+ m_SBirthDay.m_nDate = nDay;
+ m_SBirthDay.m_nMonth = nMonth;
+ m_SBirthDay.m_nYear = nYear;
+}
+
+CStudent :: CStudent (CStudent& Stud )
+{
+ m_sName = new char [30];
+ strcpy(m_sName,Stud.m_sName);
+ m_nAddmissionNo = Stud.m_nAddmissionNo;
+  for(int i=0; i<4; i++)
+   m_fMarks[i] =Stud.m_fMarks[i];
+ m_fCutOff = 0.0;
+ m_SBirthDay.m_nDate = Stud.m_SBirthDay.m_nDate;
+ m_SBirthDay.m_nMonth = Stud.m_SBirthDay.m_nMonth;
+ m_SBirthDay.m_nYear = Stud.m_SBirthDay.m_nYear;
+}
+
+int CStudent :: CalculateCutOff(int nCategory, int nBonusMark)
+{
+ switch(nCategory)
+  {
+   case 1:m_fCutOff = m_fMarks[0] * .5 + ((m_fMarks[1] + m_fMarks[2]) /2) 
+                            * 0.25 + m_fMarks[3] * .25;
+          return 1;
+          break;
+   case 2:m_fCutOff = m_fMarks[0] * .45 + ((m_fMarks[1] + m_fMarks[2]) /2) 
+                            * 0.2 + m_fMarks[3] * .35;
+          return 1;
+          break;  
+   case 3:m_fCutOff = m_fMarks[0] * .4 + ((m_fMarks[1] + m_fMarks[2]) /2)  
+                             * 0.2 + m_fMarks[3] * .4;
+          return 1;
+          break;
+   default: 
+          return 0;
+  }
+}
+
+void CStudent :: SetData(char *sName, int nAddNo, float fMark[4],int nDate, int nMonth, int nYear)
+{
+ strcpy(m_sName,sName);
+ m_nAddmissionNo = nAddNo;
+  for(int i=0; i<4; i++)
+  m_fMarks[i] = fMark[i];
+ m_fCutOff = 0.0;
+ m_SBirthDay.m_nDate = nDate;
+ m_SBirthDay.m_nMonth = nMonth;
+ m_SBirthDay.m_nYear = nYear;
+}
+void CStudent :: Display ()
+{
+ cout << "\nName of the Student: " << m_sName << endl;
+ cout << "Addmission No: " << m_nAddmissionNo << endl;
+ cout << "Maths Mark : " << m_fMarks[0] << endl;
+ cout << "Phyiscs Mark : " << m_fMarks[1] << endl;
+ cout << "Chemistry Mark :" << m_fMarks[2] << endl;
+ cout << "Campus Mark :" << m_fMarks[3] << endl;
+ cout << "CutOff Mark: "<< m_fCutOff << endl<<endl;
+}
+void CStudent :: CategoryDisplay()
+{
+	int nCategory=0,nLevel;
+   cout<<"\nEnter the Category to which you belong:\n";
+   cout<<"1.General Category\n2.Sports Category\n3.Physically Challenged\n";
+   cout<<"Category:";
+   cin>>nCategory;
+   switch(nCategory)
+    {
+     case 1: CalculateCutOff(nCategory);
+             Display();
+             break;
+     case 2: cout<<"\nEnter the Level for which you have played.."<<endl;
+             cout<<"1.Intra School Level"<<endl<<"2.Inter School Level"<<endl<<
+             "3.District Level"<<endl<<"4.State Level"<<endl<<
+             "5.National Level"<<endl<<"Level You Played:";
+             cin>>nLevel;
+             CalculateCutOff(nCategory, nLevel);
+             Display();
+             break;
+     case 3: cout<<"\n1.10%-20\%Challenged"<<endl<<"2.20-40\% Challenged"<<endl<<
+             "3.40-50\% Challenged"<<endl
+                  <<"4.50-60\% Challenged"<<endl
+                  <<"5.above 60\%Challenged"<<endl;
+            cout<<"\nEnter the Physically Challenged Level:";
+            cin>> nLevel;
+            CalculateCutOff(nCategory, nLevel);
+            Display();
+            break;
+   default: cout<<"There is No Such Category......"<<endl;
+            
+   }
+}
+
+CStudent :: ~CStudent()
+{
+ //delete [] m_sName; 
+}
+bash-3.2$ cat aStudent.co[Kpp
+#include"hStudent.h"
+main()
+{
+ char sName[30];
+ int nAddmission;
+ float fMarks[4];
+ int nDate,nMonth,nYear;
+ CStudent Candidate1;
+ cout<<"**********Using Default Constructor************\n";
+ cout << "\nEnter the name of the Student: ";
+ cin >> sName;
+ cout << "Enter the Addmission No: ";
+ cin >> nAddmission;
+  cout << "Enter the Maths Mark :";
+  cin>> fMarks[0];
+  cout << "Enter the Phyiscs Mark :";
+  cin>> fMarks[1];
+  cout << "Enter the Chemistry Mark :";
+  cin>> fMarks[2];
+  cout << "Enter the Campus Mark :";
+  cin >> fMarks[3];
+ cout << "Enter Your Date OF Birth.....\n";
+  cout << "Date: ";
+  cin >> nDate;
+  cout << "Month: ";
+  cin >> nMonth;
+  cout << "Year: ";
+  cin >> nYear;
+   Candidate1.SetData(sName,nAddmission,fMarks,nDate,nMonth,nYear);
+   Candidate1.CategoryDisplay();
+    
+ cout<<"\n***********Using Parametarised Consructor********\n";
+ cout << "\nEnter the name of the Student: ";
+ cin >> sName;
+ cout << "Enter the Addmission No: ";
+ cin >> nAddmission;
+  cout << "Enter the Maths Mark :";
+  cin>> fMarks[0];
+  cout << "Enter the Phyiscs Mark :";
+  cin>> fMarks[1];
+  cout << "Enter the Chemistry Mark :";
+  cin>> fMarks[2];
+  cout << "Enter the Campus Mark :";
+  cin>>fMarks[3];
+  cout << "Date: ";
+  cin >> nDate;
+  cout << "Month: ";
+  cin >> nMonth;
+  cout << "Year: ";
+  cin >> nYear;
+ CStudent Candidate2(sName,nAddmission,fMarks,nDate,nMonth,nYear);
+ Candidate2.CategoryDisplay();
+ cout<<"Details of Student 2 was copied...\nNow Check CutOff in Other Category..\n"; 
+ cout<<"***********Using Copy Consructor********\n";
+ CStudent Candidate3(Candidate2);
+ Candidate3.CategoryDisplay();
+ cout<<"**********Thank You***********\n";
+}
+
+bash-3.2$ ./Student
+**********Using Default Constructor************
+
+Enter the name of the Student: guru
+Enter the Addmission No: 1110
+Enter the Maths Mark :200
+Enter the Phyiscs Mark :125
+Enter the Chemistry Mark :126
+Enter the Campus Mark :200
+Enter Your Date OF Birth.....
+Date: 20
+Month: 2
+Year: 1998
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:1
+
+Name of the Student: guru
+Addmission No: 1110
+Maths Mark : 200
+Phyiscs Mark : 125
+Chemistry Mark :126
+Campus Mark :200
+CutOff Mark: 181.375
+
+
+***********Using Parametarised Consructor********
+
+Enter the name of the Student: Mani
+Enter the Addmission No: 1111
+Enter the Maths Mark :200
+Enter the Phyiscs Mark :198
+Enter the Chemistry Mark :196
+Enter the Campus Mark :168
+Date: 20
+Month: 2
+Year: 1998
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:2
+
+Enter the Level for which you have played..
+1.Intra School Level
+2.Inter School Level
+3.District Level
+4.State Level
+5.National Level
+Level You Played:4
+
+Name of the Student: Mani
+Addmission No: 1111
+Maths Mark : 200
+Phyiscs Mark : 198
+Chemistry Mark :196
+Campus Mark :168
+CutOff Mark: 188.2
+
+Details of Student 2 was copied...
+Now Check CutOff in Other Category..
+***********Using Copy Consructor********
+
+Enter the Category to which you belong:
+1.General Category
+2.Sports Category
+3.Physically Challenged
+Category:3
+
+1.10%-20%Challenged
+2.20-40% Challenged
+3.40-50% Challenged
+4.50-60% Challenged
+5.above 60%Challenged
+
+Enter the Physically Challenged Level:4
+
+Name of the Student: Mani
+Addmission No: 1111
+Maths Mark : 200
+Phyiscs Mark : 198
+Chemistry Mark :196
+Campus Mark :168
+CutOff Mark: 186.6
+
+**********Thank You***********
+bash-3.2$ exit
+exit
+
+Script done on Fri 04 Sep 2015 11:46:32 AM IST

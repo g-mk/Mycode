@@ -1,0 +1,192 @@
+Script started on Fri 07 Nov 2014 11:46:35 AM IST
+bash-3.2$ cat fbseres[K[Ks.c
+#include<stdio.h>
+#include<stdlib.h>
+main()
+{
+ int *a,n,i;
+ printf("Enter the No. of terms: ");
+ scanf("%d",&n);
+ a=(int *)malloc(n*sizeof(int));
+ a[0]=0;
+ a[1]=1;
+ for(i=2;i<n;i++)
+ {
+  a[i]=a[i-2]+a[i-1];
+ }
+ printf("\nFibanacci Series:\n");
+ for(i=0;i<n;i++)
+ {
+  printf("%d\n",a[i]);
+ }
+}
+
+bash-3.2$ ./fbsers
+Enter the No. of terms: 8
+
+Fibanacci Series:
+0
+1
+1
+2
+3
+5
+8
+13
+bash-3.2$ cat stfadvsr.c
+#include<stdio.h>
+#include<stdlib.h>
+main()
+{
+ int *std,n,i,s1[50],s2[50],o=0,e=0;
+ printf("Enter the Total Number of Students: ");
+ scanf("%d",&n);
+ std= (int*)malloc(n*sizeof(int));
+ printf("\nEnter the Roll No. For the Students:\n");
+ for(i=0;i<n;i++)
+ {
+  scanf("%d",&std[i]);
+ }
+ for(i=0;i<n;i++)
+ {
+  if(std[i]%2==0)
+  {
+   s2[e]=std[i];
+   e++;
+  }
+  else
+  {
+   s1[o]=std[i];
+   o++;
+  }
+ }
+ printf("Staff Advisor 1:\n");
+ for(i=0;i<o;i++)
+ {
+  printf("%d) %d\n",i+1,s1[i]);
+ }
+ printf("Staff Advisor 2:\n");
+ for(i=0;i<e;i++)
+ {
+  printf("%d) %d\n",i+1,s2[i]);
+ }
+}
+
+bash-3.2$ ./advs[K[K[K[Kstfadvsr
+Enter the Total Number of Students: 10
+
+Enter the Roll No. For the Students:
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+1008
+1009
+1010
+Staff Advisor 1:
+1) 1001
+2) 1003
+3) 1005
+4) 1007
+5) 1009
+Staff Advisor 2:
+1) 1002
+2) 1004
+3) 1006
+4) 1008
+5) 1010
+bash-3.2$ cat pop.c
+#include<stdio.h>
+#include<stdlib.h>
+main()
+{
+ int **a;
+ int d,c,i,j,n,sum=0;
+ printf("Enter the No. Of Districts: ");
+ scanf("%d",&d);
+ printf("Enter the No. Of City in each District: ");
+ scanf("%d",&c);
+ a=(int **)malloc(d*sizeof(int *));
+ for(i=0;i<d;i++)
+  {
+   a[i] = (int*)(malloc(c+1*sizeof(int)));
+  }
+ for(i=0;i<d;i++)
+  {
+   printf("Enter the Population for District %d\n ",i+1);
+   for(j=0;j<c;j++)
+    {
+     printf("Enter the Population for City %d ",j+1);
+     scanf("%d",&a[i][j]);
+     sum+=a[i][j];
+    }
+   a[i][c]=sum;
+  }
+ for(i=0;i<d;i++)
+  {
+   printf("City %d ",i+1);
+   for(j=0;j<c;j++)
+    {
+     printf("%d\t",a[i][j]);
+    }
+   printf("\n");
+  }
+ printf("Enter the district to know the Population: ");
+ scanf("%d",&n);
+ if(n<=c)
+ {
+ printf("Population for the district %d is %d\n\n",n,a[n-1][c]);
+ }
+ else
+  printf("No Such District Exists......\n\n");
+}
+
+bash-3.2$ ./pop
+Enter the No. Of Districts: 3
+Enter the No. Of City in each District: 3
+Enter the Population for District 1
+ Enter the Population for City 1 1200
+Enter the Population for City 2 1300
+Enter the Population for City 3 1400
+Enter the Population for District 2
+ Enter the Population for City 1 2000
+Enter the Population for City 2 2100
+Enter the Population for City 3 2300
+Enter the Population for District 3
+ Enter the Population for City 1 4000
+Enter the Population for City 2 1230
+Enter the Population for City 3 2145
+City 1 1200	1300	1400	
+City 2 2000	2100	2300	
+City 3 4000	1230	2145	
+Enter the district to know the Population: 3
+Population for the district 3 is 17675
+
+bash-3.2$ ./pop
+Enter the No. Of Districts: 3
+Enter the No. Of City in each District: 3
+Enter the Population for District 1
+ Enter the Population for City 1 1200
+Enter the Population for City 2 1300
+Enter the Population for City 3 1400
+Enter the Population for District 2
+ Enter the Population for City 1 200
+Enter the Population for City 2 2000
+Enter the Population for City 3 12400 
+Enter the Population for District 3
+ Enter the Population for City 1 4000
+Enter the Population for City 2 1245
+Enter the Population for City 3 2145
+City 1 1200	1300	1400	
+City 2 200	2000	1240	
+City 3 4000	1245	2145	
+Enter the district to know the Population: 5
+No Such District Exists......
+
+bash-3.2$ exit
+exit
+
+Script done on Fri 07 Nov 2014 11:50:05 AM IST

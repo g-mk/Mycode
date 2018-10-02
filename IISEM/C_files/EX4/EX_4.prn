@@ -1,0 +1,531 @@
+Script started on Mon 16 Mar 2015 07:46:45 AM IST
+bash-3.2$ cd 4a
+bash-3.2$ cat hClass.h
+#include<stdio.h>
+#include<stdlib.h>
+struct student
+{
+ int rollno;
+ char name[30],sec;
+ int m[4];
+ int total;
+ float avg;
+ int p,r,ar;
+}**s;
+void rank(struct student **,int);
+int classtopper(struct student **,int,int);
+bash-3.2$ cat aClass.c
+#include"hClass.h"
+main()
+{
+ int n,i,j,k,p;
+ s=(struct student **)malloc(3*sizeof(struct student *));
+ printf("Enter the No of Students in class: ");
+ scanf("%d",&n);
+ for(i=0;i<3;i++)
+ {
+  s[i]=(struct student *)malloc(n*sizeof(struct student ));
+ }
+ for(i=0;i<3;i++)
+ {
+  for(j=0;j<n;j++)
+   {
+    s[i][j].total=0;
+    s[i][j].avg=0;
+    s[i][j].p=1;
+    s[i][j].ar=0;
+   }
+  }  
+ for(i=0;i<3;i++)
+ {
+  for(j=0;j<n;j++)
+  {
+  printf("Enter the Details Of the Student of class %d\n",i+1);
+  printf("Name:");
+  scanf("%s",s[i][j].name);
+  printf("Reg.No:");
+  scanf("%d",&s[i][j].rollno);
+  for(k=0;k<4;k++)
+  {
+   printf("Mark %d:",k+1);
+   scanf("%d",&s[i][j].m[k]);
+   s[i][j].total+=s[i][j].m[k];
+   if(s[i][j].m[k]<50)
+   {
+    s[i][j].p=0;
+    s[i][j].ar+=1;
+   }
+  }
+  s[i][j].avg=s[i][j].total/4;
+  printf("Average:%f\n",s[i][j].avg);
+  }
+ }
+ printf("Name\tRoll no\tM1\tM2\tM3\tM4\tTotal\tAvg\tPass\n");
+ for(i=0;i<3;i++)
+ {
+  for(j=0;j<n;j++)
+  {
+   printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t%.2f\t%d\n",s[i][j].name,s[i][j].rollno,
+  s[i][j].m[0],s[i][j].m[1],s[i][j].m[2],s[i][j].m[3],
+  s[i][j].total,s[i][j].avg,s[i][j].p);
+  }
+ }
+ rank(s,n);
+}
+bash-3.2$ cat iClass.c
+#include"hClass.h"
+void rank(struct student **s,int n)
+{
+ int m=0,top,i,t,f=0,j,k,tot[40],rank=1,a=0;
+ for(i=0;i<3;i++)
+ {
+  for(j=0;j<n;j++)
+    {
+     if(s[i][j].p==1)
+     {
+      tot[a]=s[i][j].total;
+     a++;
+     }
+    }
+ }
+ for(i=0;i<a;i++)
+ {
+  for(j=i+1;j<a;j++)
+   {
+    if(tot[i]<tot[j])
+     {
+      t=tot[i];
+      tot[i]=tot[j];
+      tot[j]=t;
+     }
+   }
+ }
+ for(i=0;i<a;i++)
+ {
+  for(j=0;j<3;j++)
+   {
+    for(k=0;k<n;k++)
+     {
+      if(tot[i]==s[j][k].total)
+       {
+        s[j][k].r=i+1;
+       // rank++;
+       }
+     }
+   }
+ }
+ for(i=0;i<3;i++)
+ {
+  for(j=0;j<n;j++)
+  { if(s[i][j].r!=0)
+     {
+      printf("Name : %s\n",s[i][j].name);
+      printf("Roll No: %d\n",s[i][j].rollno);
+      printf("Total: %d\n",s[i][j].total);
+      printf("Rank: %d\n\n",s[i][j].r);
+     }
+  }
+ }
+ printf("NAME          Roll No.        No.of Arrear\n");
+for(i=1;i<=4;i++)
+ {
+  for(j=0;j<3;j++)
+   {
+    for(k=0;k<n;k++)
+    { if(s[j][k].ar==i)
+       {
+        printf("%s          %d               %d\n",s[j][k].name,s[j][k].rollno,s[j][k].ar);
+       }
+    }
+   }
+ }
+     
+ for(i=0;i<3;i++)
+  {m=0;
+  // j=classtopper(s,n,i);
+   // m=s[i][j].total;
+     for(j=0;j<n;j++)
+   {
+ // printf("\n%d\n",s[i][j].total);
+    if(m<s[i][j].total)
+      {
+       top=j;
+       m=s[i][j].total;
+      }
+   }
+   printf("Topper in Class %d\n",i+1);
+   printf("Name:%s\n",s[i][top].name);
+   printf("Total:%d\n",s[i][top].total);
+   printf("Average:%f\n",s[i][top].avg);
+  }
+}
+int classtopper(struct student **s,int n,int c)
+{
+ int i,j,top,m=s[c][0].total;
+  for(i=1;i<n;i++)
+   { 
+  printf("\n%d\n",s[c][i].total);
+    if(m<s[c][i].total)
+      {
+       top=i;
+       m=s[c][i].total;
+      }
+   }
+   return top;
+}
+bash-3.2$ ./Class
+Enter the No of Students in class: 2
+Enter the Details Of the Student of class 1
+Name:ram
+Reg.No:1
+Mark 1:98
+Mark 2:89
+Mark 3:78
+Mark 4:98
+Average:90.000000
+Enter the Details Of the Student of class 1
+Name:ganapathi
+Reg.No:2
+Mark 1:45
+Mark 2:34
+Mark 3:67
+Mark 4:78
+Average:56.000000
+Enter the Details Of the Student of class 2
+Name:viky
+Reg.No:3
+Mark 1:67
+Mark 2:78
+Mark 3:89
+Mark 4:90
+Average:81.000000
+Enter the Details Of the Student of class 2
+Name:mani
+Reg.No:4
+Mark 1:56
+Mark 2:67
+Mark 3:78
+Mark 4:89
+Average:72.000000
+Enter the Details Of the Student of class 3
+Name:guru
+Reg.No:5
+Mark 1:67
+Mark 2:87
+Mark 3:98
+Mark 4:90
+Average:85.000000
+Enter the Details Of the Student of class 3
+Name:thiru
+Reg.No:6
+Mark 1:98
+Mark 2:78
+Mark 3:67
+Mark 4:90
+Average:83.000000
+Name  Roll no  M1  M2  M3  M4  Total  Avg  Pass
+ram    1       98  89  78  98   363  90.00  1
+gan    2       45  34  67  78   224  56.00  0
+viky   3       67  78  89  90   324  81.00  1
+mani   4       56  67  78  89   290  72.00  1
+guru   5       67  87  98  90   342  85.00  1
+thiru  6       98  78  67  90   333  83.00  1
+Name : ram
+Roll No: 1
+Total: 363
+Rank: 1
+
+Name : viky
+Roll No: 3
+Total: 324
+Rank: 4
+
+Name : mani
+Roll No: 4
+Total: 290
+Rank: 5
+
+Name : guru
+Roll No: 5
+Total: 342
+Rank: 2
+
+Name : thiru
+Roll No: 6
+Total: 333
+Rank: 3
+
+NAME          Roll No.        No.of Arrear
+ganapathi          2               2
+Topper in Class 1
+Name:ram
+Total:363
+Average:90.000000
+Topper in Class 2
+Name:viky
+Total:324
+Average:81.000000
+Topper in Class 3
+Name:guru
+Total:342
+Average:85.000000
+bash-3.2$ cd ..
+bash-3.2$ cd 4b
+bash-3.2$ cat hStock.h
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct stock
+{
+ int id;
+ char n[20];
+ float r;
+ int s;
+};
+int alloc(struct stock * ,int,int ,int);
+int check(struct stock *,int ,int,int );
+int remov(struct stock *,int ,int );
+
+bash-3.2$ cat aStock.c
+#include"hStock.h"
+main()
+{
+ struct stock *it;
+ int n,i,ch=0,l,q,f;
+ int c;
+ printf("Enter the No. items to be stored:");
+ scanf("%d",&n);
+ it=(struct stock *)malloc(n*sizeof(struct stock));
+// get(it,n);
+ printf("Enter the Stocks:");
+ for(i=0;i<n;i++)
+ {
+  printf("Name:");
+  scanf("%s",it[i].n);
+  printf("ID:");
+  scanf("%d",&it[i].id);
+  printf("Price:");
+  scanf("%f",&it[i].r);
+  printf("Quantity:");
+  scanf("%d",&it[i].s);
+ } 
+ while(ch!=5)
+ {
+ printf("Enter the choice:");
+ printf("\n1)Adding Items to the Stock..\n2)Removing Items..\n3)Printing the Details of all items..\n4)Availabilitiy of a particular items..5)Exit..");
+ scanf("%d",&ch);
+ if(ch!=5)
+{
+ switch(ch)
+ {
+  case 1:printf("\n1]To add New Items..\n2]To add quantity..\n");
+         scanf("%d",&q);
+         n= alloc(it,n,ch,q);
+         break;
+  case 2:printf("Enter the Id. to Remove:");
+         scanf("%d",&c);
+         for(i=0;i<n;i++)
+           if(it[i].id==c)
+            {
+             n=remov(it,n,c);
+             f=0;
+            }
+           
+           if(f!=0) printf("No items is available in such ID....\n");
+         break;
+  case 3:print(it,n);
+         break;
+  case 4:{printf("Enter the Item ID. to check the Availability:");
+         scanf("%d",&c);
+         printf("Enter the Quantity Needed:");
+         scanf("%d",&q);
+         l= check(it,c,n,q);
+         if(l==1)
+           printf("Given Item is available...\n");
+         else
+           printf("Given items is unavailable\n");
+         
+         break;}
+  default:printf("Invlaid Option\n:");
+ }
+ }
+}
+}
+
+bash-3.2$ cat iStokck.c
+#include"hStock.h"
+int alloc(struct stock *a,int n,int ch,int l)
+{
+ int i,j,id,q;
+  if(l==1)
+  {
+  a =(struct stock *)realloc(a,(n+l)*sizeof(struct stock ));
+ for(i=n;i<n+l;i++)
+ {
+ printf("Enter the new stock:");
+ printf("Name:");
+ scanf("%s",&a[i].n);
+ printf("ID:");
+ scanf("%d",&a[i].id);
+ printf("Price:");
+ scanf("%f",&a[i].r);
+ printf("Quantity:");
+ scanf("%d",&a[i].s);
+ }
+ return n+l;
+ }
+ if (l==2)
+ {
+   printf("Enter the Id to add Stock..");
+   scanf("%d",&id);
+   printf("Enter the Quantity.:");
+   scanf("%d",&q);
+   for(i=0;i<n;i++)
+    if(a[i].id==id)
+       a[i].s+=q;
+ return n;
+  }
+}
+int remov(struct stock *a,int n,int c)
+{
+  int i,j,rm;
+  char w='n';
+  for(i=0;i<n;i++)
+   {
+    if(a[i].id==c)
+     {
+      printf("Quantity to be Removed:");
+      scanf("%d",&rm);
+      a[i].s-=rm;
+      if(a[i].s<=0)
+      {
+        printf("Do you want to remove the items:y/n");
+        scanf(" %c",&w);
+        if(w=='y')
+         {
+         for(j=i;j<n;j++)
+          a[j]=a[j+1]; 
+         return n-1;
+         }
+      }
+    }
+  }
+   return n;
+}
+void print(struct stock *a,int l)
+{
+ int i;
+ for(i=0;i<l;i++)
+ {
+  printf("Name:%s\n",a[i].n);
+  printf("ID:%d\n",a[i].id);
+  printf("Price: %.2f\n",a[i].r);
+  printf("Quantity:%d\n",a[i].s);
+ }
+}
+int check(struct stock *a,int item,int n,int q)
+{
+ int i;
+ for(i=0;i<n;i++)
+ {
+  if(a[i].id==item)
+   {
+   if(a[i].s>q)
+   return 1;
+  else
+   return 0;
+   }
+ }
+} 
+bash-3.2$ ./Stock
+Enter the No. items to be stored:4
+Enter the Stocks:Name:soap
+ID:1
+Price:25
+Quantity:19
+Name:shampoo
+ID:2
+Price:76
+Quantity:15
+Name:mirror
+ID:3
+Price:13
+Quantity:43
+Name:pen
+ID:4
+Price:5
+Quantity:28
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..1
+
+1]To add New Items..
+2]To add quantity..
+2
+Enter the Id to add Stock..2
+Enter the Quantity.:14
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..1
+
+1]To add New Items..
+2]To add quantity..
+1
+Enter the new stock:Name:pencil
+ID:5
+Price:12
+Quantity:20
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..3
+Name:soap
+ID:1
+Price: 25.00
+Quantity:19
+Name:shampoo
+ID:2
+Price: 76.00
+Quantity:29
+Name:mirror
+ID:3
+Price: 13.00
+Quantity:43
+Name:pen
+ID:4
+Price: 5.00
+Quantity:28
+Name:pencil
+ID:5
+Price: 12.00
+Quantity:20
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..2
+Enter the Id. to Remove:3
+Quantity to be Removed:43
+Do you want to remove the items:y/ny
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..4
+Enter the Item ID. to check the Availability:3
+Enter the Quantity Needed:12
+Given items is unavailable
+Enter the choice:
+1)Adding Items to the Stock..
+2)Removing Items..
+3)Printing the Details of all items..
+4)Availabilitiy of a particular items..5)Exit..5
+bash-3.2$ exit
+exit
+
+Script done on Mon 16 Mar 2015 07:53:22 AM IST

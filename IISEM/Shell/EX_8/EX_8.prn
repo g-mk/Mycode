@@ -1,0 +1,80 @@
+Script started on Mon 30 Mar 2015 04:14:32 PM IST
+bash-3.2$ finger 14bcs068
+Login: 14bcs068       			Name: Guru Manikandan N
+Directory: /student/cse/ug/be2014/b/14bcs068	Shell: /bin/bash
+On since Mon Mar 30 14:53 (IST) on pts/115 from 172.16.31.74
+On since Mon Mar 30 16:14 (IST) on pts/123
+No mail.
+No Plan.
+bash-3.2$ uptime
+ 16:14:46 up 12:12, 130 users,  load average: 0.17, 0.19, 0.18
+bash-3.2$ tr '[a-z]' [[K'[A-Z]' < Biodata.txt 
+NAME : N.GURU MANIKANDAN
+AGE : 18
+MAIL ID: GMK30.7.1996@GMAIL.COM
+HOBBY: PLAYIN GAME IN PC.
+
+bash-3.2$ ls -l | tr -s ' ' | grep "^d" | cut -d ' '  -f 9| tee Directory.txt 
+MARK
+MENU
+bash-3.2$ ls -l | tr -s ' ' | grep "^d" | cut -d ' '  -f 9| tee Directory.txt [1P[1@-[1@r[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P[1P [1P[1P[1P[1P[1P [1P[1P[1P[1P[1P[1P F i le.txt 
+Biodata.txt
+college
+collegenames
+Dept
+Directory.txt
+EX_8.prn
+File.txt
+newdirectroy
+Studentsnames
+bash-3.2$ sort -r Directory.txt 
+MENU
+MARK
+bash-3.2$ sort -r Directory.txt |nl
+     1	MENU
+     2	MARK
+bash-3.2$ du
+4	./MARK
+4	./MENU
+44	.
+bash-3.2$ dh[Kf
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/sdb1             38686864  11361536  25328452  31% /
+/dev/sdb5             19840892  14985992   3830760  80% /softwares
+/dev/sdb3             34718516   1765220  31161248   6% /staff
+/dev/sdb2             34718516  22495636  10430832  69% /student
+tmpfs                  4088840         0   4088840   0% /dev/shm
+bash-3.2$ cat *nam[K[K[K[Kcollegenames 
+Mepco
+Kalasalingam
+Kumaraguru
+KCT
+NIT
+IIT
+CEG
+bash-3.2$ cat s[KStudentsnames 
+Guru
+Mani
+Kandan
+Subangan
+Dhivahar
+
+bash-3.2$ cat *names > newdirectroy 
+bash-3.2$ who | wc -l
+127
+bash-3.2$ cat college
+CSE In MEPCO SCHLENK ENGG COLLEEGE.
+Kumaraguru
+NATIONAL ENGG COLLEGE
+bash-3.2$ cat DE[Kept 
+CSE MEPCO
+ECE MEPCO
+IT NATIONAL COLLEGE OF ENGG COLLEGE
+CIVIL KUmaraguru
+
+bash-3.2$ cmp Co[K[Kcollege Dept 
+college Dept differ: byte 5, line 1
+bash-3.2$ exit
+exit
+
+Script done on Mon 30 Mar 2015 04:17:19 PM IST

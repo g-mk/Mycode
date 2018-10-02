@@ -1,0 +1,508 @@
+Script started on Fri 18 Sep 2015 12:28:07 PM IST
+bash-3.2$ cat Name.pr[K[Ktxt
+*******************************************************************
+Name    : N.Guru Manikandan                    Roll No.:14BCS068
+Year    : II                                   SEC     : 'B'
+Ex No.  : 6                                    Date    : 04/09/2015
+Heading : Inheritance.
+*******************************************************************
+
+bash-3.2$ cat hStudent.h
+#include<iostream>
+#define SET 1000
+using namespace std;
+struct SDateOfBirth
+{
+    int m_nDate;
+    int m_nMonth;
+    int m_nYear;
+
+};
+
+
+class Student
+{
+ public:
+  Student ();
+  virtual ~Student();
+  virtual int CalculateCutOff()=0;
+  Student* operator + (int nBonusMark );
+  Student* operator = (Student *Stud);
+  static int GenerateAddNo();
+  int IsEligible();
+  friend ostream& operator <<(ostream&,Student*);
+  friend istream& operator >>(istream& ,Student*);
+ protected:
+  static int m_nAssignAddNo;
+  static int m_nTotalSeat;
+  static int m_nWaitingList;
+  string m_sName;
+  int m_nAddmissionNo;
+  float m_fMarks[4];
+  float m_fCutOff;
+  struct SDateOfBirth m_SBirthDay;
+};
+
+class GeneralStudent: public Student
+{
+ public :
+  GeneralStudent();
+ ~GeneralStudent();
+  int CalculateCutOff();
+};
+class SportsStudent : public Student 
+{
+ public:
+  SportsStudent();
+ ~SportsStudent();
+  int CalculateCutOff();
+};
+class PhysicallyChallenged : public Student
+{
+ public:
+  PhysicallyChallenged();
+ ~PhysicallyChallenged();
+  int CalculateCutOff();
+};
+  
+bash-3.2$ cat iStudent.cpp
+#include"hStudent.h"
+int Student :: m_nWaitingList = 1;
+int Student :: m_nTotalSeat = 1;
+int Student :: m_nAssignAddNo = 1;
+
+Student :: Student() 
+{
+    cout<<"\n*******************Base Class Constructor******************\n";
+    m_sName = " ";
+    m_nAddmissionNo = Student::GenerateAddNo();
+    for(int i=0;i<4;i++)
+    {
+        m_fMarks[i]=0.0;
+    }
+    m_fCutOff =0.0;
+    m_SBirthDay.m_nDate=0;
+    m_SBirthDay.m_nMonth=0;
+    m_SBirthDay.m_nYear=0;
+}
+Student :: ~Student()
+{
+    cout<<"\n*******************Base Class Destructor****************\n";
+}
+istream& operator >> (istream &get,Student *Stud)
+{
+    cout<<"\n*******************Addmission Process**********************\n";
+    cout<<"Enter the Name:";
+    get>>Stud->m_sName;
+    cout<<" Addmission No: "<< Stud->m_nAddmissionNo<<endl;
+    cout<<"Enter the Maths Mark:";
+    get>>Stud->m_fMarks[0];
+    cout<<"Enter the Phyiscs Mark:";
+    get>>Stud->m_fMarks[1];
+    cout<<"Enter the Chemistry Mark:";
+    get>>Stud->m_fMarks[2];
+    cout<<"Enter the Campus Entrance Test Mark:";
+    get>>Stud->m_fMarks[3];
+    cout<<"Enter the Date of Birth\n";
+    cout<<"Date:";
+    get>>Stud->m_SBirthDay.m_nDate;
+    cout<<"Month:";
+    get>>Stud->m_SBirthDay.m_nMonth;
+    cout<<"Year: ";
+    get>>Stud->m_SBirthDay.m_nYear;
+    return get;
+}
+ 
+ostream& operator << (ostream &print,Student *Stud)
+{
+    print<<"Name : "<<Stud->m_sName<<endl;
+    print<<"Addmission No: "<<Stud->m_nAddmissionNo<<endl;
+    print<<"CutOff :"<<Stud -> m_fCutOff<<endl;
+    print<<"\nRemaining Seats: "<<Student :: m_nTotalSeat<<endl;
+    print<<"\nRemaining Waiting Seats: "<<Student :: m_nWaitingList<<endl;
+}
+Student* Student :: operator+ (int nBonusMark)
+{
+ this->m_fCutOff=this->m_fCutOff + nBonusMark;
+ if(this->m_fCutOff>200)
+  this->m_fCutOff = 200;
+ return this;
+}
+Student* Student :: operator= (Student* Candidate)
+{
+ this->m_fCutOff = Candidate->m_fCutOff;
+ return this;
+}
+int Student :: IsEligible()
+{
+    if(this->m_fCutOff>160)
+    {
+        if(this->m_nTotalSeat)
+        {
+            this->m_nTotalSeat--;
+            return 1;
+        }
+        else if (this->m_nWaitingList)
+        {
+            this->m_nWaitingList--;
+            return 2;
+        }
+         else
+          return 0;
+     }
+    else
+        return -1;
+}
+
+int Student :: GenerateAddNo()
+{
+    return (SET + m_nAssignAddNo++);
+}
+/*************GENERAL STUDENTS CLASS METHODS DEFINITOIN**************/
+GeneralStudent :: GeneralStudent () : Student()
+{
+ cout<<"\n************General Students Class Constructor**************\n";
+}
+GeneralStudent :: ~GeneralStudent()
+{
+ cout<<"\n**************GeneralStudent Destructor*****************\n";
+}
+int GeneralStudent :: CalculateCutOff()
+{
+ this->m_fCutOff =this-> m_fMarks[0]*0.5 + ((this->m_fMarks[1] + this->m_fMarks[2])/2 * 0.25) 
+                + this->m_fMarks[3]*0.25;
+ if(this->m_fCutOff)
+  return 1;
+ else 
+ 	return 0;
+}
+/*************SPORTS STUDENTS CLASS METHODS DEFINITOIN**************/
+SportsStudent :: SportsStudent() : Student()
+{
+ cout<<"\n**************Sports Student Class Constuctor**************\n";
+}
+SportsStudent ::~SportsStudent()
+{
+ cout<<"\n**************Sports Student Destructor*****************\n";
+}
+int SportsStudent :: CalculateCutOff()
+{
+ this-> m_fCutOff=this->m_fMarks[0]*0.45 + ((this->m_fMarks[1] + this->m_fMarks[2])/2 * 0.2)
+                  + this->m_fMarks[3]*0.35;
+ if(this->m_fCutOff) 
+	return 1;
+ else 
+  return 0;
+}
+/*************PHYSICALLY CHALLENGED CLASS METHODS DEFINITIONS******/
+PhysicallyChallenged :: PhysicallyChallenged () : Student()
+{
+ cout<<"\n******Physically Challenged Student Class Constructor******\n";
+}
+PhysicallyChallenged :: ~PhysicallyChallenged()
+{
+ cout<<"\n******Physically Challenged Student Class Destructor******\n";
+}
+int PhysicallyChallenged :: CalculateCutOff()
+{
+  this->m_fCutOff = this->m_fMarks[0]*0.4 + ((this->m_fMarks[1] + this->m_fMarks[2])/2 * 0.2)
+                  + this->m_fMarks[3]*0.4;
+	 if(this->m_fCutOff)
+		return 1;
+	 else
+		return 0;
+}
+
+bash-3.2$ cat i[KaStudn[Kent.cpp
+#include"hStudent.h"
+main()
+{
+    int nCategory=0,nLevel=0,nStatus;
+    char cControl;
+   do
+   { 
+      Student *PtrStud;
+        do
+       {
+        cout<<"\nEnter the Category in which You Belong....\n";
+        cout<<"\n1.General Category...\n2.Sports Category...\n3.Physically Challenged Category...\n";
+        cout<<"Category: ";
+        cin>>nCategory;
+        if(nCategory >3 )
+          cout<<"No Such Category....\n";
+       }while(nCategory>3);
+        switch(nCategory)
+        {   case 1: 
+                    PtrStud = new GeneralStudent;
+                    cin >> PtrStud;
+                    break;
+                   
+            case 2: PtrStud=new SportsStudent;
+                    cin >> PtrStud;
+               do
+            {
+                if(nLevel>5)
+                    cout<<"\nThere is No Such Level...\n";
+                cout<<"\nEnter the Level for which You have Played...\n";
+                cout<<"1.Intra School Level...\n2.Inter School Level...\n"<<
+                "3.District Level...\n4.State Level...\n5.National Level...\n";
+                cout<<"Level:";
+                cin>>nLevel;
+            }while(nLevel>5);
+            break;
+            case 3: PtrStud= new PhysicallyChallenged;
+                    cin >> PtrStud;
+                do
+               {
+                if(nLevel>5)
+                    cout<<"\nThere is no such level in the list...\n";
+                cout<<"\nEnter the Percentage of Disability...\n";
+                cout<<"1.10-20\% Challenged...\n2.20-30\% Challenged...\n"<<
+                      "3.30-50\% Challenged...\n4.50-60\% Challenged...\n"<<
+                      "5.Above 60\% Challenged...\n";
+                cout<<"Level:";
+                cin>>nLevel;
+            }while(nLevel>5);
+            break;
+            default: cout<<"\nNo Such Category Exists....\n";
+
+        }
+        nStatus = PtrStud -> CalculateCutOff();
+            if(nStatus)
+                cout<<"\nCutOff Calculated...\n";
+            else
+                cout<<"\nCutOff is Not Calculated Properly...\n";
+           if(nLevel>0)
+           {
+           PtrStud = *PtrStud + nLevel;
+           cout<<"\nBonus Mark Added\n\n";
+           }
+        nStatus = PtrStud->IsEligible();
+        if(nStatus==1)
+        {
+            cout<< PtrStud;
+            cout<<"\nSeat is Alloted for the Student";
+        }
+        else if(nStatus==2)
+        {
+            cout<<PtrStud;
+            cout<<"\nStudent id in Waiting List...\n";
+        }
+        else if (nStatus == 0)
+        {
+            cout<<"\nSeat are Over to Allot...\n ";
+        }
+        else
+        {
+            cout<<PtrStud;
+            cout<<"\nThis Student is not Eligible to give the Seat...\n";
+        }
+       // cout<<"\nRemaining Seats :"<<Student::m_nTotalSeat<<endl;
+       // cout<<"Remaining Seats in Waiting List : "<<Student :: m_nWaitingList;
+        cout<<"\n********************************************************\n";
+        do
+       {
+        cout<<"\nPress 'Y' to Continue or Press 'N' to Stop: ";
+        cin>>cControl;
+       }while(cControl!='y'&&cControl!='Y' && cControl !='n'&& cControl != 'N');
+       delete PtrStud;
+    }while(cControl == 'Y'||cControl == 'y'&& nStatus!=0);
+       if(!nStatus&&(cControl!='n'||cControl!='N'))
+         cout<<"\n**********Sorry Seats Are Over for Addmission***********\n";
+       cout<<"\n***********************Thank You************************\n";
+    return 0;
+}
+bash-3.2$ ./Su[Ktudent
+
+Enter the Category in which You Belong....
+
+1.General Category...
+2.Sports Category...
+3.Physically Challenged Category...
+Category: 1
+
+*******************Base Class Constructor******************
+
+************General Students Class Constructor**************
+
+*******************Addmission Process**********************
+Enter the Name:Guru
+ Addmission No: 1001
+Enter the Maths Mark:198
+Enter the Phyiscs Mark:196
+Enter the Chemistry Mark:195
+Enter the Campus Entrance Test Mark:190
+Enter the Date of Birth
+Date:30
+Month:7
+Year: 1996
+
+CutOff Calculated...
+Name : Guru
+Addmission No: 1001
+CutOff :195.375
+
+Remaining Seats: 0
+
+Remaining Waiting Seats: 1
+
+Seat is Alloted for the Student
+********************************************************
+
+Press 'Y' to Continue or Press 'N' to Stop: y
+
+**************GeneralStudent Destructor*****************
+
+*******************Base Class Destructor****************
+
+Enter the Category in which You Belong....
+
+1.General Category...
+2.Sports Category...
+3.Physically Challenged Category...
+Category: 2
+
+*******************Base Class Constructor******************
+
+**************Sports Student Class Constuctor**************
+
+*******************Addmission Process**********************
+Enter the Name:4
+ Addmission No: 1002
+Enter the Maths Mark:178
+Enter the Phyiscs Mark:186
+Enter the Chemistry Mark:168
+Enter the Campus Entrance Test Mark:196
+Enter the Date of Birth
+Date:1
+Month:1
+Year: 1997
+
+Enter the Level for which You have Played...
+1.Intra School Level...
+2.Inter School Level...
+3.District Level...
+4.State Level...
+5.National Level...
+Level:4
+
+CutOff Calculated...
+
+Bonus Mark Added
+
+Name : 4
+Addmission No: 1002
+CutOff :188.1
+
+Remaining Seats: 0
+
+Remaining Waiting Seats: 0
+
+Student id in Waiting List...
+
+********************************************************
+
+Press 'Y' to Continue or Press 'N' to Stop: y
+
+**************Sports Student Destructor*****************
+
+*******************Base Class Destructor****************
+
+Enter the Category in which You Belong....
+
+1.General Category...
+2.Sports Category...
+3.Physically Challenged Category...
+Category: 3
+
+*******************Base Class Constructor******************
+
+******Physically Challenged Student Class Constructor******
+
+*******************Addmission Process**********************
+Enter the Name:Mani
+ Addmission No: 1003
+Enter the Maths Mark:123
+Enter the Phyiscs Mark:124
+Enter the Chemistry Mark:126
+Enter the Campus Entrance Test Mark:154
+Enter the Date of Birth
+Date:1
+Month:1
+Year: 1998
+
+Enter the Percentage of Disability...
+1.10-20% Challenged...
+2.20-30% Challenged...
+3.30-50% Challenged...
+4.50-60% Challenged...
+5.Above 60% Challenged...
+Level:5
+
+CutOff Calculated...
+
+Bonus Mark Added
+
+Name : Mani
+Addmission No: 1003
+CutOff :140.8
+
+Remaining Seats: 0
+
+Remaining Waiting Seats: 0
+
+This Student is not Eligible to give the Seat...
+
+********************************************************
+
+Press 'Y' to Continue or Press 'N' to Stop: y
+
+******Physically Challenged Student Class Destructor******
+
+*******************Base Class Destructor****************
+
+Enter the Category in which You Belong....
+
+1.General Category...
+2.Sports Category...
+3.Physically Challenged Category...
+Category: 1
+
+*******************Base Class Constructor******************
+
+************General Students Class Constructor**************
+
+*******************Addmission Process**********************
+Enter the Name:Krish
+ Addmission No: 1004
+Enter the Maths Mark:196
+Enter the Phyiscs Mark:198
+Enter the Chemistry Mark:196
+Enter the Campus Entrance Test Mark:196
+Enter the Date of Birth
+Date:20
+Month:1
+Year: 1996
+
+CutOff Calculated...
+
+Bonus Mark Added
+
+
+Seat are Over to Allot...
+ 
+********************************************************
+
+Press 'Y' to Continue or Press 'N' to Stop: y
+
+**************GeneralStudent Destructor*****************
+
+*******************Base Class Destructor****************
+
+**********Sorry Seats Are Over for Addmission***********
+
+***********************Thank You************************
+bash-3.2$ exit
+exit
+
+Script done on Fri 18 Sep 2015 12:29:48 PM IST

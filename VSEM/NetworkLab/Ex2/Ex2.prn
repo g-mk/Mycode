@@ -1,0 +1,144 @@
+Script started on Tue 16 Aug 2016 09:34:38 PM IST
+bash-3.2$ cat server/Ex2Server.prn
+Script started on Wed 10 Aug 2016 12:36:05 PM IST
+bash-3.2$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[100],buf[50];
+ struct sockaddr_in sin;
+ strcpy(buf,"");
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+    if((recv(accpt,data,100,0))==-1)
+     printf("\n\nData Received Failed\n\n");
+    else
+    {
+     printf("\n\nData Received Successful\n\n");
+     printf("\n\nReceived Data:%s \n",data);
+     printf("Enter the Acknowledgement:");
+     scanf("%[^\n]",buf);
+     send(accpt,buf,strlen(buf),0);
+     printf("\nAcknowledgement Send\n");
+    }
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+bash-3.2$ ./aSoServer
+
+
+Binded
+
+
+
+Data Received Successful
+
+
+
+Received Data:hello 
+Enter the Acknowledgement:hi
+
+Acknowledgement Send
+bash-3.2$ exit
+exit
+
+Script done on Wed 10 Aug 2016 12:36:47 PM IST
+bash-3.2$ cat client/Ex2Client.prn
+Script started on Wed 10 Aug 2016 12:36:13 PM IST
+bash-3.2$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+ int sid,conn,len;
+ char data[1024],buf[200];
+ struct sockaddr_in sin;
+ strcpy(buf,"");
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  printf("\n\nSocket Created\n\n");
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  
+   conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+   if(conn !=-1)
+   {
+    printf("\n\nConnection Established\n\n");
+    printf("Enter the data to be transmitted: ");
+    scanf("%[^\n]",data);
+    len = strlen(data);
+    if((send(sid,data,len,0))==-1)
+     printf("\n\nData Transmission Failed\n\n");
+    else
+    {
+     printf("\n\nData Transmission Successful\n\n");
+     recv(sid,buf,200,0);
+      printf("Acknowledge: %s\n",buf);
+    close(sid);
+    }
+   }
+   else
+    printf("\n\nConnection Not Establishment\n\n");
+ }
+ close(sid);
+}
+bash-3.2$ ./aSoClient
+
+
+Socket Created
+
+
+
+Connection Established
+
+Enter the data to be transmitted: hello
+
+
+Data Transmission Successful
+
+Acknowledge: hi
+bash-3.2$ exit
+exit
+
+Script done on Wed 10 Aug 2016 12:36:51 PM IST
+bash-3.2$ exit
+exit
+
+Script done on Tue 16 Aug 2016 09:35:08 PM IST

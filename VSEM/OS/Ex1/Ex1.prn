@@ -1,0 +1,282 @@
+Script started on Fri 05 Aug 2016 12:45:01 PM IST
+guru@ubuntu:~/Documents/Lab/OS/Ex1$ cd cat 
+guru@ubuntu:~/Documents/Lab/OS/Ex1/cat$ cat mycat.c
+/*******************************************************************************
+**Description   : Implementaion of cat command using the system call.         **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+void main(int argc,char *argv[])
+{
+ if(argc>0)
+ {
+  int op=open(argv[1],O_RDONLY);
+  if(op!=-1)
+  {
+   char out;
+   while(read(op,&out,1)!=0)
+   {
+     printf("%c",out);
+   }
+   close(op);
+  }
+  else
+   printf("\ncat: command-file not found\n");
+ }
+}
+guru@ubuntu:~/Documents/Lab/OS/Ex1/cat$ ./mycat text
+Hi How are you
+Im Fine.
+guru@ubuntu:~/Documents/Lab/OS/Ex1/cat$ cd ..
+guru@ubuntu:~/Documents/Lab/OS/Ex1/grep$ cat grep.c
+/*******************************************************************************
+**Description   : Implementaion of grep command using the system call.        **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <unistd.h>
+#include <sys/types.h> 
+#include <sys/stat.h> 
+#include <fcntl.h> 
+#include <stdio.h>
+#include <string.h>
+void main(int argc,char*argv[])
+{
+ if(argc>3&&(strcmp(argv[1],"-c")==0))
+ {
+  char line[100],temp,pattern[20];
+  int i=0,count=0;
+  int in=open(argv[3],O_RDONLY);
+  strcpy(pattern,argv[2]);
+  while(read(in,&temp,sizeof(char))!=0)
+  {
+    if(temp!='\n')
+      line[i++]=temp;
+    else
+    {
+      line[i]='\0';
+      if(strstr(line,pattern)!=NULL)
+        count++;
+      i=0;
+     }
+   }
+   close(in);
+   printf("\nCount %d\n",count);
+ }
+ else if(argc>2)
+ {
+  char line[100],temp,pattern[20];
+  int i=0;
+  int in=open(argv[2],O_RDONLY);
+  strcpy(pattern,argv[1]);
+  while(read(in,&temp,sizeof(char))!=0)
+  { 
+    if(temp!='\n')
+      line[i++]=temp;
+    else
+    { 
+      line[i]='\0';
+      if(strstr(line,pattern)!=NULL)
+        printf("%s\n",line);
+      i=0;
+     }
+   }
+   close(in);
+ }
+
+ else
+  printf("grep-command:invalic [OPTION] or file");
+}
+        
+guru@ubuntu:~/Documents/Lab/OS/Ex1/grep$ ./mygrep oun grep.c >> out.txt
+guru@ubuntu:~/Documents/Lab/OS/Ex1/grep$ head -n 3 out.txt
+  int i=0,count=0;
+        count++;
+   printf("\nCount %d\n",count);
+guru@ubuntu:~/Documents/Lab/OS/Ex1/grep$ cd ..
+guru@ubuntu:~/Documents/Lab/OS/Ex1$ cd move
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ ls ../copy
+copy  copy.c  copy.c~  copy.o  test  write4
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ cat mv.c
+/*******************************************************************************
+**Description   : Implementaion of mv command using the system call.          **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include<stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+void main(int argc,char*argv[])
+{
+ if(argc>1)
+ {
+  int rd=open(argv[1],O_RDONLY);
+  if(rd!=-1)
+  {
+   int len = strlen(argv[2]);
+   if(argv[2][len-1]=='/')
+   {
+    char *name=argv[1];
+    char file[10],token[30];
+    while(strstr(name,"/"))
+      {
+       name=strstr(name,"/")+sizeof(char);
+       strcpy(token,name);
+      }
+    strcpy(argv[2],token);
+   }
+   int wr=creat(argv[2],S_IRWXU);
+   if(wr==-1)
+   {
+     wr = open(argv[2],O_WRONLY);
+   }
+    char out;
+    while(read(rd,&out,1)!=0)
+    {
+     write(wr,&out,1); 
+    }
+    close(wr);
+   }
+  close(rd);
+  unlink(argv[1]);
+ }
+}
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ ./move ../copy/write4 ./
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ ls
+ move.c  move.o  mv.c  mv.c~  text  write write4
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ ls ../copy
+copy  copy.c  copy.c~  copy.o  test
+guru@ubuntu:~/Documents/Lab/OS/Ex1/move$ cd ..
+guru@ubuntu:~/Documents/Lab/OS/Ex1/who$ cat mywho.c
+/*******************************************************************************
+**Description   : Implementaion of who command using the system call.         **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include<stdio.h>
+#include<sys/utsname.h>
+#include<utmp.h>
+#include<time.h>
+#include<string.h>
+void main(int argc,char*argv[])
+{
+ if(argc==1)
+ {
+  struct utmp *detail;
+  struct tm *t;
+  detail = getutent();
+  while(detail!=NULL)
+  {
+   if(strcmp(detail->ut_user,"LOGIN")!=0&&strcmp(detail->ut_user,"")!=0&&
+          strcmp(detail->ut_line,"~")!=0)
+    {
+     printf("%s\t",detail->ut_user);
+     printf("%s\t",detail->ut_line);
+     printf("(%s)\t",detail->ut_host);
+     time(&detail->ut_time);
+     t=localtime(&detail->ut_time);
+     printf("%d-%d-%d %d:%d\n",t->tm_year+1900,t->tm_mon+1,t->tm_mday,
+             t->tm_hour,t->tm_min);
+    }
+    detail = getutent();
+  }
+ }
+} 
+guru@ubuntu:~/Documents/Lab/OS/Ex1/who$ head -n 5 out.txt
+15bcs012	pts/1	(172.16.23.194)	2016-7-27 10:14
+cc-exam006	pts/2	(172.16.23.201)	2016-7-27 10:14
+15bcs003	pts/3	(172.16.23.191)	2016-7-27 10:14
+15bcs035	pts/4	(172.16.23.229)	2016-7-27 10:14
+14bit032	pts/5	(10.100.14.126)	2016-7-27 10:14
+guru@ubuntu:~/Documents/Lab/OS/Ex1/who$ cd ..
+guru@ubuntu:~/Documents/Lab/OS/Ex1$ cd ls
+guru@ubuntu:~/Documents/Lab/OS/Ex1/ls$ cat ls.c
+/*******************************************************************************
+**Description   : Implementaion of ls command using the system call.          **
+**Author        : N. Guru Manikandan.                                         **
+**Date Created  : 30/06/2016.                                                 **
+**Version       : 0.1                                                         **
+*******************************************************************************/
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pwd.h>
+#include <time.h>
+void main(int argc,char* argv[])
+{
+ DIR *dir;
+ int flag=0;
+ struct stat mystat;
+ struct dirent *resfile;
+ struct tm *timeinfo;
+ char path[1024];
+  getcwd(path,1024);
+  if(argc==1)
+   {
+    dir = opendir(path);
+   }
+  else if(argc<=2 && strcmp(argv[1],"-l")!=0)
+   dir = opendir(argv[1]);
+  else if(argc<=2 && strcmp(argv[1],"-l")==0)
+  {
+   dir=opendir(path);
+   flag=1;
+  }
+  else if(argc<=3 && strcmp(argv[1],"-l")==0)
+  {
+   dir = opendir(argv[2]);
+   flag=1;
+  }
+   while((resfile = readdir(dir))!=NULL)
+   {
+     if(flag)
+     {
+      stat(resfile->d_name,&mystat);
+      printf((S_ISDIR(mystat.st_mode)) ? "d" : "-");
+      printf((mystat.st_mode & S_IRUSR) ? "r" : "-");
+      printf((mystat.st_mode & S_IWUSR) ? "w" : "-");
+      printf((mystat.st_mode & S_IXUSR) ? "x" : "-");
+      printf((mystat.st_mode & S_IRGRP) ? "r" : "-");
+      printf((mystat.st_mode & S_IWGRP) ? "w" : "-");
+      printf((mystat.st_mode & S_IXGRP) ? "x" : "-");
+      printf((mystat.st_mode & S_IROTH) ? "r" : "-");
+      printf((mystat.st_mode & S_IWOTH) ? "w" : "-");
+      printf((mystat.st_mode & S_IXOTH) ? "x" : "-");
+      printf("  %d  ",(int)mystat.st_nlink);
+      printf("%d  ",mystat.st_size);
+      timeinfo = localtime(&mystat.st_atime);
+      printf("%s  ",asctime(timeinfo));
+
+     }
+     printf("%s\n",resfile->d_name);
+   }
+ closedir(dir);
+}
+guru@ubuntu:~/Documents/Lab/OS/Ex1/ls$ ./list -l >> out.txt
+guru@ubuntu:~/Documents/Lab/OS/Ex1/ls$ head -n 6 out.txt
+-rw-rw-r--  1  2420  Thu Aug  4 22:54:35 2016
+  ls.o
+-rw-rw-r--  1  0  Fri Aug  5 12:48:48 2016
+  out.txt
+-rwxrwxr-x  1  13248  Fri Aug  5 12:26:18 2016
+  list
+guru@ubuntu:~/Documents/Lab/OS/Ex1/ls$ cd ..
+guru@ubuntu:~/Documents/Lab/OS/Ex1$ exit
+exit
+
+Script done on Fri 05 Aug 2016 12:49:39 PM IST

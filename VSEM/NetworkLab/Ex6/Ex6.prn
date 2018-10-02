@@ -1,0 +1,343 @@
+Script started on Tue 27 Sep 2016 05:29:57 PM IST
+bash-3.2$ cat Ex6.txt
+Script started on Tue 27 Sep 2016 05:16:58 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server$ cat out.txt
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char *IP = "172.16.16.25";
+ char MAC[18];
+ char data[50],buf[50],nline;
+ struct sockaddr_in sin;
+ 
+ strcpy(MAC,"bc:4d:25:bc:0c:00");
+ sid=socket(PF_INET,SOCK_STREAM,0);
+
+ printf("\nMac Id :%s\n",MAC);
+ memset(buf,'\0',sizeof(buf));
+ 
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9964);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nARP Requested Accepted\n");
+      recv(accpt,data,200,0);
+      if(strcmp(data,IP)==0)
+        strcpy(buf,MAC);
+      else
+        strcpy(buf,"NULL");
+      
+      send(accpt,buf,strlen(buf),0);
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server$ ./aSoServer
+
+Mac Id :bc:4d:25:bc:0c:00
+
+
+Binded
+
+
+ARP Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server$ ./aSoServer
+
+Mac Id :bc:4d:25:bc:0c:00
+
+
+Binded
+
+
+ARP Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:19:28 PM IST
+Script started on Tue 27 Sep 2016 05:16:44 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server1$ cat out.txt
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[50],buf[50],nline;
+ char *IP = "172.16.16.23";
+ char MAC[18];
+ struct sockaddr_in sin;
+ strcpy(MAC,"ac:bc:1c:ds:0d:23");
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ printf("\nMac Id :%s\n",MAC);
+ memset(buf,'\0',sizeof(buf));
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9965);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nARP Requested Accepted\n");
+      recv(accpt,data,200,0);
+      if(strcmp(data,IP)==0)
+        strcpy(buf,MAC);
+      else
+        strcpy(buf,"NULL");
+      
+      send(accpt,buf,strlen(buf),0);
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server1$ ./aSoServer
+
+Mac Id :ac:bc:1c:ds:0d:23
+
+
+Binded
+
+
+ARP Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server1$ ./aSoServer
+
+Mac Id :ac:bc:1c:ds:0d:23
+
+
+Binded
+
+
+ARP Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server1$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:19:24 PM IST
+Script started on Tue 27 Sep 2016 05:17:12 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server2$ cat out.txt
+#include"hSocket.h"
+int main()
+{
+ int sid,len=1024,accpt,b=1;
+ char data[50],buf[50],nline;
+ char *IP = "172.16.16.24";
+ char MAC[18];
+ struct sockaddr_in sin;
+ strcpy(MAC,"a1:b2:0c:ds:0d:24");
+ sid=socket(PF_INET,SOCK_STREAM,0);
+ printf("\nMac Id :%s\n",MAC);
+ memset(buf,'\0',sizeof(buf));
+ if(sid==-1)
+  printf("\n\nSocket failure\n\n");
+ else
+ {
+  sin.sin_family = AF_INET;
+  sin.sin_port = htons(9966);
+  sin.sin_addr.s_addr = htonl(INADDR_ANY);
+  while(b!=0)
+    b = bind(sid,(struct sockaddr *)&sin,sizeof(sin));
+    if(b==0)
+    {
+      printf("\n\nBinded\n\n");
+      listen(sid,10);
+      accpt = accept(sid,(struct sockaddr*)&sin,&len);
+      printf("\nARP Requested Accepted\n");      
+      recv(accpt,data,200,0);
+      if(strcmp(data,IP)==0)
+        strcpy(buf,MAC);
+      else
+        strcpy(buf,"NULL");
+      
+      send(accpt,buf,strlen(buf),0);
+    }
+    else 
+     printf("\n\nBinding Failed\n\n");
+  }
+  close(sid);
+}
+
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server2$ ./aSoServer
+
+Mac Id :a1:b2:0c:ds:0d:24
+
+
+Binded
+
+
+ARP Requested Accepted
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/server2$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:19:30 PM IST
+Script started on Tue 27 Sep 2016 05:16:17 PM IST
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ cat out.txt
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include"hSocket.h"
+int main()
+{
+  int sid,conn,len,loop=0;;
+  int port = 9964;
+  char data[50],buf[50],nline;
+  struct sockaddr_in sin;
+  strcpy(buf,"NULL");
+ 
+  printf("\nIP Address:");
+  scanf("%s",data);
+        
+  while(loop++<3 && (strcmp(buf,"NULL")==0))
+  {
+      memset(buf,'\0',sizeof(buf));
+     sid=socket(PF_INET,SOCK_STREAM,0);
+     if(sid==-1)
+      printf("\n\nSocket failure\n\n");
+     else
+     {
+        printf("\n\nSocket Created\n\n");
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = htonl(INADDR_ANY);
+        sin.sin_port = htons(port++);
+        printf("\nConnecting.....\n");
+        conn = connect(sid,(struct sockaddr*)(&sin),sizeof(sin));
+        if(conn !=-1)
+        {   printf("\nConnected to port %d\n",port-1);
+            if(send(sid,data,strlen(data),0)<0) 
+              printf("\nRequest Not Send\n");
+            else
+              printf("\nRequest Send\n");
+            
+            if(recv(sid,buf,200,0)<0)
+              printf("\nResponse not Received\n");
+            else
+              printf("\nResponse Received\n");
+            if(!(strcmp(buf,"NULL"))){
+              printf("\nMAC Not Found\n\nRequest transfered\n");
+            }
+            close(sid);
+         }
+        }
+   }   
+  
+  printf("\nResponse Message: %s\n",buf);
+ }
+ 
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ ./aSoClient
+
+IP Address:172.16.16.23
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9965
+
+Request Send
+
+Response Received
+
+Response Message: ac:bc:1c:ds:0d:23
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ ./aSoClient
+
+IP Address:172.16.16.200
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9964
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9965
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+
+Socket Created
+
+
+Connecting.....
+
+Connected to port 9966
+
+Request Send
+
+Response Received
+
+MAC Not Found
+
+Request transfered
+
+Response Message: NULL
+guru@ubuntu:~/Documents/Lab/NetworkLab/Ex6/client$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:19:21 PM IST
+bash-3.2$ exit
+exit
+
+Script done on Tue 27 Sep 2016 05:30:05 PM IST
